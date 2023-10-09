@@ -77,7 +77,7 @@ class _MapScreenState extends State<MapScreen> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('AccessTech'),
+          title: const Text('AccessTech BETA'),
           elevation: 2,
         ),
         body: GoogleMap(
@@ -136,18 +136,136 @@ class _MapScreenState extends State<MapScreen> {
   //End of MapScreenUI
 }
 
-//Start of BuildingScreenUI
-class BuildingScreen extends StatelessWidget {
-  //TODO stateful
-  const BuildingScreen({super.key});
+
+class BuildingInfo {
+  final String name;
+  final String description;
+  final String imageUrl;
+
+  BuildingInfo({
+    required this.name,
+    required this.description,
+    required this.imageUrl,
+  });
+}
+
+class BuildingCard extends StatelessWidget {
+  final BuildingInfo building;
+
+  const BuildingCard({Key? key, required this.building}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            // Limit the height of the image here
+            height: 100, // Adjust this value as needed
+            child: Image.asset(
+              building.imageUrl,
+              fit: BoxFit.cover, // Control how the image scales
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              building.name,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              building.description,
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ], // Children (list)
+      ),
+    );
+  }
+}
+
+//Start of BuildingScreenUI
+class BuildingScreen extends StatelessWidget {
+  const BuildingScreen({Key? key}) : super(key: key);
+  //TODO stateful
+
+  @override
+  Widget build(BuildContext context) {
+    // Simulated building data
+    final List<BuildingInfo> buildingData = [
+      BuildingInfo(
+        name: 'Holden Hall',
+        description: 'Academic hub housing classrooms and offices.',
+        imageUrl: 'assets/sub.jpg',
+      ),
+      BuildingInfo(
+        name: 'Student Union Building',
+        description: "Campus gathering spot with dining and services.",
+        imageUrl: 'assets/sub.jpg',
+      ),
+      // Add more building info...
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Buildings'),
+        elevation: 2,
+      ),
+      body: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemCount: buildingData.length,
+        itemBuilder: (context, index) {
+          final building = buildingData[index];
+          return BuildingCard(building: building);
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 1, // BuildingScreen is at index 1
+        fixedColor: Colors.red,
+        items: const [
+          BottomNavigationBarItem(
+            label: 'Home',
+            icon: Icon(Icons.home),
+          ),
+          BottomNavigationBarItem(
+            label: 'Buildings',
+            icon: Icon(Icons.search),
+          ),
+          BottomNavigationBarItem(
+            label: 'Contact',
+            icon: Icon(Icons.call),
+          ),
+        ],
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ContactScreen()),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+/* OLD BUILDING SCREEN CODE \\ TODO DELETE
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Color.fromARGB(255, 182, 8,
-            8), //TODO change color to accessable not color blind color
+        colorSchemeSeed: const Color.fromARGB(255, 182, 8,
+            8), //TODO change color to accessible not color blind color
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -213,7 +331,7 @@ class BuildingScreen extends StatelessWidget {
     );
   }
 }
-
+*/
 //Start of contact screen
 class ContactScreen extends StatelessWidget {
   //TODO stateful

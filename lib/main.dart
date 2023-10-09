@@ -136,7 +136,6 @@ class _MapScreenState extends State<MapScreen> {
   //End of MapScreenUI
 }
 
-
 class BuildingInfo {
   final String name;
   final String description;
@@ -260,6 +259,7 @@ class BuildingScreen extends StatelessWidget {
     );
   }
 }
+
 /* OLD BUILDING SCREEN CODE \\ TODO DELETE
     return MaterialApp(
       theme: ThemeData(

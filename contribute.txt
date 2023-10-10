@@ -1,3 +1,7 @@
-Write down your name to confirm that you're able to make pull requests and access the repository from your text editor.:
+Write down something after your name to confirm that you're able to make pull requests and access the repository from your text editor.:
 
-Travis
+Travis: blah blah blah 
+Houston:
+Thinh:
+Raj:
+Bhumik:

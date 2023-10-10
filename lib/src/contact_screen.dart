@@ -21,21 +21,6 @@ class ContactScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        currentIndex: 2,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              navigateWithTransition(context, const MapScreen(),-2);
-              break;
-            case 1:
-              navigateWithTransition(context, const BuildingScreen(),-1);
-              break;
-            case 2:
-              break;
-          }
-        },
-      ),
     );
   }
 }

@@ -80,21 +80,6 @@ class _MapScreenState extends State<MapScreen> {
         ),
         markers: _markers.values.toSet(),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        currentIndex: 0,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              break;
-            case 1:
-              navigateWithTransition(context, const BuildingScreen(),1);
-              break;
-            case 2:
-              navigateWithTransition(context, const ContactScreen(),2);
-              break;
-          }
-        },
-      ),
     );
   }
 //End of MapScreenUI

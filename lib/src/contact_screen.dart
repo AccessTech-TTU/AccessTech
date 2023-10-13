@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'bottom_navigation_bar.dart';
 import 'building_screen.dart';
 import 'map_screen.dart';
-
+//TODO
 class ContactScreen extends StatelessWidget {
   const ContactScreen({Key? key});
 
@@ -20,21 +20,6 @@ class ContactScreen extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        currentIndex: 2,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              navigateWithTransition(context, const MapScreen(),-2);
-              break;
-            case 1:
-              navigateWithTransition(context, const BuildingScreen(),-1);
-              break;
-            case 2:
-              break;
-          }
-        },
       ),
     );
   }

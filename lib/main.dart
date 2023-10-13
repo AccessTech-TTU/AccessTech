@@ -1,3 +1,4 @@
+import 'package:accesstech/src/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'src/map_screen.dart';
 
@@ -18,7 +19,6 @@ void main() {
          ThemeMode.dark for dark theme
       */
     title: "AccessRaider",
-    home: MapScreen(),
+    home: HomeScreen(),
   ));
 }
-

@@ -95,21 +95,6 @@ class BuildingScreen extends StatelessWidget {
           return BuildingCard(building: building);
         },
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        currentIndex: 1,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              navigateWithTransition(context, const MapScreen(),-1);
-              break;
-            case 1:
-              break;
-            case 2:
-              navigateWithTransition(context, const ContactScreen(),1);
-              break;
-          }
-        },
-      ),
     );
   }
 } // End of building screen

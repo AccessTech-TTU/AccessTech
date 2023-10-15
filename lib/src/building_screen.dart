@@ -54,7 +54,7 @@ class BuildingCard extends StatelessWidget {
     );
   }
 }
-
+// Make builing list separate from classes
 final List<BuildingInfo> buildingData = [
       BuildingInfo(
         name: 'Holden Hall',
@@ -102,6 +102,7 @@ class BuildingScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Buildings'),
         elevation: 5,
+        // Search button on app bar which show search text field when tapped
         actions: [
           IconButton(onPressed: () {
             showSearch(context: context, delegate: MySearchDelegate(),);
@@ -118,6 +119,8 @@ class BuildingScreen extends StatelessWidget {
       //     return BuildingCard(building: building);
       //   },
       // ),
+
+      // Use list view to show list of building
       body: ListView.builder(itemCount: buildingData.length, itemBuilder: (context, index) {
         final building = buildingData[index];
         return BuildingCard(building: building);
@@ -126,35 +129,43 @@ class BuildingScreen extends StatelessWidget {
   }
 }
 
+// Implementation of search function
 class MySearchDelegate extends SearchDelegate {
-  
 
+  // Clear button
   @override
   List<Widget>? buildActions(BuildContext context) => [IconButton(onPressed: () {query = '';}, icon: Icon(Icons.clear))];
 
+  // Back button
   @override
   Widget? buildLeading(BuildContext context) => IconButton(onPressed: () => close(context, null), icon: Icon(Icons.arrow_back));
 
+  // Show result
   @override
   Widget buildResults(BuildContext context) {
+    // Build results list of buildings that has names contain search query
     List<BuildingInfo> searchResults = buildingData.where((element) {
       final result = element.name.toLowerCase();
       final input = query.toLowerCase();
       return result.contains(input);
     }).toList();
+    // return results as list view
     return ListView.builder(itemCount: searchResults.length, itemBuilder: (context, index) {
       final result = searchResults[index];
       return BuildingCard(building: result);
     });
   }
 
+  // Show suggestion
   @override
   Widget buildSuggestions(BuildContext context) {
+    // Building suggestions list of builings that has names contain search query
     List<BuildingInfo> suggestions= buildingData.where((searchResult) {
       final result = searchResult.name.toLowerCase();
       final input = query.toLowerCase();
       return result.contains(input);
     }).toList();
+    // Return suggestions list
     return ListView.builder(itemCount: suggestions.length, itemBuilder: (context, index) {
       final suggestion = suggestions[index];
       return ListTile(title: Text(suggestion.name), onTap: () {

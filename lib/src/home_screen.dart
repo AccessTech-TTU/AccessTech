@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Function to pull a bottom sheet with help request form when tap on help button
   void _helpReqSheet() {
     showModalBottomSheet(
       context: context,

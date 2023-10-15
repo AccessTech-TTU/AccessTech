@@ -29,30 +29,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
           icon: Icon(Icons.call),
         ),
       ],
-      onTap: onTap,
+      onTap: onTap, // Allow onTap function to be caller-defined
     );
   }
-}
-
-Future<void> navigateWithTransition(BuildContext context, Widget screen, double i) async {
-  await Navigator.pushReplacement(
-    context,
-    PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return screen;
-      },
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final begin = Offset(i, 0.0); // Start the new screen from the right
-        const end = Offset.zero; // End the transition at the current screen
-        const curve = Curves.easeInOut; // Use your desired curve
-        var tween =
-        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
-    ),
-  );
 }

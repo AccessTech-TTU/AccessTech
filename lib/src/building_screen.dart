@@ -24,14 +24,6 @@ class BuildingCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Container(
-          //   // Limit the height of the image here
-          //   height: 100, // Adjust this value as needed
-          //   child: Image.asset(
-          //     building.imageUrl,
-          //     fit: BoxFit.cover, // Control how the image scales
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.all(8),
             child: Text(
@@ -54,7 +46,7 @@ class BuildingCard extends StatelessWidget {
     );
   }
 }
-// Make builing list separate from classes
+// Make building list separate from classes
 final List<BuildingInfo> buildingData = [
       BuildingInfo(
         name: 'Holden Hall',
@@ -109,16 +101,6 @@ class BuildingScreen extends StatelessWidget {
           }, icon: Icon(Icons.search))
         ],
       ),
-      // body: GridView.builder(
-      //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //     crossAxisCount: 2,
-      //   ),
-      //   itemCount: buildingData.length,
-      //   itemBuilder: (context, index) {
-      //     final building = buildingData[index];
-      //     return BuildingCard(building: building);
-      //   },
-      // ),
 
       // Use list view to show list of building
       body: ListView.builder(itemCount: buildingData.length, itemBuilder: (context, index) {
@@ -159,7 +141,7 @@ class MySearchDelegate extends SearchDelegate {
   // Show suggestion
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Building suggestions list of builings that has names contain search query
+    // Building suggestions list of buildings that has names contain search query
     List<BuildingInfo> suggestions= buildingData.where((searchResult) {
       final result = searchResult.name.toLowerCase();
       final input = query.toLowerCase();

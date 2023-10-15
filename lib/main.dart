@@ -19,7 +19,7 @@ void main() {
          ThemeMode.light for light theme,
          ThemeMode.dark for dark theme
       */
-    title: "AccessRaider",
+    title: "AccessTech",
     home: HomeScreen(),
   ));
 }

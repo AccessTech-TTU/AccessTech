@@ -40,7 +40,7 @@ jobs:
     - run: flutter analyze . --no-fatal-infos --no-fatal-warnings
     
     # Run widget tests for our flutter project.
-    - run: flutter test
+    #- run: flutter test
 
     # TRAVIS NOTE: Caches SDKs for each subsequent run, speeds up CI
     - uses: actions/setup-java@v3

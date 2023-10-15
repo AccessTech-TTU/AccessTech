@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
-import 'bottom_navigation_bar.dart';
-import 'building_screen.dart';
-import 'contact_screen.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -14,25 +11,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   // Making a wheelchair icon
-  //TODO Make wheelchair icon work
-  BitmapDescriptor wheelchairIcon = BitmapDescriptor.defaultMarker;
-  @override
-  void initState() {
-    addCustomIcon();
-    super.initState();
-  }
-
-  void addCustomIcon() {
-    BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/wheelchair_marker.png")
-        .then(
-          (icon) {
-        setState(() {
-          wheelchairIcon = icon;
-        });
-      },
-    );
-  } //End of making a wheelchair icon
+  
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO update the information we need from the markers
@@ -67,10 +46,10 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     // Map screen
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AccessTech BETA'),
-        elevation: 2,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('AccessTech BETA'),
+      //   elevation: 2,
+      // ),
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: const CameraPosition(

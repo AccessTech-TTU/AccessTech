@@ -1,12 +1,13 @@
 import 'package:accesstech/src/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'src/map_screen.dart';
 
 //TODO Change API key before publication
 void main() {
   runApp(MaterialApp(
     theme: ThemeData(
+      useMaterial3: false,
       brightness: Brightness.light,
+      colorSchemeSeed: Color.fromARGB(255, 204, 0, 0),
       /* light theme settings */
     ),
     darkTheme: ThemeData(

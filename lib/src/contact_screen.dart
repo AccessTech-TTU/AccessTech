@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bottom_navigation_bar.dart';
-import 'building_screen.dart';
-import 'map_screen.dart';
-//TODO
+
 class ContactScreen extends StatelessWidget {
   const ContactScreen({Key? key});
 

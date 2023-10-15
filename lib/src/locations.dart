@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'locations.g.dart';
@@ -81,7 +79,6 @@ class Locations {
 }
 
 Future<Locations> getGoogleOffices() async {
-  const googleLocationsURL = 'https://about.google/static/data/locations.json';
   //TODO If you want to get the locations from elsewhere, uncomment this code and change the googleLocationsURL to where the json data is
   /*
   // Retrieve the locations of Google offices

@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+/*
+Authors:
+  Thinh Pham, Travis Libre
+Description:
+  This file is the buildings screen. It currently lists the buildings,
+  and a description of them. Currently, much of it is unused and must
+  be implemented.
+*/
+
 class BuildingInfo {
   final String name;
   final String description;

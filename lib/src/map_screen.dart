@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
 
+/*
+Authors:
+  Houston Taylor, Travis Libre
+Description:
+  This file is the map screen. It contains the Google Map widget, and a getter
+  for the markers.
+*/
+
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
@@ -9,9 +17,12 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
-  // Making a wheelchair icon
-  
+class _MapScreenState extends State<MapScreen>
+    with AutomaticKeepAliveClientMixin{
+  // Keep screen alive between screen switches
+  @override
+  bool get wantKeepAlive => true;  // Screen will stay loaded forever
+
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO update the information we need from the markers
@@ -44,6 +55,7 @@ class _MapScreenState extends State<MapScreen> {
   //Start of UI
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // Map screen
     return Scaffold(
       // appBar: AppBar(

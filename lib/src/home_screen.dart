@@ -3,7 +3,16 @@ import 'package:accesstech/src/building_screen.dart';
 import 'package:accesstech/src/contact_screen.dart';
 import 'package:accesstech/src/map_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+/*
+Authors:
+  Thinh Pham, Travis Libre
+Description:
+  This file is the root screen, it contains the navigation bar constructor, the
+  3 other screens as states, and a help button. The other screens
+  (map, buildings, etc) are children of this one. It uses PageController to
+  switch between states.
+*/
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,70 +21,55 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //TODO Make wheelchair icon work
-  BitmapDescriptor wheelchairIcon = BitmapDescriptor.defaultMarker;
-
+  late int _selectedPageIndex;
+  static late List<Widget> _screens;
+  late PageController _pageController;
   @override
   void initState() {
-    addCustomIcon();
     super.initState();
+    _selectedPageIndex = 1;
+    _screens = [  // List of states accessible from BottomNavBar
+      BuildingScreen(),
+      MapScreen(),
+      ContactScreen()
+    ];
+    //pageController controls state transitions
+    _pageController = PageController(initialPage: _selectedPageIndex);
   }
-// TODO Get this working.
-  void addCustomIcon() {
-    BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/wheelchair_marker.png")
-        .then(
-          (icon) {
-        setState(() {
-          wheelchairIcon = icon;
-        });
-      },
-    );
-  } //End of making a wheelchair icon
 
-  int _currentIndex = 0;
-  int _previousIndex = 0;
-  final List<Widget> _screens = [ // List all possible screen destinations
-    MapScreen(),
-    BuildingScreen(),
-    ContactScreen()
-  ];
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       // Help button
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(  // Implement emergency button
         backgroundColor: Color.fromARGB(255, 204, 0, 0),
         foregroundColor: Colors.white,
         child: Icon(Icons.chat_bubble_outline_rounded),
         onPressed: _helpReqSheet,
       ),
 
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: _screens[_currentIndex], // Put possible screens as body
-        transitionBuilder: (Widget child, Animation<double> animation){
-          var begin = Offset(_currentIndex-_previousIndex as double, 0.0); // Start the new screen from the right
-          const end = Offset.zero; // End the transition at the current screen
-          const curve = Curves.easeInOut; // Use your desired curve
-          var tween =
-          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = animation.drive(tween);
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        } // Set your desired curve
+      body: PageView( // Main body is the screens
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
+        children: _screens,
       ),
-      // Define bottom bar
-      bottomNavigationBar: BottomNavigationBarWidget(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          _previousIndex = _currentIndex;
-          setState(() { // Change screen to index
-            _currentIndex = index;
+      bottomNavigationBar: BottomNavigationBarWidget(  // Call nav_bar file
+        currentIndex: _selectedPageIndex,
+        onDestinationSelected: (selectedPageIndex) {
+          setState(() {
+            _selectedPageIndex = selectedPageIndex;  // Change screen to index
+            _pageController.animateToPage( // Animate page transition
+                selectedPageIndex,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease
+            );
           });
         },
       ),

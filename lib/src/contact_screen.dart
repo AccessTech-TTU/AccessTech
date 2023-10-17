@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+/*
+Authors:
+  Houston Taylor
+Description:
+  This file is the contact screen. It's currently empty, and may be
+  replaced in the future.
+*/
+
 class ContactScreen extends StatelessWidget {
   const ContactScreen({Key? key});
 

@@ -2,6 +2,7 @@ import 'package:accesstech/src/bottom_navigation_bar.dart';
 import 'package:accesstech/src/building_screen.dart';
 import 'package:accesstech/src/contact_screen.dart';
 import 'package:accesstech/src/map_screen.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -20,10 +21,12 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late int _selectedPageIndex;
   static late List<Widget> _screens;
   late PageController _pageController;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
   @override
   void initState() {
     super.initState();
@@ -35,6 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     //pageController controls state transitions
     _pageController = PageController(initialPage: _selectedPageIndex);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+    final curvedAnimation = CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
   }
 
   @override
@@ -48,11 +57,50 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
 
       // Help button
-      floatingActionButton: FloatingActionButton(  // Implement emergency button
-        backgroundColor: Color.fromARGB(255, 204, 0, 0),
-        foregroundColor: Colors.white,
-        child: Icon(Icons.chat_bubble_outline_rounded),
-        onPressed: _helpReqSheet,
+      floatingActionButton: FloatingActionBubble(
+        iconData: Icons.help,
+        items: [
+          Bubble(
+              icon: Icons.chat_bubble,
+              iconColor: Colors.white,
+              title: "Request",
+              bubbleColor: Color.fromARGB(255, 204, 0, 0),
+              onPress: () {
+              _animationController.reverse();
+              _helpReqSheet();
+              },
+              titleStyle: TextStyle(color: Colors.white)),
+            Bubble(
+              icon: Icons.phone,
+              iconColor: Colors.white,
+              title: "Call",
+              bubbleColor: Color.fromARGB(255, 204, 0, 0),
+              onPress: () {
+              _animationController.reverse();
+              launchUrl("tel://8067422405" as Uri);
+              },
+              titleStyle: TextStyle(color: Colors.white)),
+            Bubble(
+              icon: Icons.history,
+              iconColor: Colors.white,
+              title: "History",
+              bubbleColor: Color.fromARGB(255, 204, 0, 0),
+              onPress: () {
+              _animationController.reverse();
+              AlertDialog(
+                title: Text("Request History"),
+                
+              );
+              },
+              titleStyle: TextStyle(color: Colors.white)),
+        ],
+        iconColor: Colors.white, 
+        backGroundColor: Color.fromARGB(255, 204, 0, 0),
+        animation: _animation,
+        onPress: () => _animationController.isCompleted
+              ? _animationController.reverse()
+              : _animationController.forward(), 
+        
       ),
 
       body: PageView( // Main body is the screens

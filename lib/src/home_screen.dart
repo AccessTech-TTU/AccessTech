@@ -4,6 +4,7 @@ import 'package:accesstech/src/contact_screen.dart';
 import 'package:accesstech/src/map_screen.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /*
 Authors:

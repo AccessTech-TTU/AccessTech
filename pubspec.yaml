@@ -40,6 +40,8 @@ dependencies:
   http: ^1.1.0
   json_serializable: ^6.7.1
   json_annotation: ^4.8.1
+  floating_action_bubble: 1.1.4
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_launcher_icons: "0.13.1"

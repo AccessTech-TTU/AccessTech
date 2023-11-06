@@ -18,11 +18,10 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen>
-    with AutomaticKeepAliveClientMixin{
+    with AutomaticKeepAliveClientMixin {
   // Keep screen alive between screen switches
   @override
-  bool get wantKeepAlive => true;  // Screen will stay loaded forever
-
+  bool get wantKeepAlive => true; // Screen will stay loaded forever
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO update the information we need from the markers
@@ -52,24 +51,86 @@ class _MapScreenState extends State<MapScreen>
 
 //End of list view
 
+  bool isDrawerOpen = false;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
   //Start of UI
   @override
   Widget build(BuildContext context) {
     super.build(context);
     // Map screen
     return Scaffold(
+      key: scaffoldKey,
       // appBar: AppBar(
       //   title: const Text('AccessTech BETA'),
       //   elevation: 2,
       // ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: const CameraPosition(
-          target:
-          LatLng(33.58479, -101.87466), //TODO initial position of the map
-          zoom: 15,
+      body: Stack(
+        children: [
+          GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(
+                  33.58479, -101.87466), //TODO initial position of the map
+              zoom: 15,
+            ),
+            markers: _markers.values.toSet(),
+          ),
+          Positioned(
+            top: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: FloatingActionButton.small(
+                onPressed: () {},
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                ),
+                backgroundColor: Colors.white,
+                elevation: 10,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 60,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: FloatingActionButton.small(
+                onPressed: () => scaffoldKey.currentState!.openDrawer(),
+                child: Icon(
+                  Icons.filter_vintage,
+                  color: Colors.black,
+                ),
+                backgroundColor: Colors.white,
+                elevation: 10,
+              ),
+            ),
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Color.fromARGB(255, 204, 0, 0)),
+              child: Text(
+                "Filter",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Drawer Item 1'),
+              // Add your drawer items here
+            ),
+            ListTile(
+              title: Text('Drawer Item 2'),
+              // Add more drawer items
+            ),
+          ],
         ),
-        markers: _markers.values.toSet(),
       ),
     );
   }

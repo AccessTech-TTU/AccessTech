@@ -1,8 +1,8 @@
-import 'package:accesstech/src/bottom_navigation_bar.dart';
+import 'package:accesstech/src/DraggableBottomSheet.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:accesstech/src/building_screen.dart';
 import 'package:accesstech/src/contact_screen.dart';
 import 'package:accesstech/src/map_screen.dart';
-import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,7 +32,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     _selectedPageIndex = 1;
-    _screens = [  // List of states accessible from BottomNavBar
+    _screens = [
+      // List of states accessible from BottomNavBar
       BuildingScreen(),
       MapScreen(),
       ContactScreen()
@@ -56,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // Help button
       floatingActionButton: FloatingActionBubble(
         iconData: Icons.help,
@@ -67,60 +67,52 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               title: "Request",
               bubbleColor: Color.fromARGB(255, 204, 0, 0),
               onPress: () {
-              _animationController.reverse();
-              _helpReqSheet();
+                _animationController.reverse();
+                _helpReqSheet();
               },
               titleStyle: TextStyle(color: Colors.white)),
-            Bubble(
+          Bubble(
               icon: Icons.phone,
               iconColor: Colors.white,
               title: "Call",
               bubbleColor: Color.fromARGB(255, 204, 0, 0),
               onPress: () {
-              _animationController.reverse();
-              launchUrl("tel://8067422405" as Uri);
+                _animationController.reverse();
+                launchUrl("tel://8067422405" as Uri);
               },
               titleStyle: TextStyle(color: Colors.white)),
-            Bubble(
+          Bubble(
               icon: Icons.history,
               iconColor: Colors.white,
               title: "History",
               bubbleColor: Color.fromARGB(255, 204, 0, 0),
               onPress: () {
-              _animationController.reverse();
-              AlertDialog(
-                title: Text("Request History"),
-                
-              );
+                _animationController.reverse();
+                AlertDialog(
+                  title: Text("Request History"),
+
+                );
               },
               titleStyle: TextStyle(color: Colors.white)),
         ],
-        iconColor: Colors.white, 
+        iconColor: Colors.white,
         backGroundColor: Color.fromARGB(255, 204, 0, 0),
         animation: _animation,
         onPress: () => _animationController.isCompleted
-              ? _animationController.reverse()
-              : _animationController.forward(), 
-        
-      ),
+            ? _animationController.reverse()
+            : _animationController.forward(),
 
-      body: PageView( // Main body is the screens
-        controller: _pageController,
-        physics: NeverScrollableScrollPhysics(),
-        children: _screens,
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(  // Call nav_bar file
-        currentIndex: _selectedPageIndex,
-        onDestinationSelected: (selectedPageIndex) {
-          setState(() {
-            _selectedPageIndex = selectedPageIndex;  // Change screen to index
-            _pageController.animateToPage( // Animate page transition
-                selectedPageIndex,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease
-            );
-          });
-        },
+      body: Stack(
+        children: [
+          PageView(
+            // Main body is the screens
+            controller: _pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: _screens,
+          ),
+          MyDraggableSheet(),
+        ],
       ),
     );
   }
@@ -143,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
             TextField(
               decoration:
-              InputDecoration(hintText: "What do you need help with?"),
+                  InputDecoration(hintText: "What do you need help with?"),
             ),
             TextField(
               maxLines: 5,

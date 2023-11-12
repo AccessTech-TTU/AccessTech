@@ -1,3 +1,4 @@
+import 'package:accesstech/src/mapScreen/location_service.dart';
 import 'package:flutter/material.dart';
 import 'buildingData.dart';
 
@@ -10,6 +11,9 @@ class MyDraggableSheet extends StatefulWidget {
 class _MyDraggableSheetState extends State<MyDraggableSheet> {
   final _sheet = GlobalKey();
   final _controller = DraggableScrollableController();
+
+  //for search bar:
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -83,7 +87,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                         ),
                       ],
                     ),
-                    TextField(
+                    TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Search',
                         prefixIcon: Icon(Icons.search),

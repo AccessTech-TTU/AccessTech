@@ -1,0 +1,10 @@
+class AdjacencyList<E> implements Graph<E> {
+
+  final Map<Vertex<E>, List<Edge<E>>> _connections = {};
+  var _nextIndex = 0;
+
+  @override
+  Iterable<Vertex<E>> get vertices => _connections.keys;
+
+  // more to come ...
+}

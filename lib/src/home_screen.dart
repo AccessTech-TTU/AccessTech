@@ -2,7 +2,7 @@ import 'package:accesstech/src/DraggableBottomSheet.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:accesstech/src/building_screen.dart';
 import 'package:accesstech/src/contact_screen.dart';
-import 'package:accesstech/src/map_screen.dart';
+import 'package:accesstech/src/mapScreen/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,7 +22,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late int _selectedPageIndex;
   static late List<Widget> _screens;
   late PageController _pageController;
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _screens = [
       // List of states accessible from BottomNavBar
       BuildingScreen(),
-      MapScreen(),
+      MapScreen(key: Key('Map')),
       ContactScreen()
     ];
     //pageController controls state transitions
@@ -44,7 +45,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       vsync: this,
       duration: Duration(milliseconds: 260),
     );
-    final curvedAnimation = CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
   }
 
@@ -90,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 _animationController.reverse();
                 AlertDialog(
                   title: Text("Request History"),
-
                 );
               },
               titleStyle: TextStyle(color: Colors.white)),
@@ -101,7 +102,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         onPress: () => _animationController.isCompleted
             ? _animationController.reverse()
             : _animationController.forward(),
-
       ),
       body: Stack(
         children: [
@@ -111,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             physics: NeverScrollableScrollPhysics(),
             children: _screens,
           ),
-          MyDraggableSheet(),
+          MyDraggableSheet(key: Key('Sheet')),
         ],
       ),
     );

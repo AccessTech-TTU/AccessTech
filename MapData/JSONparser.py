@@ -77,7 +77,7 @@ for path in footwaysUpdated:
     count = count + 1
     #print(string)
     file.write(string)
-file.close
+file.close()
 count = 1
 #"POINT (-101.8732499 33.5855035)", Name ,
 

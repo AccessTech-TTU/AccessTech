@@ -3,6 +3,7 @@ import json
 import geopy as geopy
 
 from Node import Node
+from NodeJson import NodeJson
 from Path import Path
 from geopy.distance import geodesic #pip install geopy
 
@@ -26,7 +27,7 @@ def find_closest_node(all_nodes, edges_node): #This function is not needed anymo
     return closest_node
     '''
 
-file = open("kmlconvertjson.json")#Loading the converted kml to json data
+file = open("updatedMapKMLtoJson.json")#Loading the converted kml to json data
 data = json.load(file)
 
 nodes = []#This list will hold data for the co-ordinates and names of markers. It will hold them as Node objects
@@ -34,6 +35,8 @@ edges = []#This list will hold data for the paths. A path is a sequence of nodes
 
 for layer in data['kml']['Document']['Folder']:#Parsing the json file
     for placemark in layer['Placemark']:#Both "Point" data and "LineString" data are in the "Placemark" key
+        #TODO if getting error if 'Point' in placemark.keys():#If it is a Point
+        #then delete polygon from json file
         if 'Point' in placemark.keys():#If it is a Point
             coords = placemark['Point']['coordinates'].split(',')#Getting the co ordinates of the point
             nodes.append(Node(float(coords[1]), float(coords[0]), placemark['name']))#Storing the "Point" data as a new node in the nodes list. Takes in the Point's (latitude, longitude, name)
@@ -53,14 +56,27 @@ for layer in data['kml']['Document']['Folder']:#Parsing the json file
 entrance_nodes = []#list for storing entrance nodes
 start_or_end_nodes = []#list for storing start or end nodes, ignores the middle nodes of paths that dont connect to a marker
 ramp_nodes = []#list for storing ramp nodes
+ramp_count = 1 #for naming the ramps after the ramp number
 for node in nodes:
-    if "entrance" in node.get_name(): # if the name of the node contains "entrance"
-        entrance_nodes.append(node)#TODO maybe remove entrance nodes from the set of all nodes
-    if "ramp" in node.get_name():#if the name of the node contains "ramp"
-        ramp_nodes.append(node)
-    if "Start of End" in node.get_name():#start or end node
-        start_or_end_nodes.append(node)
+    if "entrance" in node.get_name().lower(): # if the name of the node contains "entrance"
+        node_json = NodeJson(node.get_name(), "", node.get_lat(), node.get_long(), "", "entrance")#id, image, lat, lng, description, type
+        entrance_nodes.append(node_json)#TODO maybe remove entrance nodes from the set of all nodes
+    if "ramp" in node.get_name().lower():#if the name of the node contains "ramp"
+        node_json = NodeJson(node.get_name() + str(ramp_count), "", node.get_lat(), node.get_long(), "", "ramp")#id, image, lat, lng, description, type
+        ramp_count = ramp_count + 1
+        ramp_nodes.append(node_json)
+markers = entrance_nodes + ramp_nodes
+# Serializing json
+json_string = json.dumps([ob.__dict__ for ob in markers])
+print(markers[0].__dict__)
+print(json_string)
+# Writing to sample.json
+with open("sample.json", "w") as outfile:
+    outfile.write(json_string)
 
+"""
+
+"""
 
 
 #for node in nodes:
@@ -120,13 +136,13 @@ for x in adjMatrix:
     print(*x, sep='')
 '''
 
-#TODO make adjlist
+#Making a adj list in python. These two for loops can be commended out because they are redundant.
+"""
 adjList = {} #maps (start coordinate tuple) : (distance (end coordinate tuple)), (distance (end coordinate tuple)), ...
 for path in paths:
     startNode = path.get_start_node().get_coordinates()  # the first node in the path
     endNode = path.get_end_node().get_coordinates()  # the last node in the path
     if startNode not in adjList.keys():
-        print("graph[", startNode, "] = [route[1]];")
         adjList[startNode] = []#initializes an empty list to add nodes to.
     if endNode not in adjList.keys():
         adjList[endNode] = []#initializes an empty list to add nodes to.
@@ -136,8 +152,69 @@ for path in paths:
     endNode = path.get_end_node().get_coordinates()  # the last node in the path
     adjList[startNode].append((path.distance, endNode))#maps (start coordinate tuple) : (distance (end coordinate tuple))
     adjList[endNode].append((path.distance, startNode))#maps (start coordinate tuple) : (distance (end coordinate tuple))
+"""
 
-for key, value in adjList.items():
-    print(key, ":", value)
+
+
+
+#The rest of the file is for outputting dart code into adjacencyList.dart
+file = open("adjacencyList.dart", "w")
+code = """class Edge {
+  final String vertex1;
+  final String vertex2;
+  final double weight;
+
+  Edge(this.vertex1, this.vertex2, this.weight);
+}
+
+class UndirectedWeightedGraph {
+  final Map<String, List<Edge>> _adjacencyList = {};
+
+  void addVertex(String vertex) {
+    if (!_adjacencyList.containsKey(vertex)) {
+      _adjacencyList[vertex] = [];
+    }
+  }
+
+  void addEdge(String vertex1, String vertex2, double weight) {
+    addVertex(vertex1);
+    addVertex(vertex2);
+
+    final edge = Edge(vertex1, vertex2, weight);
+    _adjacencyList[vertex1]?.add(edge);
+    _adjacencyList[vertex2]?.add(edge); // Undirected graph, so we add the edge for both vertices
+  }
+
+  void printGraph() {
+    _adjacencyList.forEach((vertex, edges) {
+      print('$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
+    });
+  }
+}
+
+void main() {
+  final graph = UndirectedWeightedGraph();
+"""
+file.write(code)
+for path in paths:
+    startNode = path.get_start_node().get_coordinates()  # the first node in the path
+    endNode = path.get_end_node().get_coordinates()  # the last node in the path
+    distance = path.distance
+    #s= "graph.addEdge(" + startNode + ", " + endNode + ", " + distance + ")"
+    a =f"  graph.addEdge(\"{startNode}\", \"{endNode}\", {distance});\n"
+    #print(a)
+    file.write(a)
+    #print(f"graph.addEdge({startNode}, {endNode}, {distance})")
+
+code2 = """
+        graph.printGraph();
+        }
+
+"""
+file.write(code2)
+file.close()
+
+#for key, value in adjList.items():
+#    print(key, ":", value)
 
 

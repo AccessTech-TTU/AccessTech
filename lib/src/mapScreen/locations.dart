@@ -28,7 +28,8 @@ class Marker {
       required this.image,
       required this.lat,
       required this.lng,
-      required this.description});
+      required this.description,
+      required this.type});
 
   factory Marker.fromJson(Map<String, dynamic> json) => _$MarkerFromJson(json);
   Map<String, dynamic> toJson() => _$MarkerToJson(this);
@@ -38,6 +39,7 @@ class Marker {
   final double lat;
   final double lng;
   final String description;
+  final String type;
 }
 
 @JsonSerializable()

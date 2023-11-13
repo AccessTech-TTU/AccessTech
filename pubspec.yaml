@@ -43,10 +43,11 @@ dependencies:
   geolocator: ^10.1.0
   floating_action_bubble: 1.1.4
   url_launcher: ^6.2.1
-  location: 
-  polyline:
+  location:
+  #polyline:
 
 dev_dependencies:
+  build_runner: ^2.4.6
   flutter_launcher_icons: "0.13.1"
   flutter_test:
     sdk: flutter

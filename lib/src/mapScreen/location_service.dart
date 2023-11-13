@@ -35,7 +35,7 @@ class LocationService {
     print(results);
     return results;
   }
-
+/*
   Future<Map<String, dynamic>> getDirections(
     String origin, String destination) async {
     getPath(origin, destination);
@@ -46,5 +46,5 @@ class LocationService {
       'end_location': ,
       'polyline': ,
     }
-  }
+  }*/
 }

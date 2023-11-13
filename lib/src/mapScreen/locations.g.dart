@@ -22,6 +22,7 @@ Marker _$MarkerFromJson(Map<String, dynamic> json) => Marker(
       lat: (json['lat'] as num).toDouble(),
       lng: (json['lng'] as num).toDouble(),
       description: json['description'] as String,
+      type: json['type'] as String,
     );
 
 Map<String, dynamic> _$MarkerToJson(Marker instance) => <String, dynamic>{
@@ -30,6 +31,7 @@ Map<String, dynamic> _$MarkerToJson(Marker instance) => <String, dynamic>{
       'lat': instance.lat,
       'lng': instance.lng,
       'description': instance.description,
+      'type': instance.type
     };
 
 Locations _$LocationsFromJson(Map<String, dynamic> json) => Locations(

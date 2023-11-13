@@ -100,6 +100,7 @@ class _MapScreenState extends State<MapScreen>
     ));
   }
 
+/*
   //This function centers a camera around a route
   Future<void> _goToPlaceRoute(double lat, double lng, Map<String, dynamic> boundsNe, Map<String, dynamic> boundsSw) async {
     final GoogleMapController controller = await _controller.future;
@@ -135,7 +136,7 @@ class _MapScreenState extends State<MapScreen>
       ),
     );
   }
-
+*/
   bool isDrawerOpen = false;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
@@ -182,10 +183,12 @@ class _MapScreenState extends State<MapScreen>
               padding: const EdgeInsets.all(20.0),
               child: FloatingActionButton.small(
                 onPressed: () async {
+                  /*
                   var directions = await LocationService()
                       .getDirections("Holden Hall", "Physics");
                   _goToPlace(start_location, end_location, northeast bound, southwest bound);
                   _setPolyline(directions polyline decoded);
+                */
                 }, //TODO change button
                 child: Icon(
                   Icons.menu,

@@ -159,35 +159,70 @@ for path in paths:
 
 #The rest of the file is for outputting dart code into adjacencyList.dart
 file = open("adjacencyList.dart", "w")
-code = """class Edge {
-  final String vertex1;
-  final String vertex2;
-  final double weight;
+code = """cyList[vertex2]
+        ?.add(edge); // Undirected graph, so we add the edge for both vertices
+  }
 
-  Edge(this.vertex1, this.vertex2, this.weight);
-}
+  void bfs(String startVertex) {
+    final visited = <String>{};
+    final queue = <String>[];
 
-class UndirectedWeightedGraph {
-  final Map<String, List<Edge>> _adjacencyList = {};
+    visited.add(startVertex);
+    queue.add(startVertex);
 
-  void addVertex(String vertex) {
-    if (!_adjacencyList.containsKey(vertex)) {
-      _adjacencyList[vertex] = [];
+    while (queue.isNotEmpty) {
+      final currentVertex = queue.removeAt(0);
+      print(currentVertex);
+
+      for (final edge in _adjacencyList[currentVertex]!) {
+        final neighbor =
+            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        if (!visited.contains(neighbor)) {
+          visited.add(neighbor);
+          queue.add(neighbor);
+        }
+      }
     }
   }
 
-  void addEdge(String vertex1, String vertex2, double weight) {
-    addVertex(vertex1);
-    addVertex(vertex2);
+  Map<String, double> dijkstra(String startVertex) {
+    final distances = <String, double>{};
+    final priorityQueue = <String, double>{};
+    final previous = <String, String>{};
 
-    final edge = Edge(vertex1, vertex2, weight);
-    _adjacencyList[vertex1]?.add(edge);
-    _adjacencyList[vertex2]?.add(edge); // Undirected graph, so we add the edge for both vertices
+    for (final vertex in _adjacencyList.keys) {
+      distances[vertex] = double.infinity;
+      previous[vertex] = "";
+    }
+
+    distances[startVertex] = 0;
+    priorityQueue[startVertex] = 0;
+
+    while (priorityQueue.isNotEmpty) {
+      final currentVertex = priorityQueue.keys
+          .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+      priorityQueue.remove(currentVertex);
+
+      for (final edge in _adjacencyList[currentVertex]!) {
+        final neighbor =
+            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        final totalWeight = distances[currentVertex]! + edge.weight;
+
+        if (totalWeight < distances[neighbor]!) {
+          distances[neighbor] = totalWeight;
+          previous[neighbor] = currentVertex;
+          priorityQueue[neighbor] = totalWeight;
+        }
+      }
+    }
+
+    return distances;
   }
 
   void printGraph() {
     _adjacencyList.forEach((vertex, edges) {
-      print('$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
+      print(
+          '$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
     });
   }
 }
@@ -207,8 +242,14 @@ for path in paths:
     #print(f"graph.addEdge({startNode}, {endNode}, {distance})")
 
 code2 = """
-        graph.printGraph();
-        }
+        graph.bfs("(33.5853681, -101.8743443)");
+  print('Dijkstra\'s algorithm from vertex (33.5861073, -101.87357):');
+  final distances = graph.dijkstra('(33.5861073, -101.87357)');
+  distances.forEach((vertex, distance) {
+    print('Vertex: $vertex, Distance: $distance');
+  });
+  //graph.printGraph();
+}
 
 """
 file.write(code2)

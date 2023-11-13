@@ -17,6 +17,7 @@ class NodeJson:
         self.image = image
         self.lat = lat
         self.lng = lng
+        self.description = description
         self.type = type
 
     

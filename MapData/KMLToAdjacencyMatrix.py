@@ -159,7 +159,30 @@ for path in paths:
 
 #The rest of the file is for outputting dart code into adjacencyList.dart
 file = open("adjacencyList.dart", "w")
-code = """cyList[vertex2]
+code = """class Edge {
+  final String vertex1;
+  final String vertex2;
+  final double weight;
+
+  Edge(this.vertex1, this.vertex2, this.weight);
+}
+
+class UndirectedWeightedGraph {
+  final Map<String, List<Edge>> _adjacencyList = {};
+
+  void addVertex(String vertex) {
+    if (!_adjacencyList.containsKey(vertex)) {
+      _adjacencyList[vertex] = [];
+    }
+  }
+
+  void addEdge(String vertex1, String vertex2, double weight) {
+    addVertex(vertex1);
+    addVertex(vertex2);
+
+    final edge = Edge(vertex1, vertex2, weight);
+    _adjacencyList[vertex1]?.add(edge);
+    _adjacencyList[vertex2]
         ?.add(edge); // Undirected graph, so we add the edge for both vertices
   }
 
@@ -219,6 +242,48 @@ code = """cyList[vertex2]
     return distances;
   }
 
+  Map<String, dynamic> dijkstraPath(String startVertex, String? endVertex) {
+    final distances = <String, double>{};
+    final priorityQueue = <String, double>{};
+    final previous = <String, String>{};
+
+    for (final vertex in _adjacencyList.keys) {
+      distances[vertex] = double.infinity;
+      previous[vertex] = "";
+    }
+
+    distances[startVertex] = 0;
+    priorityQueue[startVertex] = 0;
+
+    while (priorityQueue.isNotEmpty) {
+      final currentVertex = priorityQueue.keys.reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+      priorityQueue.remove(currentVertex);
+
+      for (final edge in _adjacencyList[currentVertex]!) {
+        final neighbor = edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        final totalWeight = distances[currentVertex]! + edge.weight;
+
+        if (totalWeight < distances[neighbor]!) {
+          distances[neighbor] = totalWeight;
+          previous[neighbor] = currentVertex;
+          priorityQueue[neighbor] = totalWeight;
+        }
+      }
+    }
+
+    // Build the sequence of nodes in the shortest path
+    final path = <String>[];
+    var current = endVertex;
+    while (current != null) {
+      path.insert(0, current);
+      current = previous[current];
+    }
+
+    
+
+    return {'distances': distances, 'shortestPath': path};
+  }
+
   void printGraph() {
     _adjacencyList.forEach((vertex, edges) {
       print(
@@ -242,12 +307,13 @@ for path in paths:
     #print(f"graph.addEdge({startNode}, {endNode}, {distance})")
 
 code2 = """
-        graph.bfs("(33.5853681, -101.8743443)");
-  print('Dijkstra\'s algorithm from vertex (33.5861073, -101.87357):');
-  final distances = graph.dijkstra('(33.5861073, -101.87357)');
-  distances.forEach((vertex, distance) {
-    print('Vertex: $vertex, Distance: $distance');
-  });
+          //graph.bfs("(33.5853681, -101.8743443)");
+  
+  final result = graph.dijkstraPath('(33.5861073, -101.87357)', '(33.5870844, -101.8749556)');
+  print('Shortest distances: ${result['distances']}');
+  print('Shortest path: ${result['shortestPath']}');
+  //TODO map sequence of nodes to in more detail sequence of nodes
+  
   //graph.printGraph();
 }
 

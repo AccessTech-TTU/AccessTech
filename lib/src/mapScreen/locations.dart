@@ -1,3 +1,7 @@
+/*
+This file reads marker data from assets/locations.json
+*/
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';

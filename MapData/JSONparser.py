@@ -1,11 +1,11 @@
-import json
-import shapely
-from shapely.geometry import LineString, Point
-from Node import Node
 """
 This file takes is openstreetmap data, originally in .osm formal but converted to json using xml to json converter: https://www.convertjson.com/xml-to-json.htm
 
 """
+import json
+import shapely
+from shapely.geometry import LineString, Point
+from Node import Node
 file = open("convertjson.json")#Opening the json file containing openstreetmap data in an easily parsable json format #TODO maybe take in file name as input instead of hardcode
 data = json.load(file) #dictionary contianing the json data
 

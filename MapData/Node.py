@@ -1,3 +1,6 @@
+"""
+This object is used in KMLToAdjacencyMatrix.py
+"""
 class Node:
     def __init__(self, latitude, longitude, name):
         self.latitude = latitude

@@ -1,4 +1,7 @@
-from Node import Node
+"""
+
+THIS FILE IS NOT USED. KMLToAdjacencyMatrix.py is used instead.
+""" from Node import Node
 import numpy as np
 import geopy.distance
 

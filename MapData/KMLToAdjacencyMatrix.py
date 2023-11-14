@@ -1,3 +1,10 @@
+"""
+This file takes a KML file downloaded from google.com/maps/d and coverts it into an adjacencyList in adjacencyList.dart.
+It also stores all entrance and ramp markers in sample.json
+
+To parse the KML file, first convert it to a json file by using an online xml to json converter. 
+
+"""
 import json
 
 import geopy as geopy

@@ -97,7 +97,7 @@ for node in nodeSet:
     string = "\"POINT ("
     string += node[1] + " " + node[0] + ")\", "
     string += "Name " + str(count) + " ,\n"
-    count = count + 1;
+    count = count + 1
     #print(string)
     file.write(string)
 file.close()

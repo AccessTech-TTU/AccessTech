@@ -11,8 +11,13 @@ class MyDraggableSheet extends StatefulWidget {
 
 class _MyDraggableSheetState extends State<MyDraggableSheet> {
   final _sheet = GlobalKey();
-  final _controller = DraggableScrollableController();
+  final DraggableScrollableController _controller = DraggableScrollableController();
   String searchQuery = '';
+  bool isSearching = false;
+  ScrollController scrollController = ScrollController();
+  final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
 
   void _removeFromFavorites(BuildingInfo building) {
     setState(() {
@@ -37,21 +42,37 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // No need to add a listener here since we'll use the GestureDetector
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _textEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SizedBox.expand(
-          child: DraggableScrollableSheet(
-            key: _sheet,
-            initialChildSize: 0.5,
-            maxChildSize: .94,
-            minChildSize: 0.2,
-            snap: true,
-            snapSizes: [0.2, 0.5, .94],
-            controller: _controller,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return Container(
-                padding: EdgeInsets.all(16),
+    // Define the max and initial sizes here for reference later
+    const double maxChildSize = 0.94;
+    const double initialChildSize = 0.5;
+    return SizedBox.expand(
+      child: DraggableScrollableSheet(
+        initialChildSize: initialChildSize,
+        maxChildSize: maxChildSize,
+        minChildSize: 0.13,
+        snap: true,
+        snapSizes: [0.13, initialChildSize, maxChildSize],
+        controller: _controller,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 68), // Padding for the static search bar height
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -59,91 +80,159 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                     topRight: Radius.circular(16),
                   ),
                 ),
-                child: ListView(
+                child: ListView.builder(
                   controller: scrollController,
-                  children: [
-                    Column(
+                  itemCount: favoriteBuildings.length + buildingData.length + 2, // for headers
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          "Favorites",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    } else if (index <= favoriteBuildings.length) {
+                      final building = favoriteBuildings[index - 1];
+                      return _buildBuildingCard(building);
+                    } else if (index == favoriteBuildings.length + 1) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          "Buildings",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    } else {
+                      final buildingIndex = index - favoriteBuildings.length - 2;
+                      final building = buildingData[buildingIndex];
+                      return _buildBuildingCard(building);
+                    }
+                  },
+                ),
+              ),
+
+              // Positioned widget for draggable handle and search bar
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    _controller.jumpTo(
+                      _controller.size - details.primaryDelta! / MediaQuery.of(context).size.height,
+                    );
+                  },
+                  onVerticalDragEnd: (details) {
+                    // Call the snap function when the drag ends
+                    _snapToClosestPoint();
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
                       children: [
+                        SizedBox(height: 16),
                         SizedBox(
                           width: 50,
                           child: Divider(
                             thickness: 5,
                           ),
                         ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                focusNode: _focusNode,
+                                controller: _textEditingController,
+                                decoration: InputDecoration(
+                                  labelText: 'Search',
+                                  prefixIcon: Icon(Icons.search),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    isSearching = true;
+                                    _controller.animateTo(
+                                      maxChildSize, // Use the direct numeric value
+                                      duration: const Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                  });
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    searchQuery = value.toLowerCase();
+                                  });
+                                },
+                              ),
+                            ),
+                            if (isSearching)
+                              IconButton(
+                                icon: Icon(Icons.cancel),
+                                onPressed: () {
+                                  _textEditingController.clear();
+                                  _focusNode.unfocus();
+                                  setState(() {
+                                    isSearching = false;
+                                    searchQuery = '';
+                                    _controller.animateTo(
+                                      initialChildSize, // Use the direct numeric value
+                                      duration: const Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                    // Scroll to top of the list
+                                    scrollController.animateTo(
+                                      0,
+                                      duration: Duration(milliseconds: 200),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  });
+                                },
+                              ),
+                          ],
+                        ),
                       ],
                     ),
-                    GestureDetector(
-                      onVerticalDragDown: (_) {
-                        _expand();
-                      },
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: 'Search',
-                          prefixIcon: Icon(Icons.search),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            searchQuery = value.toLowerCase();
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Favorites",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: favoriteBuildings.length,
-                      itemBuilder: (context, index) {
-                        final building = favoriteBuildings[index];
-                        return Card(
-                          elevation: 1,
-                          child: ListTile(
-                            leading: Icon(Icons.star),
-                            title: Text(building.name),
-                            onTap: () {
-                              _showBuildingDetails(context, building);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Buildings",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: buildingData.length,
-                      itemBuilder: (context, index) {
-                        final building = buildingData[index];
-                        return _buildBuildingCard(building);
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              );
-            },
-          ),
-        );
-      },
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
+
+
+  void _snapToClosestPoint() {
+    final double currentSize = _controller.size;
+    final List<double> snapPoints = [0.13, 0.5, 0.94];
+    final double closestSnapSize = snapPoints.reduce((double a, double b) {
+      return (currentSize - a).abs() < (currentSize - b).abs() ? a : b;
+    });
+
+    // Only snap if the current size is not already at a snap point
+    if (!snapPoints.contains(currentSize)) {
+      _controller.animateTo(
+        closestSnapSize,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+  //
+  // double _getClosestSnapPoint(double currentSize, List<double> snapPoints) {
+  //   // Ensure that snapPoints is not empty to avoid a potential error
+  //   if (snapPoints.isEmpty) {
+  //     // Return a default value, for example, the initialChildSize
+  //     return 0.5; // or any other appropriate default value
+  //   }
+  //
+  //   // If snapPoints is not empty, find and return the closest snap point
+  //   return snapPoints.reduce((double a, double b) {
+  //     return (currentSize - a).abs() < (currentSize - b).abs() ? a : b;
+  //   });
+  // }
 
 
   Widget _buildBuildingCard(BuildingInfo building) {
@@ -155,7 +244,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
       return Card(
         elevation: 1,
         child: ListTile(
-          leading: Icon(Icons.house),
+          leading: isFavorite ? Icon(Icons.star) : Icon(Icons.house), // Use star icon for favorites
           title: Text(building.name),
           onTap: () {
             _showBuildingDetails(context, building);
@@ -166,27 +255,27 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
       return Container(); // Return an empty container for non-matching items
     }
   }
+  //
+  // void _onChanged() {
+  //   final currentSize = _controller.size;
+  //   if (currentSize <= 0.05) _collapse();
+  // }
 
-  void _onChanged() {
-    final currentSize = _controller.size;
-    if (currentSize <= 0.05) _collapse();
-  }
+  // void _collapse() => _animateSheet(sheet.snapSizes!.first);
+  //
+  // void _anchor() => _animateSheet(sheet.snapSizes!.last);
+  //
+  // void _expand() => _animateSheet(sheet.maxChildSize);
+  //
+  // void _hide() => _animateSheet(sheet.minChildSize);
 
-  void _collapse() => _animateSheet(sheet.snapSizes!.first);
-
-  void _anchor() => _animateSheet(sheet.snapSizes!.last);
-
-  void _expand() => _animateSheet(sheet.maxChildSize);
-
-  void _hide() => _animateSheet(sheet.minChildSize);
-
-  void _animateSheet(double size) {
-    _controller.animateTo(
-      size,
-      duration: const Duration(milliseconds: 50),
-      curve: Curves.easeInOut,
-    );
-  }
+  // void _animateSheet(double size) {
+  //   _controller.animateTo(
+  //     size,
+  //     duration: const Duration(milliseconds: 300),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
 
   DraggableScrollableSheet get sheet =>
       (_sheet.currentWidget as DraggableScrollableSheet);

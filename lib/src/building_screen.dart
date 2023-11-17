@@ -72,6 +72,7 @@ class BuildingInfo {
   final String address;
   final String imageUrl;
 
+
   BuildingInfo({
     required this.name,
     required this.description,

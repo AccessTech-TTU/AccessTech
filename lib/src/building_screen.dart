@@ -71,6 +71,10 @@ class BuildingInfo {
   final String hours;
   final String address;
   final String imageUrl;
+  final String accessibleDoors;
+  final String ramps;
+  final String elevators;
+  final String restrooms;
 
 
   BuildingInfo({
@@ -79,6 +83,10 @@ class BuildingInfo {
     required this.hours,
     required this.address,
     required this.imageUrl,
+    required this.accessibleDoors,
+    required this.ramps,
+    required this.elevators,
+    required this.restrooms,
   });
 }
 

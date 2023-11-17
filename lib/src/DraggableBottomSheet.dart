@@ -150,14 +150,34 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                   prefixIcon: Icon(Icons.search),
                                 ),
                                 onTap: () {
-                                  setState(() {
-                                    isSearching = true;
-                                    _controller.animateTo(
-                                      maxChildSize, // Use the direct numeric value
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                    );
-                                  });
+                                  // First, animate to the top of the list if it's not already there.
+                                  if (scrollController.hasClients && scrollController.offset > 0) {
+                                    scrollController.animateTo(
+                                      0, // Scroll to the top
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    ).then((_) {
+                                      // Then, proceed with the other operations after scrolling.
+                                      setState(() {
+                                        isSearching = true;
+                                        _controller.animateTo(
+                                          maxChildSize, // Expand the bottom sheet to the maxChildSize
+                                          duration: const Duration(milliseconds: 300),
+                                          curve: Curves.easeOut,
+                                        );
+                                      });
+                                    });
+                                  } else {
+                                    // If the list is already at the top, just expand the bottom sheet.
+                                    setState(() {
+                                      isSearching = true;
+                                      _controller.animateTo(
+                                        maxChildSize, // Expand the bottom sheet to the maxChildSize
+                                        duration: const Duration(milliseconds: 300),
+                                        curve: Curves.easeOut,
+                                      );
+                                    });
+                                  }
                                 },
                                 onChanged: (value) {
                                   setState(() {
@@ -166,6 +186,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                 },
                               ),
                             ),
+
                             if (isSearching)
                               IconButton(
                                 icon: Icon(Icons.cancel),
@@ -175,17 +196,20 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                   setState(() {
                                     isSearching = false;
                                     searchQuery = '';
-                                    _controller.animateTo(
-                                      initialChildSize, // Use the direct numeric value
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                    );
-                                    // Scroll to top of the list
-                                    scrollController.animateTo(
-                                      0,
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeInOut,
-                                    );
+                                  });
+                                  _controller.animateTo(
+                                    initialChildSize, // Snap back to the initial position
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOut,
+                                  ).then((_) {
+                                    // After snapping back, animate to the top of the list
+                                    if (scrollController.hasClients) {
+                                      scrollController.animateTo(
+                                        0, // Scroll to the top
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    }
                                   });
                                 },
                               ),
@@ -276,7 +300,13 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   //     curve: Curves.easeInOut,
   //   );
   // }
-
+  Widget _buildAccessibilityFeature(IconData icon, String title, String description) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      subtitle: Text(description),
+    );
+  }
   DraggableScrollableSheet get sheet =>
       (_sheet.currentWidget as DraggableScrollableSheet);
 
@@ -343,43 +373,10 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                       'Accessible:',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    ListTile(
-                      title: Row(
-                        children: [
-                          Icon(Icons.door_sliding), // Icon for doors
-                          SizedBox(width: 8),
-                          Text('Doors'),
-                        ],
-                      ),
-                    ),
-                    ListTile(
-                      title: Row(
-                        children: [
-                          Icon(Icons.wheelchair_pickup_rounded),
-                          // Icon for ramps
-                          SizedBox(width: 8),
-                          Text('Ramps'),
-                        ],
-                      ),
-                    ),
-                    ListTile(
-                      title: Row(
-                        children: [
-                          Icon(Icons.elevator), // Icon for elevator
-                          SizedBox(width: 8),
-                          Text('Elevator'),
-                        ],
-                      ),
-                    ),
-                    ListTile(
-                      title: Row(
-                        children: [
-                          Icon(Icons.wc), // Icon for restroom
-                          SizedBox(width: 8),
-                          Text('Restroom'),
-                        ],
-                      ),
-                    ),
+                    _buildAccessibilityFeature(Icons.door_sliding, 'Doors', building.accessibleDoors),
+                    _buildAccessibilityFeature(Icons.wheelchair_pickup_rounded, 'Ramps', building.ramps),
+                    _buildAccessibilityFeature(Icons.elevator, 'Elevator', building.elevators),
+                    _buildAccessibilityFeature(Icons.wc, 'Restroom', building.restrooms),
                     Text(
                       'Address:',
                       style: TextStyle(fontWeight: FontWeight.bold),

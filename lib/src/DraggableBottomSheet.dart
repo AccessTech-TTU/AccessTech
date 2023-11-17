@@ -9,6 +9,69 @@ class MyDraggableSheet extends StatefulWidget {
   _MyDraggableSheetState createState() => _MyDraggableSheetState();
 }
 
+class AllBuildingsScreen extends StatelessWidget {
+  // Define a method to show the building details in a modal bottom sheet
+  void showBuildingDetails(BuildContext context, BuildingInfo building) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min, // To make the modal only as tall as the content
+            children: [
+              Text(
+                building.name,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              Text(
+                building.description,
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Hours: ${building.hours}',
+                style: TextStyle(fontSize: 18),
+              ),
+
+              SizedBox(height: 8),
+              Text(
+                'Address: ${building.address}',
+                style: TextStyle(fontSize: 18),
+              ),
+              // ... Add more details or widgets as required
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('All Buildings'),
+      ),
+      body: ListView.builder(
+        itemCount: buildingData.length,
+        itemBuilder: (context, index) {
+          final building = buildingData[index];
+          return ListTile(
+            title: Text(building.name),
+            onTap: () => showBuildingDetails(context, building),
+          );
+        },
+      ),
+    );
+  }
+}
+
 class _MyDraggableSheetState extends State<MyDraggableSheet> {
   final _sheet = GlobalKey();
   final DraggableScrollableController _controller = DraggableScrollableController();
@@ -17,6 +80,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   ScrollController scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  bool showFullList = false;
 
 
   void _removeFromFavorites(BuildingInfo building) {
@@ -60,6 +124,24 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
     // Define the max and initial sizes here for reference later
     const double maxChildSize = 0.94;
     const double initialChildSize = 0.5;
+
+    // Initialize buildingsToShow as an empty list
+    List<BuildingInfo> buildingsToShow = [];
+
+    // Calculate the itemCount dynamically based on search status
+    int itemCount;
+
+    if (searchQuery.isNotEmpty) {
+      buildingsToShow = buildingData
+          .where((building) => building.name.toLowerCase().contains(searchQuery.toLowerCase()))
+          .toList();
+      itemCount = buildingsToShow.length;
+    } else {
+      // +2 for headers ("Favorites" and "Popular Buildings")
+      // +1 for "Show More" button
+      itemCount = favoriteBuildings.length + popularBuildings.length + 3;
+    }
+
     return SizedBox.expand(
       child: DraggableScrollableSheet(
         initialChildSize: initialChildSize,
@@ -82,36 +164,52 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                 ),
                 child: ListView.builder(
                   controller: scrollController,
-                  itemCount: favoriteBuildings.length + buildingData.length + 2, // for headers
+                  itemCount: itemCount, // Use dynamic itemCount based on search
                   itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          "Favorites",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      );
-                    } else if (index <= favoriteBuildings.length) {
-                      final building = favoriteBuildings[index - 1];
+                    if (searchQuery.isNotEmpty) {
+                      // If there's a search query, show the filtered list
+                      final building = buildingsToShow[index];
                       return _buildBuildingCard(building);
-                    } else if (index == favoriteBuildings.length + 1) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          "Buildings",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      );
                     } else {
-                      final buildingIndex = index - favoriteBuildings.length - 2;
-                      final building = buildingData[buildingIndex];
-                      return _buildBuildingCard(building);
+                      // If there's no search, show the list with headers and "Show More" button
+                      if (index == 0) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            "Favorites",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        );
+                      } else if (index <= favoriteBuildings.length) {
+                        final building = favoriteBuildings[index - 1];
+                        return _buildBuildingCard(building);
+                      } else if (index == favoriteBuildings.length + 1) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            "Popular Buildings",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        );
+                      } else if (index < favoriteBuildings.length + popularBuildings.length + 2) {
+                        final building = popularBuildings[index - favoriteBuildings.length - 2];
+                        return _buildBuildingCard(building);
+                      } else {
+                        return Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => AllBuildingsScreen()),
+                              );
+                            },
+                            child: Text('Show More'),
+                          ),
+                        );
+                      }
                     }
                   },
                 ),
               ),
-
               // Positioned widget for draggable handle and search bar
               Positioned(
                 top: 0,
@@ -226,7 +324,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
       ),
     );
   }
-
 
   void _snapToClosestPoint() {
     final double currentSize = _controller.size;

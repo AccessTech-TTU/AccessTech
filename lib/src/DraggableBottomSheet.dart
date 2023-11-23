@@ -1,3 +1,10 @@
+/*
+Authors:
+  Raj Raman, Thinh Pham
+Description:
+  This file is the draggable bottom sheet with building information.
+*/
+
 import 'package:flutter/material.dart';
 import 'buildingData.dart';
 import 'building_screen.dart';

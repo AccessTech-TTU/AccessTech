@@ -1,67 +1,12 @@
-// import 'package:flutter/material.dart';
-// import "buildingData.dart";
-//
+
 // /*
 // Authors:
-//   Thinh Pham, Travis Libre
+//   Thinh Pham, Travis Libre, Raj Raman
 // Description:
 //   This file is the buildings screen. It currently lists the buildings,
 //   and a description of them. Currently, much of it is unused and must
 //   be implemented.
 // */
-//
-// class BuildingInfo {
-//   final String name;
-//   final String description;
-//   final String hours;
-//   final String address;
-//   final String imageUrl;
-//
-//   BuildingInfo({
-//     required this.name,
-//     required this.description,
-//     required this.hours;
-//     required this.address;
-//     required this.imageUrl,
-//   });
-// }
-//
-// class BuildingCard extends StatelessWidget {
-//   final BuildingInfo building;
-//
-//   const BuildingCard({Key? key, required this.building}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       elevation: 10,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(8),
-//             child: Text(
-//               building.name,
-//               style: TextStyle(
-//                 fontSize: 20,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-//             child: Text(
-//               building.description,
-//               style: TextStyle(fontSize: 16),
-//             ),
-//           ),
-//         ], // Children (list)
-//       ),
-//     );
-//   }
-// }
-
-
 import 'package:flutter/material.dart';
 import 'buildingData.dart';
 

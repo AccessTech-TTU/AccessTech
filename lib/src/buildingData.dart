@@ -1,4 +1,3 @@
-// Make building list separate from classes
 import 'building_screen.dart';
 
 List<BuildingInfo> favoriteBuildings = [

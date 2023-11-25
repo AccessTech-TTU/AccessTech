@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
+import 'location_service.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+
 
 /*
 Authors:
@@ -46,6 +49,30 @@ class _MapScreenState extends State<MapScreen>
   }
   //End wheelchair icon for ramps
 
+
+//Entrance icon for entrances
+BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
+  @override
+  void initState2() {
+    addCustomIcon2();
+    super.initState();
+  }
+
+  void addCustomIcon2() {
+    BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(), "assets/entranceIcon.png")
+        .then(
+      (icon) {
+        setState(() {
+          entranceIcon = icon;
+        });
+      },
+    );
+  }
+  //End entrance icon for entrances
+  //TODO make a entrance icon
+
+
   //getting user location
   /*
   LocationData? currentLocation;
@@ -60,9 +87,15 @@ class _MapScreenState extends State<MapScreen>
   //end getting user location
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
-//TODO update the information we need from the markers
-
+//TODO create a Map for mapping marker names to their coordinates
   final Map<String, Marker> _markers = {};
+  final Map<String, Marker> _entranceMarkers = {};
+  final Map<String, Marker> _rampMarkers = {};
+  final Map<String, dynamic> _convertToCoords = {};
+  
+  String convertLatLngToString(LatLng coords){
+    return "(" + coords.latitude.toString() + ", " + coords.longitude.toString() + ")";
+  }
   Set<Polyline> _polylines = Set<Polyline>();
   int _polylineIdCounter = 1;
   Completer<GoogleMapController> _controller = Completer();
@@ -73,6 +106,26 @@ class _MapScreenState extends State<MapScreen>
     setState(() {
       _markers.clear();
       for (final mark in googleMarkers.markers) {
+        String lowercaseId = mark.id.toLowerCase();
+        if(lowercaseId.contains("entrance")){//If marker is an entrance
+        final marker = Marker(
+          markerId: MarkerId(mark.id),
+          position: LatLng(mark.lat, mark.lng),
+          icon:
+              entranceIcon, //TODO different icons for different marker types
+          infoWindow: InfoWindow(
+            title: mark.id,
+            snippet: mark.description,
+          ),
+        );
+        _entranceMarkers[mark.id] = marker;//Seperate map of markers for entrances
+        _markers[mark.id] = marker;
+        //_convertToCoords[mark.id] = "(" + mark.lat.toString() + ", " + mark.lng.toString() + ")";//Mapping the name to the coordinates
+        _convertToCoords[mark.id] = LatLng(mark.lat, mark.lng);
+        print(convertLatLngToString(_convertToCoords[mark.id]));
+
+        }
+        else if(lowercaseId.contains("ramp")){//If marker is a ramp
         final marker = Marker(
           markerId: MarkerId(mark.id),
           position: LatLng(mark.lat, mark.lng),
@@ -83,9 +136,27 @@ class _MapScreenState extends State<MapScreen>
             snippet: mark.description,
           ),
         );
+        _rampMarkers[mark.id] = marker;//Seperate map of markers for ramps 
         _markers[mark.id] = marker;
-      }
-    });
+
+        }
+        else{//ANy other type of marker
+        final marker = Marker(
+          markerId: MarkerId(mark.id),
+          position: LatLng(mark.lat, mark.lng),
+          icon:
+            
+              wheelchairIcon, //TODO different icons for different marker types
+          infoWindow: InfoWindow(
+            title: mark.id,
+            snippet: mark.description,
+          ),
+        );
+        _markers[mark.id] = marker;
+
+        }
+    }});
+    print(_convertToCoords);
   }
 //End of getting the markers
 
@@ -100,8 +171,9 @@ class _MapScreenState extends State<MapScreen>
     ));
   }
 
-/*
+// The following commented out code is from: https://www.youtube.com/watch?v=tfFByL7F-00
   //This function centers a camera around a route
+  
   Future<void> _goToPlaceRoute(double lat, double lng, Map<String, dynamic> boundsNe, Map<String, dynamic> boundsSw) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(
@@ -113,8 +185,8 @@ class _MapScreenState extends State<MapScreen>
     controller.animateCamera(
       CameraUpdate.newLatLngBounds(
         LatLngBounds(
-          northeast: LatLng(ne lat, ne lng),
-          southwest: LatLng(se lat, sw lng),
+          northeast: LatLng(boundsNe['lat'], boundsNe['lng']),
+          southwest: LatLng(boundsSw['lat'], boundsSw['lng']),
         ),
       25),
     );
@@ -126,7 +198,7 @@ class _MapScreenState extends State<MapScreen>
     _polylines.add(
       Polyline(
         polylineId: PolylineId(polylineIdVal),
-        width: 2,
+        width: 4,
         color: Colors.blue,
         points: points
             .map(
@@ -136,7 +208,7 @@ class _MapScreenState extends State<MapScreen>
       ),
     );
   }
-*/
+
   bool isDrawerOpen = false;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
@@ -155,6 +227,12 @@ class _MapScreenState extends State<MapScreen>
         children: [
           GoogleMap(
             onMapCreated: _onMapCreated,
+            /*
+            (GoogleMapController controller){
+              _controller.complete(controller);
+            },
+            */
+            mapType: MapType.hybrid,
             cameraTargetBounds: CameraTargetBounds(LatLngBounds(
                 //setting the bounds for the map. TODO change southwest and northeast coords
                 southwest: const LatLng(33.5796412, -101.8814612),
@@ -183,12 +261,21 @@ class _MapScreenState extends State<MapScreen>
               padding: const EdgeInsets.all(20.0),
               child: FloatingActionButton.small(
                 onPressed: () async {
-                  /*
+                  print("\n\n\n one \n\n\n\n");
+                  LatLng o = _convertToCoords["Department of Mathematics and Statistics Entrance"];
+                  print(o);
+                  String origin = "(" + o.latitude.toString() + ", " + o.longitude.toString() + ")";
+                  LatLng d = _convertToCoords["Department of Physics Entrance East"];
+                  print(d);
+                  String destination = "(" + d.latitude.toString() + ", " + d.longitude.toString() + ")";
                   var directions = await LocationService()
-                      .getDirections("Holden Hall", "Physics");
-                  _goToPlace(start_location, end_location, northeast bound, southwest bound);
-                  _setPolyline(directions polyline decoded);
-                */
+                      .getDirections(origin, destination);
+                  print("\n\n\n\n\ntest\n\n\n\n");
+                  print(directions);
+                  _goToPlaceRoute(directions['start_location']['lat'], directions['start_location']['lng'], directions['bounds_ne'], directions['bounds_sw']);
+                  _setPolyline(directions['polyline_decoded']);
+                
+                
                 }, //TODO change button
                 child: Icon(
                   Icons.menu,

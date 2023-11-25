@@ -34,7 +34,7 @@ def find_closest_node(all_nodes, edges_node): #This function is not needed anymo
     return closest_node
     '''
 
-file = open("updatedMapKMLtoJson.json")#Loading the converted kml to json data
+file = open("convertedLines.json")#Loading the converted kml to json data
 data = json.load(file)
 
 nodes = []#This list will hold data for the co-ordinates and names of markers. It will hold them as Node objects
@@ -299,7 +299,7 @@ class UndirectedWeightedGraph {
   }
 }
 
-void main() {
+List<String> getPath(String origin, String destination) {
   final graph = UndirectedWeightedGraph();
 """
 file.write(code)
@@ -314,11 +314,14 @@ for path in paths:
     #print(f"graph.addEdge({startNode}, {endNode}, {distance})")
 
 code2 = """
+
           //graph.bfs("(33.5853681, -101.8743443)");
   
-  final result = graph.dijkstraPath('(33.5861073, -101.87357)', '(33.5870844, -101.8749556)');
+  final result = graph.dijkstraPath(origin, destination);
   print('Shortest distances: ${result['distances']}');
   print('Shortest path: ${result['shortestPath']}');
+  //result['shortestPath'].remove(0); //remove empty string
+  return result['shortestPath'];
   //TODO map sequence of nodes to in more detail sequence of nodes
   
   //graph.printGraph();

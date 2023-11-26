@@ -170,9 +170,9 @@ class _NewRequestState extends State<NewRequest> {
           children: [
             TextButton(
               onPressed: () {
-                if (_nameController.text.trim().isEmpty &&
-                    _rController.text.trim().isEmpty &&
-                    _titleController.text.trim().isEmpty) {
+                if (_nameController.text.trim().isNotEmpty &&
+                    _rController.text.trim().isNotEmpty &&
+                    _titleController.text.trim().isNotEmpty) {
                   _addRequest(new Request(
                       name: _nameController.text,
                       r_number: "R" + _rController.text,

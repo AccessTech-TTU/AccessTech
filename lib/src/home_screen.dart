@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:accesstech/src/DraggableBottomSheet.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:accesstech/src/building_screen.dart';
@@ -5,6 +7,8 @@ import 'package:accesstech/src/contact_screen.dart';
 import 'package:accesstech/src/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'request.dart';
+import 'RequestsHistory.dart';
 
 /*
 Authors:
@@ -22,7 +26,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late int _selectedPageIndex;
   static late List<Widget> _screens;
   late PageController _pageController;
@@ -44,7 +49,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       vsync: this,
       duration: Duration(milliseconds: 260),
     );
-    final curvedAnimation = CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
   }
 
@@ -54,9 +60,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
+  bool isDrawerOpen = false;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       // Help button
       floatingActionButton: FloatingActionBubble(
         iconData: Icons.help,
@@ -76,9 +86,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               iconColor: Colors.white,
               title: "Call",
               bubbleColor: Color.fromARGB(255, 204, 0, 0),
-              onPress: () {
+              onPress: () async {
+                final Uri sdsCall = Uri(scheme: 'tel', path: "806 742 2405");
+                if (await canLaunchUrl(sdsCall)) {
+                  await launchUrl(sdsCall);
+                } else {
+                  log("Can't call.");
+                }
                 _animationController.reverse();
-                launchUrl("tel://8067422405" as Uri);
               },
               titleStyle: TextStyle(color: Colors.white)),
           Bubble(
@@ -88,10 +103,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               bubbleColor: Color.fromARGB(255, 204, 0, 0),
               onPress: () {
                 _animationController.reverse();
-                AlertDialog(
-                  title: Text("Request History"),
-
-                );
+                _reqHist();
               },
               titleStyle: TextStyle(color: Colors.white)),
         ],
@@ -101,7 +113,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         onPress: () => _animationController.isCompleted
             ? _animationController.reverse()
             : _animationController.forward(),
-
       ),
       body: Stack(
         children: [
@@ -112,8 +123,62 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             children: _screens,
           ),
           MyDraggableSheet(),
+          // Positioned(
+          //   top: 10,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(20.0),
+          //     child: FloatingActionButton.small(
+          //       onPressed: () {},
+          //       child: Icon(
+          //         Icons.menu,
+          //         color: Colors.black,
+          //       ),
+          //       backgroundColor: Colors.white,
+          //       elevation: 10,
+          //     ),
+          //   ),
+          // ),
+          // Positioned(
+          //   top: 60,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(20.0),
+          //     child: FloatingActionButton.small(
+          //       onPressed: () => scaffoldKey.currentState!.openDrawer(),
+          //       child: Icon(
+          //         Icons.filter_vintage,
+          //         color: Colors.black,
+          //       ),
+          //       backgroundColor: Colors.white,
+          //       elevation: 10,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     children: [
+      //       DrawerHeader(
+      //         decoration: BoxDecoration(color: Color.fromARGB(255, 204, 0, 0)),
+      //         child: Text(
+      //           "Filter",
+      //           style: TextStyle(
+      //             color: Colors.white,
+      //             fontSize: 24,
+      //           ),
+      //         ),
+      //       ),
+      //       ListTile(
+      //         title: Text('Drawer Item 1'),
+      //         // Add your drawer items here
+      //       ),
+      //       ListTile(
+      //         title: Text('Drawer Item 2'),
+      //         // Add more drawer items
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 
@@ -122,43 +187,52 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void _helpReqSheet() {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(children: [
-            Align(
-              child: Text(
-                "New Help Request",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      builder: (ctx) => NewRequest(onAddRequest: _addRequest),
+      showDragHandle: true,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    );
+  }
+
+  void _reqHist() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView.builder(
+          itemCount: req_hist.length,
+          itemBuilder: (context, index) {
+            var req = req_hist[index];
+            req.getCoordinatesAsString();
+            return Card(
+              elevation: 1,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(req.title, style: TextStyle(fontWeight: FontWeight.bold),),
+                    SizedBox(height: 4,),
+                    Row(
+                      children: [
+                        Text(req.getDate()),
+                        Spacer(),
+                        Text(req.getStatus()),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              alignment: Alignment.center,
-            ),
-            TextField(
-              decoration:
-                  InputDecoration(hintText: "What do you need help with?"),
-            ),
-            TextField(
-              maxLines: 5,
-              decoration: InputDecoration(hintText: "Describe your problem"),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text("Send"),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text("Cancel"),
-                ),
-              ],
-            ),
-          ]),
+            );
+          },
         );
       },
       showDragHandle: true,
       isScrollControlled: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     );
+  }
+
+  void _addRequest(Request r) {
+    req_hist.add(r);
   }
 }

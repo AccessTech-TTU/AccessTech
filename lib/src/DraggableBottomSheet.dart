@@ -303,7 +303,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
 
   void _snapToClosestPoint() {
     final double currentSize = _controller.size;
-    final List<double> snapPoints = [0.13, 0.5, 0.94];
+    final List<double> snapPoints = [0.13, 0.5, 1];
     final double closestSnapSize = snapPoints.reduce((double a, double b) {
       return (currentSize - a).abs() < (currentSize - b).abs() ? a : b;
     });
@@ -393,6 +393,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      showDragHandle: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       // Allow the bottom sheet to take the full screen height
       builder: (BuildContext context) {
         return StatefulBuilder( // Use StatefulBuilder to rebuild part of the UI

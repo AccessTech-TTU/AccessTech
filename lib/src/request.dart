@@ -55,7 +55,7 @@ class Request {
   }
 
   String getDate() {
-    return "${this.date.month}/${this.date.day}/${this.date.year}";
+    return "${this.date.month}/${this.date.day}/${this.date.year} at ${this.date.hour}:${this.date.minute}}";
   }
 
   String getStatus() {

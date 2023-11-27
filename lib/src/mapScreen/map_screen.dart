@@ -215,6 +215,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   void _setPolyline(List<PointLatLng> points) {
     final String polylineIdVal = 'polyline_$_polylineIdCounter';
     _polylineIdCounter++;
+    setState((){
     _polylines.add(
       Polyline(
         polylineId: PolylineId(polylineIdVal),
@@ -227,6 +228,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
             .toList(),
       ),
     );
+    });
   }
 
   bool isDrawerOpen = false;

@@ -28,6 +28,10 @@ class _MapScreenState extends State<MapScreen>
   @override
   bool get wantKeepAlive => true; // Screen will stay loaded forever
 
+
+
+
+
   //Wheelchair icon for ramps
   BitmapDescriptor wheelchairIcon = BitmapDescriptor.defaultMarker;
   @override
@@ -50,7 +54,10 @@ class _MapScreenState extends State<MapScreen>
   //End wheelchair icon for ramps
 
 
-//Entrance icon for entrances
+
+
+
+//Entrance icon for entrances(Doesnt work)
 BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   @override
   void initState2() {
@@ -88,15 +95,23 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO create a Map for mapping marker names to their coordinates
-  final Map<String, Marker> _markers = {};
-  final Map<String, Marker> _entranceMarkers = {};
-  final Map<String, Marker> _rampMarkers = {};
-  final Map<String, dynamic> _convertToCoords = {};
+  final Map<String, Marker> _markers = {};//This holds all of the markers
+  final Map<String, Marker> _entranceMarkers = {};//THis holds the entrance markers
+  final Map<String, Marker> _rampMarkers = {};//THis holds the ramp markers
+  final Map<String, dynamic> _convertToCoords = {};//THis converts from the name of a place to a string representation of its coordinates ("(234.45435, 343333.3535)")
   
+
+
+  /*
+    Converts a LatLng Representation of coords to a string representation of coords.
+  */
   String convertLatLngToString(LatLng coords){
     return "(" + coords.latitude.toString() + ", " + coords.longitude.toString() + ")";
   }
-  Set<Polyline> _polylines = Set<Polyline>();
+
+
+
+  Set<Polyline> _polylines = Set<Polyline>();//THis set holds the route to be drawn
   int _polylineIdCounter = 1;
   Completer<GoogleMapController> _controller = Completer();
   Future<void> _onMapCreated(GoogleMapController controller) async {
@@ -160,7 +175,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   }
 //End of getting the markers
 
-  //This function centers the camera around a marker.
+  //This function centers the camera around a marker. It is not used yet. If you used it you would need to change it.
   Future<void> _goToPlace(Map<String, dynamic> place) async {
     final double lat = place['geometry']['location']['lat'];
     final double lng = place['geometry']['location']['lng'];
@@ -171,9 +186,10 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
     ));
   }
 
-// The following commented out code is from: https://www.youtube.com/watch?v=tfFByL7F-00
-  //This function centers a camera around a route
-  
+
+/*
+  This function centers a camera around a route
+*/
   Future<void> _goToPlaceRoute(double lat, double lng, Map<String, dynamic> boundsNe, Map<String, dynamic> boundsSw) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(
@@ -192,6 +208,10 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
     );
   }
 
+
+  /*
+    This function updates _polyline so that it can be drawn on the map.
+  */
   void _setPolyline(List<PointLatLng> points) {
     final String polylineIdVal = 'polyline_$_polylineIdCounter';
     _polylineIdCounter++;
@@ -261,6 +281,15 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
               padding: const EdgeInsets.all(20.0),
               child: FloatingActionButton.small(
                 onPressed: () async {
+                  /*
+                    The following code needs to be changed so that it is called by the search bar.
+
+                    First it gets the LatLng representation of the a location.
+                    Then it converts it from LatLng to String.
+                    Then it calls getDirections which returns the polyline route and other route info
+                    _goToPlaceRoute centers the camera around the route
+                    _setPolyline draws the route on the map
+                  */
                   print("\n\n\n one \n\n\n\n");
                   LatLng o = _convertToCoords["Department of Mathematics and Statistics Entrance"];
                   print(o);

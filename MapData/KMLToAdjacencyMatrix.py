@@ -34,7 +34,7 @@ def find_closest_node(all_nodes, edges_node): #This function is not needed anymo
     return closest_node
     '''
 
-file = open("convertedLines.json")#Loading the converted kml to json data
+file = open("update11.27.json")#Loading the converted kml to json data
 data = json.load(file)
 
 nodes = []#This list will hold data for the co-ordinates and names of markers. It will hold them as Node objects

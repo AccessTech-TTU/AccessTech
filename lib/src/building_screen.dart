@@ -1,24 +1,37 @@
-import 'package:flutter/material.dart';
-import "buildingData.dart";
 
-/*
-Authors:
-  Thinh Pham, Travis Libre
-Description:
-  This file is the buildings screen. It currently lists the buildings,
-  and a description of them. Currently, much of it is unused and must
-  be implemented.
-*/
+// /*
+// Authors:
+//   Thinh Pham, Travis Libre, Raj Raman
+// Description:
+//   This file is the buildings screen. It currently lists the buildings,
+//   and a description of them. Currently, much of it is unused and must
+//   be implemented.
+// */
+import 'package:flutter/material.dart';
+import 'buildingData.dart';
 
 class BuildingInfo {
   final String name;
   final String description;
+  final String hours;
+  final String address;
   final String imageUrl;
+  final String accessibleDoors;
+  final String ramps;
+  final String elevators;
+  final String restrooms;
+
 
   BuildingInfo({
     required this.name,
     required this.description,
+    required this.hours,
+    required this.address,
     required this.imageUrl,
+    required this.accessibleDoors,
+    required this.ramps,
+    required this.elevators,
+    required this.restrooms,
   });
 }
 
@@ -47,16 +60,29 @@ class BuildingCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
             child: Text(
-              building.description,
+              'Description: ${building.description}',
               style: TextStyle(fontSize: 16),
             ),
           ),
-        ], // Children (list)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: Text(
+              'Hours: ${building.hours}',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: Text(
+              'Address: ${building.address}',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
 // Start of BuildingScreenUI
 class BuildingScreen extends StatelessWidget {
   const BuildingScreen({Key? key}) : super(key: key);

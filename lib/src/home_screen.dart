@@ -4,7 +4,7 @@ import 'package:accesstech/src/DraggableBottomSheet.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:accesstech/src/building_screen.dart';
 import 'package:accesstech/src/contact_screen.dart';
-import 'package:accesstech/src/map_screen.dart';
+import 'package:accesstech/src/mapScreen/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'request.dart';

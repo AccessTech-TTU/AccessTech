@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
 import 'location_service.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-
-
+import 'package:geolocator/geolocator.dart';
+import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart' as accuracy;
 /*
 Authors:
   Houston Taylor, Travis Libre
@@ -27,17 +28,35 @@ class _MapScreenState extends State<MapScreen>
   // Keep screen alive between screen switches
   @override
   bool get wantKeepAlive => true; // Screen will stay loaded forever
+  late LatLng _currentLoc;
+  bool _isLoading = true;
 
+  getLocation() async {
+    LocationPermission permission;
+    permission = await Geolocator.requestPermission();
 
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: accuracy.LocationAccuracy.high);
+    double lat = position.latitude;
+    double long = position.longitude;
 
+    LatLng location = LatLng(lat, long);
 
+    setState(() {
+      _currentLoc = location;
+      _isLoading = false;
+    });
+  }
 
   //Wheelchair icon for ramps
   BitmapDescriptor wheelchairIcon = BitmapDescriptor.defaultMarker;
   @override
   void initState() {
     addCustomIcon();
+    //getCurrentLocation();
     super.initState();
+    getLocation();
+    //getCurrentLocation();
   }
 
   void addCustomIcon() {
@@ -61,8 +80,11 @@ class _MapScreenState extends State<MapScreen>
 BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   @override
   void initState2() {
+    //getCurrentLocation();
     addCustomIcon2();
     super.initState();
+    getLocation();
+    //getCurrentLocation();
   }
 
   void addCustomIcon2() {
@@ -78,20 +100,6 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   }
   //End entrance icon for entrances
   //TODO make a entrance icon
-
-
-  //getting user location
-  /*
-  LocationData? currentLocation;
-  void getCurrentLocation(){
-    Location location = Location();
-
-    location.getLocation().then((location){
-
-    },);    
-  }
-  */
-  //end getting user location
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO create a Map for mapping marker names to their coordinates
@@ -110,7 +118,6 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   }
 
 
-
   Set<Polyline> _polylines = Set<Polyline>();//THis set holds the route to be drawn
   int _polylineIdCounter = 1;
   Completer<GoogleMapController> _controller = Completer();
@@ -119,7 +126,6 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
     _controller.complete(controller);
     final googleMarkers = await locations.getGoogleMarkers();
     setState(() {
-      _markers.clear();
       for (final mark in googleMarkers.markers) {
         String lowercaseId = mark.id.toLowerCase();
         if(lowercaseId.contains("entrance")){//If marker is an entrance
@@ -170,6 +176,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
         _markers[mark.id] = marker;
 
         }
+        getLocation();
     }});
     print(_convertToCoords);
   }
@@ -182,7 +189,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
 
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(target: LatLng(lat, lng), zoom: 12),
+      CameraPosition(target: LatLng(lat, lng), zoom: 16),
     ));
   }
 
@@ -207,7 +214,20 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
       25),
     );
   }
-
+  Set<Marker> initializeMarkers(){
+    final set = _markers.values.toSet();
+    var markerLocal = Marker(
+      markerId: MarkerId("Current Location"),
+      position: _currentLoc,
+      icon: entranceIcon,
+      infoWindow: InfoWindow(
+          title: "Current Location"
+      ),
+    );
+    _markers["Current Location"] = markerLocal;
+    set.add(markerLocal);
+    return set;
+  }
 
   /*
     This function updates _polyline so that it can be drawn on the map.
@@ -238,6 +258,8 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    getLocation();
+    //getCurrentLocation();
     // Map screen
     return Scaffold(
       key: scaffoldKey,
@@ -245,9 +267,11 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
       //   title: const Text('AccessTech BETA'),
       //   elevation: 2,
       // ),
-      body: Stack(
+      body: _isLoading? Center(child:CircularProgressIndicator()) :
+      Stack(
         children: [
           GoogleMap(
+
             onMapCreated: _onMapCreated,
             /*
             (GoogleMapController controller){
@@ -275,7 +299,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
                   33.58479, -101.87466), //TODO initial position of the map
               zoom: 15,
             ),
-            markers: _markers.values.toSet(),
+            markers: initializeMarkers(),
           ),
           Positioned(
             top: 10,

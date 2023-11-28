@@ -293,14 +293,14 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
                     _setPolyline draws the route on the map
                   */
                   print("\n\n\n one \n\n\n\n");
-                  LatLng o = _convertToCoords["Holden Hall Entrance"];
+                  LatLng o = _convertToCoords["Livermore North Entrance"];
                   print(o);
                   String origin = "(" + o.latitude.toString() + ", " + o.longitude.toString() + ")";
-                  LatLng d = _convertToCoords["Livermore North Entrance"];
+                  LatLng d = _convertToCoords["Holden Hall Entrance"];
                   print(d);
                   String destination = "(" + d.latitude.toString() + ", " + d.longitude.toString() + ")";
                   var directions = await LocationService()
-                      .getDirections(origin, destination);
+                      .getDirections("(33.58798, -101.87573)", destination);
                   print("\n\n\n\n\ntest\n\n\n\n");
                   print(directions);
                   _goToPlaceRoute(directions['start_location']['lat'], directions['start_location']['lng'], directions['bounds_ne'], directions['bounds_sw']);

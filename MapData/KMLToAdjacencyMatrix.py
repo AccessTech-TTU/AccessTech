@@ -167,141 +167,180 @@ for path in paths:
 #The rest of the file is for outputting dart code into adjacencyList.dart
 file = open("adjacencyList.dart", "w")
 code = """class Edge {
-  final String vertex1;
-  final String vertex2;
-  final double weight;
+            final String vertex1;
+            final String vertex2;
+            final double weight;
 
-  Edge(this.vertex1, this.vertex2, this.weight);
-}
+            Edge(this.vertex1, this.vertex2, this.weight);
+          }
 
-class UndirectedWeightedGraph {
-  final Map<String, List<Edge>> _adjacencyList = {};
+          class UndirectedWeightedGraph {
+            final Map<String, List<Edge>> _adjacencyList = {};
+            //final List<String> vertexes = List.empty(growable: true);
 
-  void addVertex(String vertex) {
-    if (!_adjacencyList.containsKey(vertex)) {
-      _adjacencyList[vertex] = [];
-    }
-  }
+            void addVertex(String vertex) {
+              if (!_adjacencyList.containsKey(vertex)) {
+                _adjacencyList[vertex] = [];
+                //vertexes.add(vertex);
+              }
+            }
 
-  void addEdge(String vertex1, String vertex2, double weight) {
-    addVertex(vertex1);
-    addVertex(vertex2);
+            void addEdge(String vertex1, String vertex2, double weight) {
+              addVertex(vertex1);
+              addVertex(vertex2);
 
-    final edge = Edge(vertex1, vertex2, weight);
-    _adjacencyList[vertex1]?.add(edge);
-    _adjacencyList[vertex2]
-        ?.add(edge); // Undirected graph, so we add the edge for both vertices
-  }
+              final edge = Edge(vertex1, vertex2, weight);
+              _adjacencyList[vertex1]?.add(edge);
+              _adjacencyList[vertex2]
+                  ?.add(edge); // Undirected graph, so we add the edge for both vertices
+            }
 
-  void bfs(String startVertex) {
-    final visited = <String>{};
-    final queue = <String>[];
+            void bfs(String startVertex) {
+              final visited = <String>{};
+              final queue = <String>[];
 
-    visited.add(startVertex);
-    queue.add(startVertex);
+              visited.add(startVertex);
+              queue.add(startVertex);
 
-    while (queue.isNotEmpty) {
-      final currentVertex = queue.removeAt(0);
-      print(currentVertex);
+              while (queue.isNotEmpty) {
+                final currentVertex = queue.removeAt(0);
+                print(currentVertex);
 
-      for (final edge in _adjacencyList[currentVertex]!) {
-        final neighbor =
-            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
-        if (!visited.contains(neighbor)) {
-          visited.add(neighbor);
-          queue.add(neighbor);
-        }
-      }
-    }
-  }
+                for (final edge in _adjacencyList[currentVertex]!) {
+                  final neighbor =
+                      edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+                  if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    queue.add(neighbor);
+                  }
+                }
+              }
+            }
 
-  Map<String, double> dijkstra(String startVertex) {
-    final distances = <String, double>{};
-    final priorityQueue = <String, double>{};
-    final previous = <String, String>{};
+            Map<String, double> dijkstra(String startVertex) {
+              final distances = <String, double>{};
+              final priorityQueue = <String, double>{};
+              final previous = <String, String>{};
 
-    for (final vertex in _adjacencyList.keys) {
-      distances[vertex] = double.infinity;
-      previous[vertex] = "";
-    }
+              for (final vertex in _adjacencyList.keys) {
+                distances[vertex] = double.infinity;
+                previous[vertex] = "";
+              }
 
-    distances[startVertex] = 0;
-    priorityQueue[startVertex] = 0;
+              distances[startVertex] = 0;
+              priorityQueue[startVertex] = 0;
 
-    while (priorityQueue.isNotEmpty) {
-      final currentVertex = priorityQueue.keys
-          .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
-      priorityQueue.remove(currentVertex);
+              while (priorityQueue.isNotEmpty) {
+                final currentVertex = priorityQueue.keys
+                    .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+                priorityQueue.remove(currentVertex);
 
-      for (final edge in _adjacencyList[currentVertex]!) {
-        final neighbor =
-            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
-        final totalWeight = distances[currentVertex]! + edge.weight;
+                for (final edge in _adjacencyList[currentVertex]!) {
+                  final neighbor =
+                      edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+                  final totalWeight = distances[currentVertex]! + edge.weight;
 
-        if (totalWeight < distances[neighbor]!) {
-          distances[neighbor] = totalWeight;
-          previous[neighbor] = currentVertex;
-          priorityQueue[neighbor] = totalWeight;
-        }
-      }
-    }
+                  if (totalWeight < distances[neighbor]!) {
+                    distances[neighbor] = totalWeight;
+                    previous[neighbor] = currentVertex;
+                    priorityQueue[neighbor] = totalWeight;
+                  }
+                }
+              }
 
-    return distances;
-  }
+              return distances;
+            }
 
-  Map<String, dynamic> dijkstraPath(String startVertex, String? endVertex) {
-    final distances = <String, double>{};
-    final priorityQueue = <String, double>{};
-    final previous = <String, String>{};
+            Map<String, dynamic> dijkstraPath(String startVertex, String? endVertex) {
+              final distances = <String, double>{};
+              final priorityQueue = <String, double>{};
+              final previous = <String, String>{};
 
-    for (final vertex in _adjacencyList.keys) {
-      distances[vertex] = double.infinity;
-      previous[vertex] = "";
-    }
+              for (final vertex in _adjacencyList.keys) {
+                distances[vertex] = double.infinity;
+                previous[vertex] = "";
+              }
 
-    distances[startVertex] = 0;
-    priorityQueue[startVertex] = 0;
+              distances[startVertex] = 0;
+              priorityQueue[startVertex] = 0;
 
-    while (priorityQueue.isNotEmpty) {
-      final currentVertex = priorityQueue.keys.reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
-      priorityQueue.remove(currentVertex);
+              while (priorityQueue.isNotEmpty) {
+                final currentVertex = priorityQueue.keys
+                    .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+                priorityQueue.remove(currentVertex);
 
-      for (final edge in _adjacencyList[currentVertex]!) {
-        final neighbor = edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
-        final totalWeight = distances[currentVertex]! + edge.weight;
+                for (final edge in _adjacencyList[currentVertex]!) {
+                  final neighbor =
+                      edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+                  final totalWeight = distances[currentVertex]! + edge.weight;
 
-        if (totalWeight < distances[neighbor]!) {
-          distances[neighbor] = totalWeight;
-          previous[neighbor] = currentVertex;
-          priorityQueue[neighbor] = totalWeight;
-        }
-      }
-    }
+                  if (totalWeight < distances[neighbor]!) {
+                    distances[neighbor] = totalWeight;
+                    previous[neighbor] = currentVertex;
+                    priorityQueue[neighbor] = totalWeight;
+                  }
+                }
+              }
 
-    // Build the sequence of nodes in the shortest path
-    final path = <String>[];
-    var current = endVertex;
-    while (current != null) {
-      path.insert(0, current);
-      current = previous[current];
-    }
+              // Build the sequence of nodes in the shortest path
+              final path = <String>[];
+              var current = endVertex;
+              while (current != null) {
+                path.insert(0, current);
+                current = previous[current];
+              }
 
-    
+              return {'distances': distances, 'shortestPath': path};
+            }
 
-    return {'distances': distances, 'shortestPath': path};
-  }
+            void printGraph() {
+              _adjacencyList.forEach((vertex, edges) {
+                print(
+                    '$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
+              });
+            }
 
-  void printGraph() {
-    _adjacencyList.forEach((vertex, edges) {
-      print(
-          '$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
-    });
-  }
-}
+            List<double> convertCoords(String coord) {
+              //print("\n\n\n\n\nprint cords" + coord);
+              String removeParen =
+                  coord.substring(1, coord.length - 1); //Removing start and end paren
+              List<String> coords = removeParen.split(", "); //split by the comma
+              double lat = double.parse(coords[0]);
+              double lng = double.parse(coords[1]);
+              List<double> temp = [lat, lng];
+              return temp;
+            }
 
-List<String> getPath(String origin, String destination) {
-  final graph = UndirectedWeightedGraph();
+            double getDistance(String coords1, String coords2) {
+              List<double> convertedOne = convertCoords(coords1);
+              List<double> convertedTwo = convertCoords(coords2);
+              double dif1 = (convertedOne[0] - convertedTwo[0]);
+              dif1 = dif1 * dif1;
+              double dif2 = (convertedOne[1] - convertedTwo[1]);
+              dif2 = dif2 * dif2;
+              return dif1 + dif2;
+            }
+
+            String findClosestVertex(String coords) {
+              String closest = coords;
+              double min = 10000000000;
+              Iterable<String> vertexes = _adjacencyList.keys;
+              for (int i = 0; i < vertexes.length; i++) {
+                double currentDistance = getDistance(coords, vertexes.elementAt(i));
+                print(i);
+                if (currentDistance < min) {
+                  min = currentDistance;
+                  closest = vertexes.elementAt(i);
+                }
+              }
+              return closest;
+            }
+          }
+
+          List<String> getPath(String origin, String destination) {
+            final graph = UndirectedWeightedGraph();
 """
+
 file.write(code)
 for path in paths:
     startNode = path.get_start_node().get_coordinates()  # the first node in the path
@@ -316,14 +355,14 @@ for path in paths:
 code2 = """
 
           //graph.bfs("(33.5853681, -101.8743443)");
-  
+
   final result = graph.dijkstraPath(origin, destination);
   print('Shortest distances: ${result['distances']}');
   print('Shortest path: ${result['shortestPath']}');
   //result['shortestPath'].remove(0); //remove empty string
   return result['shortestPath'];
   //TODO map sequence of nodes to in more detail sequence of nodes
-  
+
   //graph.printGraph();
 }
 

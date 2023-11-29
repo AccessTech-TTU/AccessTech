@@ -34,7 +34,7 @@ def find_closest_node(all_nodes, edges_node): #This function is not needed anymo
     return closest_node
     '''
 
-file = open("update11.27.json")#Loading the converted kml to json data
+file = open("11.29update.json")#Loading the converted kml to json data
 data = json.load(file)
 
 nodes = []#This list will hold data for the co-ordinates and names of markers. It will hold them as Node objects
@@ -301,7 +301,7 @@ code = """class Edge {
             }
 
             List<double> convertCoords(String coord) {
-              //print("\n\n\n\n\nprint cords" + coord);
+              //print("print cords" + coord);
               String removeParen =
                   coord.substring(1, coord.length - 1); //Removing start and end paren
               List<String> coords = removeParen.split(", "); //split by the comma
@@ -355,7 +355,8 @@ for path in paths:
 code2 = """
 
           //graph.bfs("(33.5853681, -101.8743443)");
-
+  origin = graph.findClosestVertex(
+      origin); //If using the users location, autosnaps to closest node in graph
   final result = graph.dijkstraPath(origin, destination);
   print('Shortest distances: ${result['distances']}');
   print('Shortest path: ${result['shortestPath']}');

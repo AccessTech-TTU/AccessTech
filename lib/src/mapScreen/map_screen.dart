@@ -41,6 +41,9 @@ class _MapScreenState extends State<MapScreen>
     double long = position.longitude;
 
     LatLng location = LatLng(lat, long);
+    print("Current location of user: ");
+    print(long);
+    print(lat);
 
     setState(() {
       _currentLoc = location;
@@ -317,14 +320,15 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
                     _setPolyline draws the route on the map
                   */
                   print("\n\n\n one \n\n\n\n");
-                  LatLng o = _convertToCoords["Livermore North Entrance"];
+                  LatLng o = _convertToCoords["Bob L. Herd Department of Petroleum Engineering Entrance"];
                   print(o);
                   String origin = "(" + o.latitude.toString() + ", " + o.longitude.toString() + ")";
                   LatLng d = _convertToCoords["Holden Hall Entrance"];
                   print(d);
                   String destination = "(" + d.latitude.toString() + ", " + d.longitude.toString() + ")";
+                  String userCoords = convertLatLngToString(_currentLoc);
                   var directions = await LocationService()
-                      .getDirections("(33.58798, -101.87573)", destination);
+                      .getDirections(userCoords, destination);
                   print("\n\n\n\n\ntest\n\n\n\n");
                   print(directions);
                   _goToPlaceRoute(directions['start_location']['lat'], directions['start_location']['lng'], directions['bounds_ne'], directions['bounds_sw']);

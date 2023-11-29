@@ -6129,6 +6129,8 @@ List<String> getPath(String origin, String destination) {
   //graph.bfs("(33.5853681, -101.8743443)");
   origin = graph.findClosestVertex(
       origin); //If using the users location, autosnaps to closest node in graph
+    print("ClosesstVertex");
+    print(origin);
   final result = graph.dijkstraPath(origin, destination);
   print('Shortest distances: ${result['distances']}');
   print('Shortest path: ${result['shortestPath']}');

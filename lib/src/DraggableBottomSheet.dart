@@ -20,7 +20,8 @@ class MyDraggableSheet extends StatefulWidget {
 
 class _MyDraggableSheetState extends State<MyDraggableSheet> {
   final _sheet = GlobalKey();
-  final DraggableScrollableController _controller = DraggableScrollableController();
+  final DraggableScrollableController _controller =
+      DraggableScrollableController();
   String searchQuery = '';
   bool isSearching = false;
   ScrollController scrollController = ScrollController();
@@ -36,7 +37,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
       });
     }
   }
-
 
   void _removeFromFavorites(BuildingInfo building) {
     setState(() {
@@ -83,21 +83,22 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
     // Filter the buildings based on the search query
     List<BuildingInfo> filteredBuildings = searchQuery.isEmpty
         ? buildingData
-        : buildingData.where((building) =>
-        building.name.toLowerCase().contains(searchQuery.toLowerCase()))
-        .toList();
+        : buildingData
+            .where((building) =>
+                building.name.toLowerCase().contains(searchQuery.toLowerCase()))
+            .toList();
 
     // Calculate the total item count, considering the search query
-    int itemCount = favoriteBuildings.length +
-        2; // Include favorites and headers
+    int itemCount =
+        favoriteBuildings.length + 2; // Include favorites and headers
     itemCount += searchQuery.isEmpty
         ? min(_buildingsToShow, buildingData.length)
         : filteredBuildings
-        .length; // Add either the number of buildings to show, or all filtered buildings if searching
+            .length; // Add either the number of buildings to show, or all filtered buildings if searching
 
     // Include the "See More" button if there are more buildings to show and not searching
-    if (buildingData.length > _buildingsToShow &&
-        searchQuery.isEmpty) itemCount++;
+    if (buildingData.length > _buildingsToShow && searchQuery.isEmpty)
+      itemCount++;
 
     return SizedBox.expand(
       child: DraggableScrollableSheet(
@@ -148,23 +149,26 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       );
-                    } else if (searchQuery.isEmpty && index <
-                        favoriteBuildings.length + _buildingsToShow + 2) {
+                    } else if (searchQuery.isEmpty &&
+                        index <
+                            favoriteBuildings.length + _buildingsToShow + 2) {
                       // Non-search "Buildings" list logic
-                      final buildingIndex = index - favoriteBuildings.length -
-                          2;
+                      final buildingIndex =
+                          index - favoriteBuildings.length - 2;
                       final building = buildingData[buildingIndex];
                       return _buildBuildingCard(building);
-                    } else if (!searchQuery.isEmpty && index <
-                        favoriteBuildings.length + filteredBuildings.length +
-                            2) {
+                    } else if (!searchQuery.isEmpty &&
+                        index <
+                            favoriteBuildings.length +
+                                filteredBuildings.length +
+                                2) {
                       // Search results logic
-                      final buildingIndex = index - favoriteBuildings.length -
-                          2;
+                      final buildingIndex =
+                          index - favoriteBuildings.length - 2;
                       final building = filteredBuildings[buildingIndex];
                       return _buildBuildingCard(building);
                     } else if (index ==
-                        favoriteBuildings.length + _buildingsToShow + 2 &&
+                            favoriteBuildings.length + _buildingsToShow + 2 &&
                         searchQuery.isEmpty) {
                       // "See More" button logic
                       return Center(
@@ -186,10 +190,9 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                 child: GestureDetector(
                   onVerticalDragUpdate: (details) {
                     _controller.jumpTo(
-                      _controller.size - details.primaryDelta! / MediaQuery
-                          .of(context)
-                          .size
-                          .height,
+                      _controller.size -
+                          details.primaryDelta! /
+                              MediaQuery.of(context).size.height,
                     );
                   },
                   onVerticalDragEnd: (details) {
@@ -222,19 +225,21 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                   // First, animate to the top of the list if it's not already there.
                                   if (scrollController.hasClients &&
                                       scrollController.offset > 0) {
-                                    scrollController.animateTo(
+                                    scrollController
+                                        .animateTo(
                                       0, // Scroll to the top
                                       duration: Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
-                                    ).then((_) {
+                                    )
+                                        .then((_) {
                                       // Then, proceed with the other operations after scrolling.
                                       setState(() {
                                         isSearching = true;
                                         _controller.animateTo(
                                           maxChildSize,
                                           // Expand the bottom sheet to the maxChildSize
-                                          duration: const Duration(
-                                              milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           curve: Curves.easeOut,
                                         );
                                       });
@@ -246,8 +251,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                       _controller.animateTo(
                                         maxChildSize,
                                         // Expand the bottom sheet to the maxChildSize
-                                        duration: const Duration(
-                                            milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.easeOut,
                                       );
                                     });
@@ -260,7 +265,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                 },
                               ),
                             ),
-
                             if (isSearching)
                               IconButton(
                                 icon: Icon(Icons.cancel),
@@ -271,12 +275,14 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                     isSearching = false;
                                     searchQuery = '';
                                   });
-                                  _controller.animateTo(
+                                  _controller
+                                      .animateTo(
                                     initialChildSize,
                                     // Snap back to the initial position
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeOut,
-                                  ).then((_) {
+                                  )
+                                      .then((_) {
                                     // After snapping back, animate to the top of the list
                                     if (scrollController.hasClients) {
                                       scrollController.animateTo(
@@ -333,7 +339,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   //   });
   // }
 
-
   Widget _buildBuildingCard(BuildingInfo building) {
     final isFavorite = favoriteBuildings.contains(building);
 
@@ -377,8 +382,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   //     curve: Curves.easeInOut,
   //   );
   // }
-  Widget _buildAccessibilityFeature(IconData icon, String title,
-      String description) {
+  Widget _buildAccessibilityFeature(
+      IconData icon, String title, String description) {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
@@ -389,7 +394,6 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   DraggableScrollableSheet get sheet =>
       (_sheet.currentWidget as DraggableScrollableSheet);
 
-
   void _showBuildingDetails(BuildContext context, BuildingInfo building) {
     showModalBottomSheet(
       context: context,
@@ -398,7 +402,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       // Allow the bottom sheet to take the full screen height
       builder: (BuildContext context) {
-        return StatefulBuilder( // Use StatefulBuilder to rebuild part of the UI
+        return StatefulBuilder(
+          // Use StatefulBuilder to rebuild part of the UI
           builder: (BuildContext context, StateSetter setState) {
             // Check the favorite status inside the StatefulBuilder to ensure it's up-to-date
             final bool isFavorite = favoriteBuildings.contains(building);
@@ -412,8 +417,8 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
               // Minimum size when the user drags down
               expand: false,
               // Prevent the sheet from expanding to full height
-              builder: (BuildContext context,
-                  ScrollController scrollController) {
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
                 return Padding(
                   padding: const EdgeInsets.all(16),
                   child: SingleChildScrollView(
@@ -465,16 +470,16 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                           onPressed: () {
                             // TODO replace placeholder
                             print("changing");
-
+                            print("Lat: " +
+                                building.latlong.latitude.toString() +
+                                " Long: " +
+                                building.latlong.longitude.toString());
                             // Use 'setState' provided by StatefulBuilder to rebuild the UI
                             setState(() {});
                           },
-                          icon: Icon(
-                            Icons.location_on
-                          ),
+                          icon: Icon(Icons.location_on),
                           label: Text('Navigate Test'),
                         ),
-
                         Text(
                           'Hours:',
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -486,13 +491,14 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                         ),
                         _buildAccessibilityFeature(Icons.door_sliding, 'Doors',
                             building.accessibleDoors),
-                        _buildAccessibilityFeature(Icons
-                            .wheelchair_pickup_rounded, 'Ramps',
+                        _buildAccessibilityFeature(
+                            Icons.wheelchair_pickup_rounded,
+                            'Ramps',
                             building.ramps),
-                        _buildAccessibilityFeature(Icons.elevator, 'Elevator',
-                            building.elevators),
-                        _buildAccessibilityFeature(Icons.wc, 'Restroom',
-                            building.restrooms),
+                        _buildAccessibilityFeature(
+                            Icons.elevator, 'Elevator', building.elevators),
+                        _buildAccessibilityFeature(
+                            Icons.wc, 'Restroom', building.restrooms),
                         Text(
                           'Address:',
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -501,8 +507,10 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                         SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context); // Close the current bottom sheet
-                            _showReportIssueForm(context, building); // Call the new method to show the report issue form
+                            Navigator.pop(
+                                context); // Close the current bottom sheet
+                            _showReportIssueForm(context,
+                                building); // Call the new method to show the report issue form
                           },
                           child: Text('Report Issue'),
                         ),
@@ -518,6 +526,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
     );
   }
 }
+
 void _showReportIssueForm(BuildContext context, BuildingInfo building) {
   final _formKey = GlobalKey<FormState>();
   String issueDescription = '';
@@ -527,7 +536,8 @@ void _showReportIssueForm(BuildContext context, BuildingInfo building) {
     isScrollControlled: true,
     builder: (ctx) {
       return Container(
-        height: MediaQuery.of(ctx).size.height / 2, // Set the height to half the screen height
+        height: MediaQuery.of(ctx).size.height /
+            2, // Set the height to half the screen height
         padding: EdgeInsets.all(24),
         child: Form(
           key: _formKey,
@@ -565,7 +575,8 @@ void _showReportIssueForm(BuildContext context, BuildingInfo building) {
                       if (_formKey.currentState?.validate() ?? false) {
                         _formKey.currentState?.save();
                         // You can handle the issueDescription here
-                        print('Issue reported: $issueDescription'); // For now, just print it to the console
+                        print(
+                            'Issue reported: $issueDescription'); // For now, just print it to the console
                         Navigator.pop(ctx); // Close the form
                       }
                     },
@@ -584,5 +595,3 @@ void _showReportIssueForm(BuildContext context, BuildingInfo building) {
     },
   );
 }
-
-

@@ -114,7 +114,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                 padding: EdgeInsets.only(top: 68),
                 // Padding for the static search bar height
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16),

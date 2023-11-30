@@ -137,9 +137,6 @@ class _HomeScreenState extends State<HomeScreen>
   void callbackParent(LatLng destination){
     myController.testFunc(destination);
   }
-  void callMap(LatLng destination){
-
-  }
 
   // Function to pull a "bottom sheet" with Help Request form items
   // when Help Button is tapped

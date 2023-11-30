@@ -103,7 +103,7 @@ class BuildingScreen extends StatelessWidget {
 
     // Step 2: Sort the Building List
     final sortedBuildings = buildingData
-      ..sort((a, b) => a.name.compareTo(b.name));
+      ..sort((a, b) => a.latlong.latitude.compareTo(b.latlong.latitude));
 
     return Scaffold(
       appBar: AppBar(

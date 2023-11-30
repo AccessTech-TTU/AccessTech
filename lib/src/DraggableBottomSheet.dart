@@ -6,13 +6,14 @@ Description:
 */
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'buildingData.dart';
 import 'building_screen.dart';
 import 'dart:math';
 
 class MyDraggableSheet extends StatefulWidget {
-  const MyDraggableSheet({Key? key});
-
+  const MyDraggableSheet({Key? key, required this.destinationChanged});
+  final Function destinationChanged;
   @override
   _MyDraggableSheetState createState() => _MyDraggableSheetState();
 }
@@ -76,7 +77,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
   @override
   Widget build(BuildContext context) {
     // Define the max and initial sizes here for reference later
-    const double maxChildSize = 0.94;
+    const double maxChildSize = 0.80;
     const double initialChildSize = 0.5;
 
     // Filter the buildings based on the search query
@@ -113,7 +114,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                 padding: EdgeInsets.only(top: 68),
                 // Padding for the static search bar height
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16),
@@ -460,6 +461,20 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                 : 'Add to Favorites',
                           ),
                         ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            // TODO replace placeholder
+                            print("changing");
+                            widget.destinationChanged(building.latlong);
+                            // Use 'setState' provided by StatefulBuilder to rebuild the UI
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.location_on
+                          ),
+                          label: Text('Navigate Test'),
+                        ),
+
                         Text(
                           'Hours:',
                           style: TextStyle(fontWeight: FontWeight.bold),

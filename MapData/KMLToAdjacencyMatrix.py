@@ -34,7 +34,7 @@ def find_closest_node(all_nodes, edges_node): #This function is not needed anymo
     return closest_node
     '''
 
-file = open("convertedLines.json")#Loading the converted kml to json data
+file = open("11.29update.json")#Loading the converted kml to json data
 data = json.load(file)
 
 nodes = []#This list will hold data for the co-ordinates and names of markers. It will hold them as Node objects
@@ -166,7 +166,187 @@ for path in paths:
 
 #The rest of the file is for outputting dart code into adjacencyList.dart
 file = open("adjacencyList.dart", "w")
-code = """class Edge {
+code = """import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'dart:math';
+import 'dart:core';
+
+/*
+This file finds path between two places and returns a polyline
+*/
+class LocationService {
+  final String key = "AIzaSyDL6tLCdvSU3udcWF7DiYkM8f5AGhl3H_s";
+
+  /*
+This code is just copied and pasted from this tutorial
+https://www.youtube.com/watch?v=tfFByL7F-00
+
+
+
+  */
+  /*
+
+  THIS FUNCTION IS NOT USED 
+  Change this method so that it takes in the name of the place as a parameter,
+   then uses a Map<string, coords> to convert from the name to its respective coordinates
+   then returns the co ordinates so that they can be used in the get directions function
+  */
+  Future<String> getPlaceId(String input) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$input&inputtype=textquery&key=$key';
+
+    var response = await http.get(Uri.parse(url));
+
+    var json = convert.jsonDecode(response.body);
+
+    var placeId = json['candidates'][0]['place_id'] as String;
+    //print(placeId);
+    return placeId;
+  }
+
+  /*
+
+  THIS FUNCTION IS NOT USED
+  */
+  Future<Map<String, dynamic>> getPlace(String input) async {
+    final placeId = await getPlaceId(input);
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
+
+    var response = await http.get(Uri.parse(url));
+
+    var json = convert.jsonDecode(response.body);
+    var results = json['result'] as Map<String, dynamic>;
+
+    print(results);
+    return results;
+  }
+
+  /*
+    PsuedoCode Plan: 
+    Change getDirections so that it takes two co-ordinates as input. It then uses the dijkstra algorithm in Mapdata/adjacencyList.dart
+    to get a sequence of coordinates.
+      final result = graph.dijkstraPath('(33.5861073, -101.87357)', '(33.5870844, -101.8749556)');
+      print('Shortest distances: ${result['distances']}');
+      print('Shortest path: ${result['shortestPath']}');
+    It then returns these co-ordinates in the results dictionary
+    With bounds_ne being the most north east coordinate (to zoom the camera in around the bounds)
+      Need a function that calculates the most north east coordinate out of a set of coordinates
+    With bounds_sw being the most south west coordinate
+      Need a function that calculates the most south west coordinate out of a set of coordinates
+              For the above functions might be easier to find
+                most northern point of all coordinates(highest latitude)
+                most southern point of all coordinates(lowest latitude)
+                most eastern(highest longitude)   Maybe switch these two
+                mosts western(lowest longitude)
+                and return bounds_ne = (highest lat, highest long)
+                bounds_se = (lowest lat, lowest long)
+    start_location just being the origin coordinate
+    end_location being the destination coordinate
+    polyline being the path as a sequence of coordinates(more specifically will probably be a sequence of LatLng objects)
+  */
+
+  /*
+    This function takes in a a String version of the coordinates and returns a list where the 0th element is the lat and 1st element is lng
+  */
+  List<double> convertCoords(String coord) {
+    //print("print cords" + coord);
+    String removeParen =
+        coord.substring(1, coord.length - 1); //Removing start and end paren
+    List<String> coords = removeParen.split(", "); //split by the comma
+    double lat = double.parse(coords[0]);
+    double lng = double.parse(coords[1]);
+    List<double> temp = [lat, lng];
+    return temp;
+  }
+
+  /*
+    This function takes the path and finds the most North east point in the path. Need this point to center the camera around the route
+  */
+  Map<String, dynamic> getBoundsNe(List<String> path) {
+    print(path);
+    double mostNorth = -100000;
+    double mostEast = -100000;
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      double lat = coords[0];
+      double lng = coords[1];
+      mostNorth = mostNorth > lat ? mostNorth : lat;
+      mostEast = mostEast > lng ? mostEast : lng; //TODO  > to <
+    }
+    return {'lat': mostNorth, 'lng': mostEast};
+  }
+
+  /*
+    This function takes the path and finds the most south west point in the path. Need this point to center the camera around the route
+  */
+  Map<String, dynamic> getBoundsSw(List<String> path) {
+    double mostSouth = 100000;
+    double mostWest = 100000;
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      double lat = coords[0];
+      double lng = coords[1];
+      mostSouth = mostSouth < lat ? mostSouth : lat;
+      mostWest = mostWest < lng ? mostWest : lng; //TODO switch > to <
+    }
+    return {'lat': mostSouth, 'lng': mostWest};
+  }
+
+  /*
+    Converts the path from a sequence of String ("(2432.3, 485388.2)") to a sequence of PointLatLng objects.
+  */
+  List<PointLatLng> convertPath(List<String> path) {
+    List<PointLatLng> converted = [];
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      converted.add(PointLatLng(coords[0], coords[1]));
+    }
+    return converted;
+  }
+
+  /*
+    This method takes in the string representation of coordinates, finds the path and returns a results variable that contains:
+      the most norht east point
+      the most south west point
+      the starting point
+      the ending point
+      the polyline(not used)
+      the polyline decoded(used)
+  */
+  Future<Map<String, dynamic>> getDirections(
+      String origin, String destination) async {
+    List<String> path = getPath(origin, destination);
+    path.remove("");
+    print("updated path");
+    print(path);
+    List<double> convertOrigin = convertCoords(origin);
+    List<double> convertDestination = convertCoords(destination);
+
+    var results = {
+      'bounds_ne': getBoundsNe(path), //used to zoom in
+      'bounds_sw': getBoundsSw(path), //lat lng
+      'start_location': {
+        "lat": convertOrigin[0],
+        "lng": convertOrigin[1]
+      }, //{lat: , lng: }
+      'end_location': {
+        "lat": convertDestination[0],
+        "lng": convertDestination[1]
+      }, //lat lng
+      'polyline': path,
+      'polyline_decoded': convertPath(path)
+    };
+    return results;
+  }
+}
+
+/*
+The rest of this file is auto generated by running KMLTOAdjacencyMatrix.py
+It contains the graph, path finding alogo.
+*/
+class Edge {
   final String vertex1;
   final String vertex2;
   final double weight;
@@ -176,10 +356,12 @@ code = """class Edge {
 
 class UndirectedWeightedGraph {
   final Map<String, List<Edge>> _adjacencyList = {};
+  //final List<String> vertexes = List.empty(growable: true);
 
   void addVertex(String vertex) {
     if (!_adjacencyList.containsKey(vertex)) {
       _adjacencyList[vertex] = [];
+      //vertexes.add(vertex);
     }
   }
 
@@ -263,11 +445,13 @@ class UndirectedWeightedGraph {
     priorityQueue[startVertex] = 0;
 
     while (priorityQueue.isNotEmpty) {
-      final currentVertex = priorityQueue.keys.reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+      final currentVertex = priorityQueue.keys
+          .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
       priorityQueue.remove(currentVertex);
 
       for (final edge in _adjacencyList[currentVertex]!) {
-        final neighbor = edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        final neighbor =
+            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
         final totalWeight = distances[currentVertex]! + edge.weight;
 
         if (totalWeight < distances[neighbor]!) {
@@ -286,8 +470,6 @@ class UndirectedWeightedGraph {
       current = previous[current];
     }
 
-    
-
     return {'distances': distances, 'shortestPath': path};
   }
 
@@ -297,11 +479,48 @@ class UndirectedWeightedGraph {
           '$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
     });
   }
+
+  List<double> convertCoords(String coord) {
+    //print("print cords" + coord);
+    String removeParen =
+        coord.substring(1, coord.length - 1); //Removing start and end paren
+    List<String> coords = removeParen.split(", "); //split by the comma
+    double lat = double.parse(coords[0]);
+    double lng = double.parse(coords[1]);
+    List<double> temp = [lat, lng];
+    return temp;
+  }
+
+  double getDistance(String coords1, String coords2) {
+    List<double> convertedOne = convertCoords(coords1);
+    List<double> convertedTwo = convertCoords(coords2);
+    double dif1 = (convertedOne[0] - convertedTwo[0]);
+    dif1 = dif1 * dif1;
+    double dif2 = (convertedOne[1] - convertedTwo[1]);
+    dif2 = dif2 * dif2;
+    return dif1 + dif2;
+  }
+
+  String findClosestVertex(String coords) {
+    String closest = coords;
+    double min = 10000000000;
+    Iterable<String> vertexes = _adjacencyList.keys;
+    for (int i = 0; i < vertexes.length; i++) {
+      double currentDistance = getDistance(coords, vertexes.elementAt(i));
+      print(i);
+      if (currentDistance < min) {
+        min = currentDistance;
+        closest = vertexes.elementAt(i);
+      }
+    }
+    return closest;
+  }
 }
 
 List<String> getPath(String origin, String destination) {
   final graph = UndirectedWeightedGraph();
 """
+
 file.write(code)
 for path in paths:
     startNode = path.get_start_node().get_coordinates()  # the first node in the path
@@ -316,14 +535,17 @@ for path in paths:
 code2 = """
 
           //graph.bfs("(33.5853681, -101.8743443)");
-  
+  origin = graph.findClosestVertex(
+      origin); //If using the users location, autosnaps to closest node in graph
+    print("ClosesstVertex");
+    print(origin);
   final result = graph.dijkstraPath(origin, destination);
   print('Shortest distances: ${result['distances']}');
   print('Shortest path: ${result['shortestPath']}');
   //result['shortestPath'].remove(0); //remove empty string
   return result['shortestPath'];
   //TODO map sequence of nodes to in more detail sequence of nodes
-  
+
   //graph.printGraph();
 }
 

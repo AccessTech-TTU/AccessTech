@@ -1,176 +1,356 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'dart:math';
+import 'dart:core';
+
+/*
+This file finds path between two places and returns a polyline
+*/
+class LocationService {
+  final String key = "AIzaSyDL6tLCdvSU3udcWF7DiYkM8f5AGhl3H_s";
+
+  /*
+This code is just copied and pasted from this tutorial
+https://www.youtube.com/watch?v=tfFByL7F-00
+
+
+
+  */
+  /*
+
+  THIS FUNCTION IS NOT USED 
+  Change this method so that it takes in the name of the place as a parameter,
+   then uses a Map<string, coords> to convert from the name to its respective coordinates
+   then returns the co ordinates so that they can be used in the get directions function
+  */
+  Future<String> getPlaceId(String input) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$input&inputtype=textquery&key=$key';
+
+    var response = await http.get(Uri.parse(url));
+
+    var json = convert.jsonDecode(response.body);
+
+    var placeId = json['candidates'][0]['place_id'] as String;
+    //print(placeId);
+    return placeId;
+  }
+
+  /*
+
+  THIS FUNCTION IS NOT USED
+  */
+  Future<Map<String, dynamic>> getPlace(String input) async {
+    final placeId = await getPlaceId(input);
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
+
+    var response = await http.get(Uri.parse(url));
+
+    var json = convert.jsonDecode(response.body);
+    var results = json['result'] as Map<String, dynamic>;
+
+    print(results);
+    return results;
+  }
+
+  /*
+    PsuedoCode Plan: 
+    Change getDirections so that it takes two co-ordinates as input. It then uses the dijkstra algorithm in Mapdata/adjacencyList.dart
+    to get a sequence of coordinates.
+      final result = graph.dijkstraPath('(33.5861073, -101.87357)', '(33.5870844, -101.8749556)');
+      print('Shortest distances: ${result['distances']}');
+      print('Shortest path: ${result['shortestPath']}');
+    It then returns these co-ordinates in the results dictionary
+    With bounds_ne being the most north east coordinate (to zoom the camera in around the bounds)
+      Need a function that calculates the most north east coordinate out of a set of coordinates
+    With bounds_sw being the most south west coordinate
+      Need a function that calculates the most south west coordinate out of a set of coordinates
+              For the above functions might be easier to find
+                most northern point of all coordinates(highest latitude)
+                most southern point of all coordinates(lowest latitude)
+                most eastern(highest longitude)   Maybe switch these two
+                mosts western(lowest longitude)
+                and return bounds_ne = (highest lat, highest long)
+                bounds_se = (lowest lat, lowest long)
+    start_location just being the origin coordinate
+    end_location being the destination coordinate
+    polyline being the path as a sequence of coordinates(more specifically will probably be a sequence of LatLng objects)
+  */
+
+  /*
+    This function takes in a a String version of the coordinates and returns a list where the 0th element is the lat and 1st element is lng
+  */
+  List<double> convertCoords(String coord) {
+    //print("print cords" + coord);
+    String removeParen =
+        coord.substring(1, coord.length - 1); //Removing start and end paren
+    List<String> coords = removeParen.split(", "); //split by the comma
+    double lat = double.parse(coords[0]);
+    double lng = double.parse(coords[1]);
+    List<double> temp = [lat, lng];
+    return temp;
+  }
+
+  /*
+    This function takes the path and finds the most North east point in the path. Need this point to center the camera around the route
+  */
+  Map<String, dynamic> getBoundsNe(List<String> path) {
+    print(path);
+    double mostNorth = -100000;
+    double mostEast = -100000;
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      double lat = coords[0];
+      double lng = coords[1];
+      mostNorth = mostNorth > lat ? mostNorth : lat;
+      mostEast = mostEast > lng ? mostEast : lng; //TODO  > to <
+    }
+    return {'lat': mostNorth, 'lng': mostEast};
+  }
+
+  /*
+    This function takes the path and finds the most south west point in the path. Need this point to center the camera around the route
+  */
+  Map<String, dynamic> getBoundsSw(List<String> path) {
+    double mostSouth = 100000;
+    double mostWest = 100000;
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      double lat = coords[0];
+      double lng = coords[1];
+      mostSouth = mostSouth < lat ? mostSouth : lat;
+      mostWest = mostWest < lng ? mostWest : lng; //TODO switch > to <
+    }
+    return {'lat': mostSouth, 'lng': mostWest};
+  }
+
+  /*
+    Converts the path from a sequence of String ("(2432.3, 485388.2)") to a sequence of PointLatLng objects.
+  */
+  List<PointLatLng> convertPath(List<String> path) {
+    List<PointLatLng> converted = [];
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      converted.add(PointLatLng(coords[0], coords[1]));
+    }
+    return converted;
+  }
+
+  /*
+    This method takes in the string representation of coordinates, finds the path and returns a results variable that contains:
+      the most norht east point
+      the most south west point
+      the starting point
+      the ending point
+      the polyline(not used)
+      the polyline decoded(used)
+  */
+  Future<Map<String, dynamic>> getDirections(
+      String origin, String destination) async {
+    List<String> path = getPath(origin, destination);
+    path.remove("");
+    print("updated path");
+    print(path);
+    List<double> convertOrigin = convertCoords(origin);
+    List<double> convertDestination = convertCoords(destination);
+
+    var results = {
+      'bounds_ne': getBoundsNe(path), //used to zoom in
+      'bounds_sw': getBoundsSw(path), //lat lng
+      'start_location': {
+        "lat": convertOrigin[0],
+        "lng": convertOrigin[1]
+      }, //{lat: , lng: }
+      'end_location': {
+        "lat": convertDestination[0],
+        "lng": convertDestination[1]
+      }, //lat lng
+      'polyline': path,
+      'polyline_decoded': convertPath(path)
+    };
+    return results;
+  }
+}
+
+/*
+The rest of this file is auto generated by running KMLTOAdjacencyMatrix.py
+It contains the graph, path finding alogo.
+*/
 class Edge {
-            final String vertex1;
-            final String vertex2;
-            final double weight;
+  final String vertex1;
+  final String vertex2;
+  final double weight;
 
-            Edge(this.vertex1, this.vertex2, this.weight);
-          }
+  Edge(this.vertex1, this.vertex2, this.weight);
+}
 
-          class UndirectedWeightedGraph {
-            final Map<String, List<Edge>> _adjacencyList = {};
-            //final List<String> vertexes = List.empty(growable: true);
+class UndirectedWeightedGraph {
+  final Map<String, List<Edge>> _adjacencyList = {};
+  //final List<String> vertexes = List.empty(growable: true);
 
-            void addVertex(String vertex) {
-              if (!_adjacencyList.containsKey(vertex)) {
-                _adjacencyList[vertex] = [];
-                //vertexes.add(vertex);
-              }
-            }
+  void addVertex(String vertex) {
+    if (!_adjacencyList.containsKey(vertex)) {
+      _adjacencyList[vertex] = [];
+      //vertexes.add(vertex);
+    }
+  }
 
-            void addEdge(String vertex1, String vertex2, double weight) {
-              addVertex(vertex1);
-              addVertex(vertex2);
+  void addEdge(String vertex1, String vertex2, double weight) {
+    addVertex(vertex1);
+    addVertex(vertex2);
 
-              final edge = Edge(vertex1, vertex2, weight);
-              _adjacencyList[vertex1]?.add(edge);
-              _adjacencyList[vertex2]
-                  ?.add(edge); // Undirected graph, so we add the edge for both vertices
-            }
+    final edge = Edge(vertex1, vertex2, weight);
+    _adjacencyList[vertex1]?.add(edge);
+    _adjacencyList[vertex2]
+        ?.add(edge); // Undirected graph, so we add the edge for both vertices
+  }
 
-            void bfs(String startVertex) {
-              final visited = <String>{};
-              final queue = <String>[];
+  void bfs(String startVertex) {
+    final visited = <String>{};
+    final queue = <String>[];
 
-              visited.add(startVertex);
-              queue.add(startVertex);
+    visited.add(startVertex);
+    queue.add(startVertex);
 
-              while (queue.isNotEmpty) {
-                final currentVertex = queue.removeAt(0);
-                print(currentVertex);
+    while (queue.isNotEmpty) {
+      final currentVertex = queue.removeAt(0);
+      print(currentVertex);
 
-                for (final edge in _adjacencyList[currentVertex]!) {
-                  final neighbor =
-                      edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
-                  if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    queue.add(neighbor);
-                  }
-                }
-              }
-            }
+      for (final edge in _adjacencyList[currentVertex]!) {
+        final neighbor =
+            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        if (!visited.contains(neighbor)) {
+          visited.add(neighbor);
+          queue.add(neighbor);
+        }
+      }
+    }
+  }
 
-            Map<String, double> dijkstra(String startVertex) {
-              final distances = <String, double>{};
-              final priorityQueue = <String, double>{};
-              final previous = <String, String>{};
+  Map<String, double> dijkstra(String startVertex) {
+    final distances = <String, double>{};
+    final priorityQueue = <String, double>{};
+    final previous = <String, String>{};
 
-              for (final vertex in _adjacencyList.keys) {
-                distances[vertex] = double.infinity;
-                previous[vertex] = "";
-              }
+    for (final vertex in _adjacencyList.keys) {
+      distances[vertex] = double.infinity;
+      previous[vertex] = "";
+    }
 
-              distances[startVertex] = 0;
-              priorityQueue[startVertex] = 0;
+    distances[startVertex] = 0;
+    priorityQueue[startVertex] = 0;
 
-              while (priorityQueue.isNotEmpty) {
-                final currentVertex = priorityQueue.keys
-                    .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
-                priorityQueue.remove(currentVertex);
+    while (priorityQueue.isNotEmpty) {
+      final currentVertex = priorityQueue.keys
+          .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+      priorityQueue.remove(currentVertex);
 
-                for (final edge in _adjacencyList[currentVertex]!) {
-                  final neighbor =
-                      edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
-                  final totalWeight = distances[currentVertex]! + edge.weight;
+      for (final edge in _adjacencyList[currentVertex]!) {
+        final neighbor =
+            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        final totalWeight = distances[currentVertex]! + edge.weight;
 
-                  if (totalWeight < distances[neighbor]!) {
-                    distances[neighbor] = totalWeight;
-                    previous[neighbor] = currentVertex;
-                    priorityQueue[neighbor] = totalWeight;
-                  }
-                }
-              }
+        if (totalWeight < distances[neighbor]!) {
+          distances[neighbor] = totalWeight;
+          previous[neighbor] = currentVertex;
+          priorityQueue[neighbor] = totalWeight;
+        }
+      }
+    }
 
-              return distances;
-            }
+    return distances;
+  }
 
-            Map<String, dynamic> dijkstraPath(String startVertex, String? endVertex) {
-              final distances = <String, double>{};
-              final priorityQueue = <String, double>{};
-              final previous = <String, String>{};
+  Map<String, dynamic> dijkstraPath(String startVertex, String? endVertex) {
+    final distances = <String, double>{};
+    final priorityQueue = <String, double>{};
+    final previous = <String, String>{};
 
-              for (final vertex in _adjacencyList.keys) {
-                distances[vertex] = double.infinity;
-                previous[vertex] = "";
-              }
+    for (final vertex in _adjacencyList.keys) {
+      distances[vertex] = double.infinity;
+      previous[vertex] = "";
+    }
 
-              distances[startVertex] = 0;
-              priorityQueue[startVertex] = 0;
+    distances[startVertex] = 0;
+    priorityQueue[startVertex] = 0;
 
-              while (priorityQueue.isNotEmpty) {
-                final currentVertex = priorityQueue.keys
-                    .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
-                priorityQueue.remove(currentVertex);
+    while (priorityQueue.isNotEmpty) {
+      final currentVertex = priorityQueue.keys
+          .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+      priorityQueue.remove(currentVertex);
 
-                for (final edge in _adjacencyList[currentVertex]!) {
-                  final neighbor =
-                      edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
-                  final totalWeight = distances[currentVertex]! + edge.weight;
+      for (final edge in _adjacencyList[currentVertex]!) {
+        final neighbor =
+            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        final totalWeight = distances[currentVertex]! + edge.weight;
 
-                  if (totalWeight < distances[neighbor]!) {
-                    distances[neighbor] = totalWeight;
-                    previous[neighbor] = currentVertex;
-                    priorityQueue[neighbor] = totalWeight;
-                  }
-                }
-              }
+        if (totalWeight < distances[neighbor]!) {
+          distances[neighbor] = totalWeight;
+          previous[neighbor] = currentVertex;
+          priorityQueue[neighbor] = totalWeight;
+        }
+      }
+    }
 
-              // Build the sequence of nodes in the shortest path
-              final path = <String>[];
-              var current = endVertex;
-              while (current != null) {
-                path.insert(0, current);
-                current = previous[current];
-              }
+    // Build the sequence of nodes in the shortest path
+    final path = <String>[];
+    var current = endVertex;
+    while (current != null) {
+      path.insert(0, current);
+      current = previous[current];
+    }
 
-              return {'distances': distances, 'shortestPath': path};
-            }
+    return {'distances': distances, 'shortestPath': path};
+  }
 
-            void printGraph() {
-              _adjacencyList.forEach((vertex, edges) {
-                print(
-                    '$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
-              });
-            }
+  void printGraph() {
+    _adjacencyList.forEach((vertex, edges) {
+      print(
+          '$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
+    });
+  }
 
-            List<double> convertCoords(String coord) {
-              //print("print cords" + coord);
-              String removeParen =
-                  coord.substring(1, coord.length - 1); //Removing start and end paren
-              List<String> coords = removeParen.split(", "); //split by the comma
-              double lat = double.parse(coords[0]);
-              double lng = double.parse(coords[1]);
-              List<double> temp = [lat, lng];
-              return temp;
-            }
+  List<double> convertCoords(String coord) {
+    //print("print cords" + coord);
+    String removeParen =
+        coord.substring(1, coord.length - 1); //Removing start and end paren
+    List<String> coords = removeParen.split(", "); //split by the comma
+    double lat = double.parse(coords[0]);
+    double lng = double.parse(coords[1]);
+    List<double> temp = [lat, lng];
+    return temp;
+  }
 
-            double getDistance(String coords1, String coords2) {
-              List<double> convertedOne = convertCoords(coords1);
-              List<double> convertedTwo = convertCoords(coords2);
-              double dif1 = (convertedOne[0] - convertedTwo[0]);
-              dif1 = dif1 * dif1;
-              double dif2 = (convertedOne[1] - convertedTwo[1]);
-              dif2 = dif2 * dif2;
-              return dif1 + dif2;
-            }
+  double getDistance(String coords1, String coords2) {
+    List<double> convertedOne = convertCoords(coords1);
+    List<double> convertedTwo = convertCoords(coords2);
+    double dif1 = (convertedOne[0] - convertedTwo[0]);
+    dif1 = dif1 * dif1;
+    double dif2 = (convertedOne[1] - convertedTwo[1]);
+    dif2 = dif2 * dif2;
+    return dif1 + dif2;
+  }
 
-            String findClosestVertex(String coords) {
-              String closest = coords;
-              double min = 10000000000;
-              Iterable<String> vertexes = _adjacencyList.keys;
-              for (int i = 0; i < vertexes.length; i++) {
-                double currentDistance = getDistance(coords, vertexes.elementAt(i));
-                print(i);
-                if (currentDistance < min) {
-                  min = currentDistance;
-                  closest = vertexes.elementAt(i);
-                }
-              }
-              return closest;
-            }
-          }
+  String findClosestVertex(String coords) {
+    String closest = coords;
+    double min = 10000000000;
+    Iterable<String> vertexes = _adjacencyList.keys;
+    for (int i = 0; i < vertexes.length; i++) {
+      double currentDistance = getDistance(coords, vertexes.elementAt(i));
+      print(i);
+      if (currentDistance < min) {
+        min = currentDistance;
+        closest = vertexes.elementAt(i);
+      }
+    }
+    return closest;
+  }
+}
 
-          List<String> getPath(String origin, String destination) {
-            final graph = UndirectedWeightedGraph();
+List<String> getPath(String origin, String destination) {
+  final graph = UndirectedWeightedGraph();
   graph.addEdge("(33.5844713, -101.8746846)", "(33.584315, -101.8746843)", 18.95890368132894);
   graph.addEdge("(33.584315, -101.8746843)", "(33.5841113, -101.8746853)", 24.708612819281033);
   graph.addEdge("(33.5841113, -101.8746853)", "(33.5838454, -101.8746817)", 32.25520983643949);
@@ -2802,7 +2982,7 @@ class Edge {
   graph.addEdge("(33.5868967, -101.8758052)", "(33.5868095, -101.8758037)", 10.57828695140126);
   graph.addEdge("(33.5868095, -101.8758037)", "(33.5865059, -101.8757988)", 36.829449446480695);
   graph.addEdge("(33.5868095, -101.8758037)", "(33.5868075, -101.8755364)", 27.13732165425833);
-  graph.addEdge("(33.586897, -101.8759816)", "(33.5872886, -101.8759842)", 47.501055469537974);
+  graph.addEdge("(33.586897, -101.8759816)", "(33.5870707, -101.8759835)", 21.070356361152253);
   graph.addEdge("(33.5872209, -101.8754844)", "(33.5872923, -101.8754321)", 10.15862922887684);
   graph.addEdge("(33.5872923, -101.8754321)", "(33.5873397, -101.8754313)", 5.750102049921581);
   graph.addEdge("(33.5887532, -101.8750936)", "(33.5888152, -101.8750217)", 10.480200213019968);
@@ -3076,11 +3256,22 @@ class Edge {
   graph.addEdge("(33.5835659, -101.8756401)", "(33.5836543, -101.8755661)", 13.092688448462251);
   graph.addEdge("(33.5819678, -101.8755591)", "(33.5817326, -101.8755631)", 28.532170795735468);
   graph.addEdge("(33.5817326, -101.8755631)", "(33.5814903, -101.8755577)", 29.395607874432997);
+  graph.addEdge("(33.5868075, -101.8755364)", "(33.5866844, -101.8755407)", 14.938170675592158);
+  graph.addEdge("(33.5866844, -101.8755407)", "(33.5866806, -101.8752714)", 27.343201895099103);
+  graph.addEdge("(33.5869013, -101.8768451)", "(33.5868404, -101.8768376)", 7.426187579154416);
+  graph.addEdge("(33.5868404, -101.8768376)", "(33.5867603, -101.8768335)", 9.724886075797517);
+  graph.addEdge("(33.5867603, -101.8768335)", "(33.5866737, -101.8768416)", 10.536548862844343);
+  graph.addEdge("(33.5866737, -101.8768416)", "(33.5864627, -101.8768256)", 25.645381585485715);
+  graph.addEdge("(33.5864627, -101.8768256)", "(33.5863508, -101.8768666)", 14.197118060346812);
+  graph.addEdge("(33.5870707, -101.8759835)", "(33.5870692, -101.8760083)", 2.524248842382409);
+  graph.addEdge("(33.5870692, -101.8760083)", "(33.5871501, -101.876008)", 9.813060717248135);
 
 
           //graph.bfs("(33.5853681, -101.8743443)");
   origin = graph.findClosestVertex(
       origin); //If using the users location, autosnaps to closest node in graph
+    print("ClosesstVertex");
+    print(origin);
   final result = graph.dijkstraPath(origin, destination);
   print('Shortest distances: ${result['distances']}');
   print('Shortest path: ${result['shortestPath']}');

@@ -7,7 +7,8 @@ import 'locations.dart' as locations;
 import 'location_service.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart' as accuracy;
+import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart'
+    as accuracy;
 /*
 Authors:
   Houston Taylor, Travis Libre
@@ -75,12 +76,8 @@ class _MapScreenState extends State<MapScreen>
   }
   //End wheelchair icon for ramps
 
-
-
-
-
 //Entrance icon for entrances(Doesnt work)
-BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   @override
   void initState2() {
     //getCurrentLocation();
@@ -106,22 +103,29 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO create a Map for mapping marker names to their coordinates
-  final Map<String, Marker> _markers = {};//This holds all of the markers
-  final Map<String, Marker> _entranceMarkers = {};//THis holds the entrance markers
-  final Map<String, Marker> _rampMarkers = {};//THis holds the ramp markers
-  final Map<String, dynamic> _convertToCoords = {};//THis converts from the name of a place to a string representation of its coordinates ("(234.45435, 343333.3535)")
-  
-
+  final Map<String, Marker> _markers = {}; //This holds all of the markers
+  final Map<String, Marker> _entranceMarkers =
+      {}; //THis holds the entrance markers
+  final Map<String, Marker> _rampMarkers = {}; //THis holds the ramp markers
+  final Map<String, dynamic> _convertToCoords =
+      {}; //THis converts from the name of a place to a string representation of its coordinates ("(234.45435, 343333.3535)")
+  Set<Marker> _currentlyDisplayingMarkers = {};
+  bool? showRamps = true;
+  bool? showEntrances = true;
 
   /*
     Converts a LatLng Representation of coords to a string representation of coords.
   */
-  String convertLatLngToString(LatLng coords){
-    return "(" + coords.latitude.toString() + ", " + coords.longitude.toString() + ")";
+  String convertLatLngToString(LatLng coords) {
+    return "(" +
+        coords.latitude.toString() +
+        ", " +
+        coords.longitude.toString() +
+        ")";
   }
 
-
-  Set<Polyline> _polylines = Set<Polyline>();//THis set holds the route to be drawn
+  Set<Polyline> _polylines =
+      Set<Polyline>(); //THis set holds the route to be drawn
   int _polylineIdCounter = 1;
   Completer<GoogleMapController> _controller = Completer();
   Future<void> _onMapCreated(GoogleMapController controller) async {
@@ -131,56 +135,56 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
     setState(() {
       for (final mark in googleMarkers.markers) {
         String lowercaseId = mark.id.toLowerCase();
-        if(lowercaseId.contains("entrance")){//If marker is an entrance
-        final marker = Marker(
-          markerId: MarkerId(mark.id),
-          position: LatLng(mark.lat, mark.lng),
-          icon:
-              entranceIcon, //TODO different icons for different marker types
-          infoWindow: InfoWindow(
-            title: mark.id,
-            snippet: mark.description,
-          ),
-        );
-        _entranceMarkers[mark.id] = marker;//Seperate map of markers for entrances
-        _markers[mark.id] = marker;
-        //_convertToCoords[mark.id] = "(" + mark.lat.toString() + ", " + mark.lng.toString() + ")";//Mapping the name to the coordinates
-        _convertToCoords[mark.id] = LatLng(mark.lat, mark.lng);
-        print(convertLatLngToString(_convertToCoords[mark.id]));
-
-        }
-        else if(lowercaseId.contains("ramp")){//If marker is a ramp
-        final marker = Marker(
-          markerId: MarkerId(mark.id),
-          position: LatLng(mark.lat, mark.lng),
-          icon:
-              wheelchairIcon, //TODO different icons for different marker types
-          infoWindow: InfoWindow(
-            title: mark.id,
-            snippet: mark.description,
-          ),
-        );
-        _rampMarkers[mark.id] = marker;//Seperate map of markers for ramps 
-        _markers[mark.id] = marker;
-
-        }
-        else{//ANy other type of marker
-        final marker = Marker(
-          markerId: MarkerId(mark.id),
-          position: LatLng(mark.lat, mark.lng),
-          icon:
-            
-              wheelchairIcon, //TODO different icons for different marker types
-          infoWindow: InfoWindow(
-            title: mark.id,
-            snippet: mark.description,
-          ),
-        );
-        _markers[mark.id] = marker;
-
+        if (lowercaseId.contains("entrance")) {
+          //If marker is an entrance
+          final marker = Marker(
+            markerId: MarkerId(mark.id),
+            position: LatLng(mark.lat, mark.lng),
+            icon:
+                entranceIcon, //TODO different icons for different marker types
+            infoWindow: InfoWindow(
+              title: mark.id,
+              snippet: mark.description,
+            ),
+          );
+          _entranceMarkers[mark.id] =
+              marker; //Seperate map of markers for entrances
+          _markers[mark.id] = marker;
+          //_convertToCoords[mark.id] = "(" + mark.lat.toString() + ", " + mark.lng.toString() + ")";//Mapping the name to the coordinates
+          _convertToCoords[mark.id] = LatLng(mark.lat, mark.lng);
+          print(convertLatLngToString(_convertToCoords[mark.id]));
+        } else if (lowercaseId.contains("ramp")) {
+          //If marker is a ramp
+          final marker = Marker(
+            markerId: MarkerId(mark.id),
+            position: LatLng(mark.lat, mark.lng),
+            icon:
+                wheelchairIcon, //TODO different icons for different marker types
+            infoWindow: InfoWindow(
+              title: mark.id,
+              snippet: mark.description,
+            ),
+          );
+          _rampMarkers[mark.id] = marker; //Seperate map of markers for ramps
+          _markers[mark.id] = marker;
+        } else {
+          //ANy other type of marker
+          final marker = Marker(
+            markerId: MarkerId(mark.id),
+            position: LatLng(mark.lat, mark.lng),
+            icon:
+                wheelchairIcon, //TODO different icons for different marker types
+            infoWindow: InfoWindow(
+              title: mark.id,
+              snippet: mark.description,
+            ),
+          );
+          _markers[mark.id] = marker;
         }
         getLocation();
-    }});
+      }
+      _currentlyDisplayingMarkers = _markers.values.toSet();
+    });
     print(_convertToCoords);
   }
 //End of getting the markers
@@ -196,11 +200,11 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
     ));
   }
 
-
 /*
   This function centers a camera around a route
 */
-  Future<void> _goToPlaceRoute(double lat, double lng, Map<String, dynamic> boundsNe, Map<String, dynamic> boundsSw) async {
+  Future<void> _goToPlaceRoute(double lat, double lng,
+      Map<String, dynamic> boundsNe, Map<String, dynamic> boundsSw) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -210,22 +214,33 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
 
     controller.animateCamera(
       CameraUpdate.newLatLngBounds(
-        LatLngBounds(
-          northeast: LatLng(boundsNe['lat'], boundsNe['lng']),
-          southwest: LatLng(boundsSw['lat'], boundsSw['lng']),
-        ),
-      25),
+          LatLngBounds(
+            northeast: LatLng(boundsNe['lat'], boundsNe['lng']),
+            southwest: LatLng(boundsSw['lat'], boundsSw['lng']),
+          ),
+          25),
     );
   }
-  Set<Marker> initializeMarkers(){
-    final set = _markers.values.toSet();
+
+  void updateMarkers() {
+    if (showRamps == false && showEntrances == false) {
+      _currentlyDisplayingMarkers = {};
+    } else if (showRamps == true && showEntrances == false) {
+      _currentlyDisplayingMarkers = _rampMarkers.values.toSet();
+    } else if (showRamps == false && showEntrances == true) {
+      _currentlyDisplayingMarkers = _entranceMarkers.values.toSet();
+    } else {
+      _currentlyDisplayingMarkers = _markers.values.toSet();
+    }
+  }
+
+  Set<Marker> initializeMarkers() {
+    final set = _currentlyDisplayingMarkers;
     var markerLocal = Marker(
       markerId: MarkerId("Current Location"),
       position: _currentLoc,
       icon: entranceIcon,
-      infoWindow: InfoWindow(
-          title: "Current Location"
-      ),
+      infoWindow: InfoWindow(title: "Current Location"),
     );
     _markers["Current Location"] = markerLocal;
     set.add(markerLocal);
@@ -236,21 +251,22 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
     This function updates _polyline so that it can be drawn on the map.
   */
   void _setPolyline(List<PointLatLng> points) {
+    _polylines = {};
     final String polylineIdVal = 'polyline_$_polylineIdCounter';
     _polylineIdCounter++;
-    setState((){
-    _polylines.add(
-      Polyline(
-        polylineId: PolylineId(polylineIdVal),
-        width: 4,
-        color: Colors.blue,
-        points: points
-            .map(
-              (point) => LatLng(point.latitude, point.longitude),
-            )
-            .toList(),
-      ),
-    );
+    setState(() {
+      _polylines.add(
+        Polyline(
+          polylineId: PolylineId(polylineIdVal),
+          width: 4,
+          color: Colors.blue,
+          points: points
+              .map(
+                (point) => LatLng(point.latitude, point.longitude),
+              )
+              .toList(),
+        ),
+      );
     });
   }
 
@@ -270,47 +286,47 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
       //   title: const Text('AccessTech BETA'),
       //   elevation: 2,
       // ),
-      body: _isLoading? Center(child:CircularProgressIndicator()) :
-      Stack(
-        children: [
-          GoogleMap(
-
-            onMapCreated: _onMapCreated,
-            /*
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Stack(
+              children: [
+                GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  /*
             (GoogleMapController controller){
               _controller.complete(controller);
             },
             */
-            mapType: MapType.hybrid,
-            cameraTargetBounds: CameraTargetBounds(LatLngBounds(
-                //setting the bounds for the map. TODO change southwest and northeast coords
-                southwest: const LatLng(33.5796412, -101.8814612),
-                northeast: const LatLng(33.5897768, -101.8706036))),
-            compassEnabled: true,
-            minMaxZoomPreference: const MinMaxZoomPreference(
-              14, //Minzoom
-              null, //Maxzoom null means unbounded
-            ),
-            myLocationButtonEnabled: true,
-            polylines:
-                _polylines, //TODO polylines function that takes in two args: start location, end location and returns polylines
-            trafficEnabled: false,
-            zoomControlsEnabled: true,
-            zoomGesturesEnabled: true,
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(
-                  33.58479, -101.87466), //TODO initial position of the map
-              zoom: 15,
-            ),
-            markers: initializeMarkers(),
-          ),
-          Positioned(
-            top: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: FloatingActionButton.small(
-                onPressed: () async {
-                  /*
+                  mapType: MapType.hybrid,
+                  cameraTargetBounds: CameraTargetBounds(LatLngBounds(
+                      //setting the bounds for the map. TODO change southwest and northeast coords
+                      southwest: const LatLng(33.5796412, -101.8814612),
+                      northeast: const LatLng(33.5897768, -101.8706036))),
+                  compassEnabled: true,
+                  minMaxZoomPreference: const MinMaxZoomPreference(
+                    14, //Minzoom
+                    null, //Maxzoom null means unbounded
+                  ),
+                  myLocationButtonEnabled: true,
+                  polylines:
+                      _polylines, //TODO polylines function that takes in two args: start location, end location and returns polylines
+                  trafficEnabled: false,
+                  zoomControlsEnabled: true,
+                  zoomGesturesEnabled: true,
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(33.58479,
+                        -101.87466), //TODO initial position of the map
+                    zoom: 15,
+                  ),
+                  markers: initializeMarkers(),
+                ),
+                Positioned(
+                  top: 10,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: FloatingActionButton.small(
+                      onPressed: () async {
+                        /*
                     The following code needs to be changed so that it is called by the search bar.
 
                     First it gets the LatLng representation of the a location.
@@ -319,49 +335,60 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
                     _goToPlaceRoute centers the camera around the route
                     _setPolyline draws the route on the map
                   */
-                  print("\n\n\n one \n\n\n\n");
-                  LatLng o = _convertToCoords["Bob L. Herd Department of Petroleum Engineering Entrance"];
-                  print(o);
-                  String origin = "(" + o.latitude.toString() + ", " + o.longitude.toString() + ")";
-                  LatLng d = _convertToCoords["Holden Hall Entrance"];
-                  print(d);
-                  String destination = "(" + d.latitude.toString() + ", " + d.longitude.toString() + ")";
-                  String userCoords = convertLatLngToString(_currentLoc);
-                  var directions = await LocationService()
-                      .getDirections(userCoords, destination);
-                  print("\n\n\n\n\ntest\n\n\n\n");
-                  print(directions);
-                  _goToPlaceRoute(directions['start_location']['lat'], directions['start_location']['lng'], directions['bounds_ne'], directions['bounds_sw']);
-                  _setPolyline(directions['polyline_decoded']);
-                
-                
-                }, //TODO change button
-                child: Icon(
-                  Icons.menu,
-                  color: Colors.black,
+                        print("\n\n\n one \n\n\n\n");
+                        LatLng o = _convertToCoords[
+                            "Bob L. Herd Department of Petroleum Engineering Entrance"];
+                        print(o);
+                        String origin = "(" +
+                            o.latitude.toString() +
+                            ", " +
+                            o.longitude.toString() +
+                            ")";
+                        LatLng d = _convertToCoords["Holden Hall Entrance"];
+                        print(d);
+                        String destination = "(" +
+                            d.latitude.toString() +
+                            ", " +
+                            d.longitude.toString() +
+                            ")";
+                        String userCoords = convertLatLngToString(_currentLoc);
+                        var directions = await LocationService()
+                            .getDirections(userCoords, destination);
+                        print("\n\n\n\n\ntest\n\n\n\n");
+                        print(directions);
+                        _goToPlaceRoute(
+                            directions['start_location']['lat'],
+                            directions['start_location']['lng'],
+                            directions['bounds_ne'],
+                            directions['bounds_sw']);
+                        _setPolyline(directions['polyline_decoded']);
+                      }, //TODO change button
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.black,
+                      ),
+                      backgroundColor: Colors.white,
+                      elevation: 10,
+                    ),
+                  ),
                 ),
-                backgroundColor: Colors.white,
-                elevation: 10,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 60,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: FloatingActionButton.small(
-                onPressed: () => scaffoldKey.currentState!.openDrawer(),
-                child: Icon(
-                  Icons.filter_vintage,
-                  color: Colors.black,
+                Positioned(
+                  top: 60,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: FloatingActionButton.small(
+                      onPressed: () => scaffoldKey.currentState!.openDrawer(),
+                      child: Icon(
+                        Icons.filter_vintage,
+                        color: Colors.black,
+                      ),
+                      backgroundColor: Colors.white,
+                      elevation: 10,
+                    ),
+                  ),
                 ),
-                backgroundColor: Colors.white,
-                elevation: 10,
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -375,14 +402,32 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
                 ),
               ),
             ),
-            ListTile(
-              title: Text('Drawer Item 1'),
-              // Add your drawer items here
-            ),
-            ListTile(
-              title: Text('Drawer Item 2'),
-              // Add more drawer items
-            ),
+            Row(children: <Widget>[
+              Text("Show Ramps"),
+              Checkbox(
+                value: showRamps,
+                onChanged: (bool? value) {
+                  setState(() {
+                    showRamps = value;
+                    updateMarkers();
+                    print(showRamps);
+                  });
+                },
+              ),
+            ]),
+            Row(children: <Widget>[
+              Text("Show Entrances"),
+              Checkbox(
+                value: showEntrances,
+                onChanged: (bool? value) {
+                  setState(() {
+                    showEntrances = value;
+                    updateMarkers();
+                    print(showEntrances);
+                  });
+                },
+              ),
+            ]),
           ],
         ),
       ),
@@ -390,8 +435,6 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   }
 //End of MapScreenUI
 }
-
-
 
 /* Previous MapScreenUI Code // TODO Reimplement Theme Data
 return MaterialApp(

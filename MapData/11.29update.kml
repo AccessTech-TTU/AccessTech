@@ -10193,7 +10193,7 @@
         <styleUrl>#icon-1735-0288D1-nodesc</styleUrl>
         <Point>
           <coordinates>
-            -101.874948,33.586682,0
+            -101.8749487,33.5866859,0
           </coordinates>
         </Point>
       </Placemark>
@@ -10995,6 +10995,15 @@
         <Point>
           <coordinates>
             -101.8801789,33.582316,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Point 118</name>
+        <styleUrl>#icon-1735-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -101.8760083,33.5870692,0
           </coordinates>
         </Point>
       </Placemark>
@@ -39952,7 +39961,7 @@
           <tessellate>1</tessellate>
           <coordinates>
             -101.8759816,33.586897,0
-            -101.8759842,33.5872886,0
+            -101.8759835,33.5870707,0
           </coordinates>
         </LineString>
       </Placemark>
@@ -42956,6 +42965,105 @@
           <coordinates>
             -101.8755631,33.5817326,0
             -101.8755577,33.5814903,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1013</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8755364,33.5868075,0
+            -101.8755407,33.5866844,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1014</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8755407,33.5866844,0
+            -101.8752714,33.5866806,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1015</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8768451,33.5869013,0
+            -101.8768376,33.5868404,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1016</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8768376,33.5868404,0
+            -101.8768335,33.5867603,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1017</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8768335,33.5867603,0
+            -101.8768416,33.5866737,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1018</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8768416,33.5866737,0
+            -101.8768256,33.5864627,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1019</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8768256,33.5864627,0
+            -101.8768666,33.5863508,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1020</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8759835,33.5870707,0
+            -101.8760083,33.5870692,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 1021</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8760083,33.5870692,0
+            -101.876008,33.5871501,0
           </coordinates>
         </LineString>
       </Placemark>

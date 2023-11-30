@@ -128,12 +128,15 @@ class _MapScreenState extends State<MapScreen>
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO create a Map for mapping marker names to their coordinates
-  final Map<String, Marker> _markers = {};//This holds all of the markers
-  final Map<String, Marker> _entranceMarkers = {};//THis holds the entrance markers
-  final Map<String, Marker> _rampMarkers = {};//THis holds the ramp markers
-  final Map<String, dynamic> _convertToCoords = {};//THis converts from the name of a place to a string representation of its coordinates ("(234.45435, 343333.3535)")
-  
-
+  final Map<String, Marker> _markers = {}; //This holds all of the markers
+  final Map<String, Marker> _entranceMarkers =
+      {}; //THis holds the entrance markers
+  final Map<String, Marker> _rampMarkers = {}; //THis holds the ramp markers
+  final Map<String, dynamic> _convertToCoords =
+      {}; //THis converts from the name of a place to a string representation of its coordinates ("(234.45435, 343333.3535)")
+  Set<Marker> _currentlyDisplayingMarkers = {};
+  bool? showRamps = true;
+  bool? showEntrances = true;
 
   /*
     Converts a LatLng Representation of coords to a string representation of coords.
@@ -202,7 +205,9 @@ class _MapScreenState extends State<MapScreen>
 
         }
         getLocation();
-    }});
+      }
+      _currentlyDisplayingMarkers = _markers.values.toSet();
+    });
     print(_convertToCoords);
   }
 //End of getting the markers
@@ -250,8 +255,21 @@ class _MapScreenState extends State<MapScreen>
       25),
     );
   }
-  Set<Marker> initializeMarkers(){
-    final set = _markers.values.toSet();
+
+  void updateMarkers() {
+    if (showRamps == false && showEntrances == false) {
+      _currentlyDisplayingMarkers = {};
+    } else if (showRamps == true && showEntrances == false) {
+      _currentlyDisplayingMarkers = _rampMarkers.values.toSet();
+    } else if (showRamps == false && showEntrances == true) {
+      _currentlyDisplayingMarkers = _entranceMarkers.values.toSet();
+    } else {
+      _currentlyDisplayingMarkers = _markers.values.toSet();
+    }
+  }
+
+  Set<Marker> initializeMarkers() {
+    final set = _currentlyDisplayingMarkers;
     var markerLocal = Marker(
       markerId: MarkerId("Current Location"),
       position: _currentLoc,
@@ -269,6 +287,7 @@ class _MapScreenState extends State<MapScreen>
     This function updates _polyline so that it can be drawn on the map.
   */
   void _setPolyline(List<PointLatLng> points) {
+    _polylines = {};
     final String polylineIdVal = 'polyline_$_polylineIdCounter';
     _polylineIdCounter++;
     setState((){
@@ -416,14 +435,32 @@ class _MapScreenState extends State<MapScreen>
                 ),
               ),
             ),
-            ListTile(
-              title: Text('Drawer Item 1'),
-              // Add your drawer items here
-            ),
-            ListTile(
-              title: Text('Drawer Item 2'),
-              // Add more drawer items
-            ),
+            Row(children: <Widget>[
+              Text("Show Ramps"),
+              Checkbox(
+                value: showRamps,
+                onChanged: (bool? value) {
+                  setState(() {
+                    showRamps = value;
+                    updateMarkers();
+                    print(showRamps);
+                  });
+                },
+              ),
+            ]),
+            Row(children: <Widget>[
+              Text("Show Entrances"),
+              Checkbox(
+                value: showEntrances,
+                onChanged: (bool? value) {
+                  setState(() {
+                    showEntrances = value;
+                    updateMarkers();
+                    print(showEntrances);
+                  });
+                },
+              ),
+            ]),
           ],
         ),
       ),

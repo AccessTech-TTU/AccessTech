@@ -1,3 +1,183 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'dart:math';
+import 'dart:core';
+
+/*
+This file finds path between two places and returns a polyline
+*/
+class LocationService {
+  final String key = "AIzaSyDL6tLCdvSU3udcWF7DiYkM8f5AGhl3H_s";
+
+  /*
+This code is just copied and pasted from this tutorial
+https://www.youtube.com/watch?v=tfFByL7F-00
+
+
+
+  */
+  /*
+
+  THIS FUNCTION IS NOT USED 
+  Change this method so that it takes in the name of the place as a parameter,
+   then uses a Map<string, coords> to convert from the name to its respective coordinates
+   then returns the co ordinates so that they can be used in the get directions function
+  */
+  Future<String> getPlaceId(String input) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$input&inputtype=textquery&key=$key';
+
+    var response = await http.get(Uri.parse(url));
+
+    var json = convert.jsonDecode(response.body);
+
+    var placeId = json['candidates'][0]['place_id'] as String;
+    //print(placeId);
+    return placeId;
+  }
+
+  /*
+
+  THIS FUNCTION IS NOT USED
+  */
+  Future<Map<String, dynamic>> getPlace(String input) async {
+    final placeId = await getPlaceId(input);
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
+
+    var response = await http.get(Uri.parse(url));
+
+    var json = convert.jsonDecode(response.body);
+    var results = json['result'] as Map<String, dynamic>;
+
+    print(results);
+    return results;
+  }
+
+  /*
+    PsuedoCode Plan: 
+    Change getDirections so that it takes two co-ordinates as input. It then uses the dijkstra algorithm in Mapdata/adjacencyList.dart
+    to get a sequence of coordinates.
+      final result = graph.dijkstraPath('(33.5861073, -101.87357)', '(33.5870844, -101.8749556)');
+      print('Shortest distances: ${result['distances']}');
+      print('Shortest path: ${result['shortestPath']}');
+    It then returns these co-ordinates in the results dictionary
+    With bounds_ne being the most north east coordinate (to zoom the camera in around the bounds)
+      Need a function that calculates the most north east coordinate out of a set of coordinates
+    With bounds_sw being the most south west coordinate
+      Need a function that calculates the most south west coordinate out of a set of coordinates
+              For the above functions might be easier to find
+                most northern point of all coordinates(highest latitude)
+                most southern point of all coordinates(lowest latitude)
+                most eastern(highest longitude)   Maybe switch these two
+                mosts western(lowest longitude)
+                and return bounds_ne = (highest lat, highest long)
+                bounds_se = (lowest lat, lowest long)
+    start_location just being the origin coordinate
+    end_location being the destination coordinate
+    polyline being the path as a sequence of coordinates(more specifically will probably be a sequence of LatLng objects)
+  */
+
+  /*
+    This function takes in a a String version of the coordinates and returns a list where the 0th element is the lat and 1st element is lng
+  */
+  List<double> convertCoords(String coord) {
+    //print("print cords" + coord);
+    String removeParen =
+        coord.substring(1, coord.length - 1); //Removing start and end paren
+    List<String> coords = removeParen.split(", "); //split by the comma
+    double lat = double.parse(coords[0]);
+    double lng = double.parse(coords[1]);
+    List<double> temp = [lat, lng];
+    return temp;
+  }
+
+  /*
+    This function takes the path and finds the most North east point in the path. Need this point to center the camera around the route
+  */
+  Map<String, dynamic> getBoundsNe(List<String> path) {
+    print(path);
+    double mostNorth = -100000;
+    double mostEast = -100000;
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      double lat = coords[0];
+      double lng = coords[1];
+      mostNorth = mostNorth > lat ? mostNorth : lat;
+      mostEast = mostEast > lng ? mostEast : lng; //TODO  > to <
+    }
+    return {'lat': mostNorth, 'lng': mostEast};
+  }
+
+  /*
+    This function takes the path and finds the most south west point in the path. Need this point to center the camera around the route
+  */
+  Map<String, dynamic> getBoundsSw(List<String> path) {
+    double mostSouth = 100000;
+    double mostWest = 100000;
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      double lat = coords[0];
+      double lng = coords[1];
+      mostSouth = mostSouth < lat ? mostSouth : lat;
+      mostWest = mostWest < lng ? mostWest : lng; //TODO switch > to <
+    }
+    return {'lat': mostSouth, 'lng': mostWest};
+  }
+
+  /*
+    Converts the path from a sequence of String ("(2432.3, 485388.2)") to a sequence of PointLatLng objects.
+  */
+  List<PointLatLng> convertPath(List<String> path) {
+    List<PointLatLng> converted = [];
+    for (int i = 0; i < path.length; i++) {
+      List<double> coords = convertCoords(path[i]);
+      converted.add(PointLatLng(coords[0], coords[1]));
+    }
+    return converted;
+  }
+
+  /*
+    This method takes in the string representation of coordinates, finds the path and returns a results variable that contains:
+      the most norht east point
+      the most south west point
+      the starting point
+      the ending point
+      the polyline(not used)
+      the polyline decoded(used)
+  */
+  Future<Map<String, dynamic>> getDirections(
+      String origin, String destination) async {
+    List<String> path = getPath(origin, destination);
+    path.remove("");
+    print("updated path");
+    print(path);
+    List<double> convertOrigin = convertCoords(origin);
+    List<double> convertDestination = convertCoords(destination);
+
+    var results = {
+      'bounds_ne': getBoundsNe(path), //used to zoom in
+      'bounds_sw': getBoundsSw(path), //lat lng
+      'start_location': {
+        "lat": convertOrigin[0],
+        "lng": convertOrigin[1]
+      }, //{lat: , lng: }
+      'end_location': {
+        "lat": convertDestination[0],
+        "lng": convertDestination[1]
+      }, //lat lng
+      'polyline': path,
+      'polyline_decoded': convertPath(path)
+    };
+    return results;
+  }
+}
+
+/*
+The rest of this file is auto generated by running KMLTOAdjacencyMatrix.py
+It contains the graph, path finding alogo.
+*/
 class Edge {
   final String vertex1;
   final String vertex2;
@@ -8,10 +188,12 @@ class Edge {
 
 class UndirectedWeightedGraph {
   final Map<String, List<Edge>> _adjacencyList = {};
+  //final List<String> vertexes = List.empty(growable: true);
 
   void addVertex(String vertex) {
     if (!_adjacencyList.containsKey(vertex)) {
       _adjacencyList[vertex] = [];
+      //vertexes.add(vertex);
     }
   }
 
@@ -95,11 +277,13 @@ class UndirectedWeightedGraph {
     priorityQueue[startVertex] = 0;
 
     while (priorityQueue.isNotEmpty) {
-      final currentVertex = priorityQueue.keys.reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
+      final currentVertex = priorityQueue.keys
+          .reduce((a, b) => priorityQueue[a]! < priorityQueue[b]! ? a : b);
       priorityQueue.remove(currentVertex);
 
       for (final edge in _adjacencyList[currentVertex]!) {
-        final neighbor = edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
+        final neighbor =
+            edge.vertex1 == currentVertex ? edge.vertex2 : edge.vertex1;
         final totalWeight = distances[currentVertex]! + edge.weight;
 
         if (totalWeight < distances[neighbor]!) {
@@ -118,8 +302,6 @@ class UndirectedWeightedGraph {
       current = previous[current];
     }
 
-    
-
     return {'distances': distances, 'shortestPath': path};
   }
 
@@ -128,6 +310,42 @@ class UndirectedWeightedGraph {
       print(
           '$vertex -> ${edges.map((e) => '${e.vertex1}-${e.vertex2}:${e.weight}').join(', ')}');
     });
+  }
+
+  List<double> convertCoords(String coord) {
+    //print("print cords" + coord);
+    String removeParen =
+        coord.substring(1, coord.length - 1); //Removing start and end paren
+    List<String> coords = removeParen.split(", "); //split by the comma
+    double lat = double.parse(coords[0]);
+    double lng = double.parse(coords[1]);
+    List<double> temp = [lat, lng];
+    return temp;
+  }
+
+  double getDistance(String coords1, String coords2) {
+    List<double> convertedOne = convertCoords(coords1);
+    List<double> convertedTwo = convertCoords(coords2);
+    double dif1 = (convertedOne[0] - convertedTwo[0]);
+    dif1 = dif1 * dif1;
+    double dif2 = (convertedOne[1] - convertedTwo[1]);
+    dif2 = dif2 * dif2;
+    return dif1 + dif2;
+  }
+
+  String findClosestVertex(String coords) {
+    String closest = coords;
+    double min = 10000000000;
+    Iterable<String> vertexes = _adjacencyList.keys;
+    for (int i = 0; i < vertexes.length; i++) {
+      double currentDistance = getDistance(coords, vertexes.elementAt(i));
+      print(i);
+      if (currentDistance < min) {
+        min = currentDistance;
+        closest = vertexes.elementAt(i);
+      }
+    }
+    return closest;
   }
 }
 
@@ -354,7 +572,7 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5851284, -101.8718292)", "(33.5851495, -101.871806)", 3.4782074299240344);
   graph.addEdge("(33.5855753, -101.8745351)", "(33.5854407, -101.8746812)", 22.05805162431407);
   graph.addEdge("(33.5866838, -101.8742238)", "(33.5866833, -101.8743475)", 12.558161378963522);
-  graph.addEdge("(33.5866833, -101.8743475)", "(33.5866837, -101.8744888)", 14.344847698581473);
+  graph.addEdge("(33.5866833, -101.8743475)", "(33.586685, -101.874444)", 9.798842799607941);
   graph.addEdge("(33.5861073, -101.87357)", "(33.5861053, -101.8736898)", 12.164587466753058);
   graph.addEdge("(33.5861053, -101.8736898)", "(33.5861028, -101.8738349)", 14.733760807357795);
   graph.addEdge("(33.5861028, -101.8738349)", "(33.586102, -101.8740788)", 24.761066258204423);
@@ -696,7 +914,7 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5857814, -101.8757195)", "(33.5857713, -101.8753629)", 36.22310801237626);
   graph.addEdge("(33.5857713, -101.8753629)", "(33.5857735, -101.8752317)", 13.322227320232399);
   graph.addEdge("(33.5857735, -101.8752317)", "(33.5858058, -101.8751413)", 9.978806658357831);
-  graph.addEdge("(33.5866859, -101.8748456)", "(33.5863517, -101.8744867)", 54.505640279861936);
+  graph.addEdge("(33.5866859, -101.8748456)", "(33.586402, -101.874541)", 46.28290039921019);
   graph.addEdge("(33.587474, -101.8751287)", "(33.5874731, -101.8750398)", 9.02569946256754);
   graph.addEdge("(33.5874731, -101.8750398)", "(33.5874746, -101.8749484)", 9.28062041276367);
   graph.addEdge("(33.5874746, -101.8749484)", "(33.5874747, -101.8749339)", 1.4720754765754085);
@@ -1470,7 +1688,6 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5808635, -101.8778691)", "(33.5811272, -101.8778683)", 31.986371196778133);
   graph.addEdge("(33.5811272, -101.8778683)", "(33.5812593, -101.877869)", 16.02361664282806);
   graph.addEdge("(33.5812593, -101.877869)", "(33.5816451, -101.8778712)", 46.79728364343611);
-  graph.addEdge("(33.5814038, -101.8769642)", "(33.5814038, -101.8770487)", 8.57895626036472);
   graph.addEdge("(33.5814038, -101.8770487)", "(33.5814038, -101.8771745)", 12.77198458566941);
   graph.addEdge("(33.5814038, -101.8771745)", "(33.5814038, -101.8774273)", 25.665800504266198);
   graph.addEdge("(33.5815327, -101.8774278)", "(33.5812593, -101.877869)", 55.73344723047324);
@@ -2019,6 +2236,14 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5880695, -101.8760406)", "(33.5881913, -101.8760044)", 15.224308239713219);
   graph.addEdge("(33.5881913, -101.8760044)", "(33.5882897, -101.8759382)", 13.69769295351476);
   graph.addEdge("(33.5880181, -101.8760915)", "(33.5879938, -101.8757369)", 36.1188873644825);
+  graph.addEdge("(33.5816755, -101.8770489)", "(33.5816372, -101.8770287)", 5.0782385323008885);
+  graph.addEdge("(33.5816372, -101.8770287)", "(33.5815597, -101.8770272)", 9.40182510112485);
+  graph.addEdge("(33.5815597, -101.8770272)", "(33.5815565, -101.8769516)", 7.685168684116357);
+  graph.addEdge("(33.5815565, -101.8769516)", "(33.5814641, -101.8769448)", 11.229173536117454);
+  graph.addEdge("(33.5806247, -101.8795382)", "(33.5805945, -101.8795506)", 3.8734913859161586);
+  graph.addEdge("(33.587599, -101.874351)", "(33.5877674, -101.8741721)", 27.33300879586122);
+  graph.addEdge("(33.5877674, -101.8741721)", "(33.5877696, -101.8740621)", 11.170240191088991);
+  graph.addEdge("(33.586684, -101.8745374)", "(33.5866844, -101.874446)", 9.279048077318484);
   graph.addEdge("(33.5845418, -101.8737687)", "(33.5845209, -101.8737835)", 2.9469441077736263);
   graph.addEdge("(33.5845209, -101.8737835)", "(33.5844985, -101.8737919)", 2.847761931263205);
   graph.addEdge("(33.5844985, -101.8737919)", "(33.5844807, -101.8737946)", 2.176435055403246);
@@ -2039,7 +2264,7 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5861023, -101.8744415)", "(33.5861019, -101.8743534)", 8.944097133096964);
   graph.addEdge("(33.5861019, -101.8743534)", "(33.5861017, -101.8741882)", 16.771221981161055);
   graph.addEdge("(33.5862682, -101.8743508)", "(33.5865315, -101.8743409)", 31.953586902514836);
-  graph.addEdge("(33.5865315, -101.8743409)", "(33.5866837, -101.8744888)", 23.796509689340503);
+  graph.addEdge("(33.5865315, -101.8743409)", "(33.586685, -101.874444)", 21.359508822824715);
   graph.addEdge("(33.5861004, -101.872973)", "(33.5861052, -101.8729972)", 2.5248469786503502);
   graph.addEdge("(33.5861052, -101.8729972)", "(33.586108, -101.8730117)", 1.5107213807205089);
   graph.addEdge("(33.586108, -101.8730117)", "(33.5861118, -101.873171)", 16.178798634233036);
@@ -2670,7 +2895,7 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.582089, -101.8779209)", "(33.582089, -101.8779746)", 5.4519089974649315);
   graph.addEdge("(33.582089, -101.8779746)", "(33.5820897, -101.8780189)", 4.498372504821498);
   graph.addEdge("(33.5816438, -101.8777048)", "(33.582127, -101.8777087)", 58.61251284179506);
-  graph.addEdge("(33.5829237, -101.8754942)", "(33.5829226, -101.8754214)", 7.392175530671662);
+  graph.addEdge("(33.5829242, -101.8755672)", "(33.5829226, -101.8754214)", 14.80351957887654);
   graph.addEdge("(33.5829226, -101.8754214)", "(33.5829211, -101.8753168)", 10.621003689940451);
   graph.addEdge("(33.5829211, -101.8753168)", "(33.5829192, -101.8751925)", 12.62157900369046);
   graph.addEdge("(33.5829192, -101.8751925)", "(33.5829212, -101.8748889)", 30.823742445125227);
@@ -2757,7 +2982,7 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5868967, -101.8758052)", "(33.5868095, -101.8758037)", 10.57828695140126);
   graph.addEdge("(33.5868095, -101.8758037)", "(33.5865059, -101.8757988)", 36.829449446480695);
   graph.addEdge("(33.5868095, -101.8758037)", "(33.5868075, -101.8755364)", 27.13732165425833);
-  graph.addEdge("(33.586897, -101.8759816)", "(33.5872886, -101.8759842)", 47.501055469537974);
+  graph.addEdge("(33.586897, -101.8759816)", "(33.5870707, -101.8759835)", 21.070356361152253);
   graph.addEdge("(33.5872209, -101.8754844)", "(33.5872923, -101.8754321)", 10.15862922887684);
   graph.addEdge("(33.5872923, -101.8754321)", "(33.5873397, -101.8754313)", 5.750102049921581);
   graph.addEdge("(33.5887532, -101.8750936)", "(33.5888152, -101.8750217)", 10.480200213019968);
@@ -2777,8 +3002,8 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5882897, -101.8759382)", "(33.5882194, -101.8758165)", 15.011794139508728);
   graph.addEdge("(33.5861023, -101.8744415)", "(33.586365, -101.8744435)", 31.86564402253375);
   graph.addEdge("(33.586365, -101.8744435)", "(33.5865898, -101.874444)", 27.267849458982084);
-  graph.addEdge("(33.5865898, -101.874444)", "(33.5866837, -101.8744888)", 12.26436730284387);
-  graph.addEdge("(33.5866837, -101.8744888)", "(33.5869717, -101.8744439)", 35.22996992362206);
+  graph.addEdge("(33.5865898, -101.874444)", "(33.586685, -101.874444)", 11.547574904278758);
+  graph.addEdge("(33.586685, -101.874444)", "(33.5869717, -101.8744439)", 34.776155123705614);
   graph.addEdge("(33.5869717, -101.8744439)", "(33.5870109, -101.8744257)", 5.10125038331188);
   graph.addEdge("(33.5870109, -101.8744257)", "(33.5871765, -101.8744265)", 20.087123692112662);
   graph.addEdge("(33.5871765, -101.8744265)", "(33.5872138, -101.874447)", 4.980113127610964);
@@ -2826,7 +3051,7 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5823865, -101.8767453)", "(33.5824283, -101.8767458)", 5.070509361971854);
   graph.addEdge("(33.5824283, -101.8767458)", "(33.5824717, -101.8767463)", 5.264576788815826);
   graph.addEdge("(33.5843092, -101.8709703)", "(33.5843752, -101.8709709)", 8.005900438830778);
-  graph.addEdge("(33.5866866, -101.8749483)", "(33.586686, -101.8748847)", 6.45707729523174);
+  graph.addEdge("(33.5866866, -101.8749483)", "(33.586686, -101.874839)", 11.096366305185851);
   graph.addEdge("(33.5836492, -101.8760976)", "(33.5836523, -101.8757771)", 32.54044747650379);
   graph.addEdge("(33.5836523, -101.8757771)", "(33.5836543, -101.8755661)", 21.422826949653814);
   graph.addEdge("(33.5836543, -101.8755661)", "(33.5836554, -101.8754998)", 6.73232862792771);
@@ -3020,17 +3245,40 @@ List<String> getPath(String origin, String destination) {
   graph.addEdge("(33.5852086, -101.8741974)", "(33.5851219, -101.8740943)", 14.837564839051959);
   graph.addEdge("(33.5842473, -101.8768172)", "(33.5842418, -101.8769072)", 9.1613735752108);
   graph.addEdge("(33.5854577, -101.873175)", "(33.5855139, -101.8732425)", 9.665927606710065);
+  graph.addEdge("(33.5861025, -101.8745314)", "(33.5861, -101.874444)", 8.878081615109297);
+  graph.addEdge("(33.5855753, -101.8745351)", "(33.5855761, -101.8744296)", 10.710928723322297);
+  graph.addEdge("(33.5828492, -101.8755642)", "(33.5829242, -101.8755672)", 9.1024456783864);
+  graph.addEdge("(33.5829926, -101.875565)", "(33.5829242, -101.8755672)", 8.299787916306107);
+  graph.addEdge("(33.5829926, -101.875565)", "(33.5830789, -101.8755656)", 10.468193337896247);
+  graph.addEdge("(33.5830789, -101.8755656)", "(33.5833516, -101.8755777)", 33.100764345504665);
+  graph.addEdge("(33.5833516, -101.8755777)", "(33.5834214, -101.8756387)", 10.489802453145614);
+  graph.addEdge("(33.5834214, -101.8756387)", "(33.5835659, -101.8756401)", 17.528136407982807);
+  graph.addEdge("(33.5835659, -101.8756401)", "(33.5836543, -101.8755661)", 13.092688448462251);
+  graph.addEdge("(33.5819678, -101.8755591)", "(33.5817326, -101.8755631)", 28.532170795735468);
+  graph.addEdge("(33.5817326, -101.8755631)", "(33.5814903, -101.8755577)", 29.395607874432997);
+  graph.addEdge("(33.5868075, -101.8755364)", "(33.5866844, -101.8755407)", 14.938170675592158);
+  graph.addEdge("(33.5866844, -101.8755407)", "(33.5866806, -101.8752714)", 27.343201895099103);
+  graph.addEdge("(33.5869013, -101.8768451)", "(33.5868404, -101.8768376)", 7.426187579154416);
+  graph.addEdge("(33.5868404, -101.8768376)", "(33.5867603, -101.8768335)", 9.724886075797517);
+  graph.addEdge("(33.5867603, -101.8768335)", "(33.5866737, -101.8768416)", 10.536548862844343);
+  graph.addEdge("(33.5866737, -101.8768416)", "(33.5864627, -101.8768256)", 25.645381585485715);
+  graph.addEdge("(33.5864627, -101.8768256)", "(33.5863508, -101.8768666)", 14.197118060346812);
+  graph.addEdge("(33.5870707, -101.8759835)", "(33.5870692, -101.8760083)", 2.524248842382409);
+  graph.addEdge("(33.5870692, -101.8760083)", "(33.5871501, -101.876008)", 9.813060717248135);
 
 
           //graph.bfs("(33.5853681, -101.8743443)");
-  
+  origin = graph.findClosestVertex(
+      origin); //If using the users location, autosnaps to closest node in graph
+    print("ClosesstVertex");
+    print(origin);
   final result = graph.dijkstraPath(origin, destination);
   print('Shortest distances: ${result['distances']}');
   print('Shortest path: ${result['shortestPath']}');
   //result['shortestPath'].remove(0); //remove empty string
   return result['shortestPath'];
   //TODO map sequence of nodes to in more detail sequence of nodes
-  
+
   //graph.printGraph();
 }
 

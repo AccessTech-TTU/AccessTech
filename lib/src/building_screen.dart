@@ -8,6 +8,7 @@
 //   be implemented.
 // */
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'buildingData.dart';
 
 class BuildingInfo {
@@ -20,6 +21,7 @@ class BuildingInfo {
   final String ramps;
   final String elevators;
   final String restrooms;
+  final LatLng latlong;
 
 
   BuildingInfo({
@@ -32,6 +34,7 @@ class BuildingInfo {
     required this.ramps,
     required this.elevators,
     required this.restrooms,
+    required this.latlong,
   });
 }
 
@@ -75,6 +78,13 @@ class BuildingCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
             child: Text(
               'Address: ${building.address}',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: Text(
+              'Coordinates: ${building.latlong}',
               style: TextStyle(fontSize: 16),
             ),
           ),

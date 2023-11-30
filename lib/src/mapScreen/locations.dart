@@ -12,13 +12,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'locations.g.dart';
 
 @JsonSerializable()
-class LatLng {
-  LatLng({
+class LocLatLng {
+  LocLatLng({
     required this.lat,
     required this.lng,
   });
 
-  factory LatLng.fromJson(Map<String, dynamic> json) => _$LatLngFromJson(json);
+  factory LocLatLng.fromJson(Map<String, dynamic> json) => _$LatLngFromJson(json);
   Map<String, dynamic> toJson() => _$LatLngToJson(this);
 
   final double lat;

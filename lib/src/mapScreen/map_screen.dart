@@ -1,13 +1,16 @@
 import 'dart:async';
-import 'dart:ffi';
 
+import 'package:accesstech/src/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
+import 'package:accesstech/src/settings.dart';
 import 'location_service.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart' as accuracy;
+
 /*
 Authors:
   Houston Taylor, Travis Libre
@@ -17,7 +20,8 @@ Description:
 */
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  final MapScreenController controller;
+  const MapScreen({super.key, required this.controller});
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -25,11 +29,38 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen>
     with AutomaticKeepAliveClientMixin {
+
   // Keep screen alive between screen switches
   @override
   bool get wantKeepAlive => true; // Screen will stay loaded forever
   late LatLng _currentLoc;
   bool _isLoading = true;
+
+  Future<void> testFunc(LatLng destination) async {
+    /* //TODO This code was Houston's original pathing call.
+                    // Preserved for reference
+                    The following code needs to be changed so that it is called by the search bar.
+
+                    First it gets the LatLng representation of the a location.
+                    Then it converts it from LatLng to String.
+                    Then it calls getDirections which returns the polyline route and other route info
+                    _goToPlaceRoute centers the camera around the route
+                    _setPolyline draws the route on the map*/
+
+    print("\n\n\n one \n\n\n\n");
+    LatLng o = _convertToCoords["Livermore North Entrance"];
+    print(o);
+    String origin = "(" + o.latitude.toString() + ", " + o.longitude.toString() + ")";
+    LatLng d = _convertToCoords["Holden Hall Entrance"];
+    print(d);
+    String destination = "(" + d.latitude.toString() + ", " + d.longitude.toString() + ")";
+    var directions = await LocationService()
+        .getDirections("(33.58798, -101.87573)", destination);
+    print("\n\n\n\n\ntest\n\n\n\n");
+    print(directions);
+    _goToPlaceRoute(directions['start_location']['lat'], directions['start_location']['lng'], directions['bounds_ne'], directions['bounds_sw']);
+    _setPolyline(directions['polyline_decoded']);
+  }
 
   getLocation() async {
     LocationPermission permission;
@@ -50,15 +81,17 @@ class _MapScreenState extends State<MapScreen>
 
   //Wheelchair icon for ramps
   BitmapDescriptor wheelchairIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor myLocationIcon = BitmapDescriptor.defaultMarker;
   @override
   void initState() {
+    super.initState();
+    widget.controller.testFunc = testFunc;
     addCustomIcon();
     //getCurrentLocation();
-    super.initState();
     getLocation();
     //getCurrentLocation();
   }
-
   void addCustomIcon() {
     BitmapDescriptor.fromAssetImage(
             const ImageConfiguration(), "assets/wheelchair_marker.png")
@@ -69,37 +102,29 @@ class _MapScreenState extends State<MapScreen>
         });
       },
     );
-  }
-  //End wheelchair icon for ramps
-
-
-
-
-
-//Entrance icon for entrances(Doesnt work)
-BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
-  @override
-  void initState2() {
-    //getCurrentLocation();
-    addCustomIcon2();
-    super.initState();
-    getLocation();
-    //getCurrentLocation();
-  }
-
-  void addCustomIcon2() {
     BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(), "assets/entranceIcon.png")
+        const ImageConfiguration(), "assets/entranceIcon.png")
         .then(
-      (icon) {
+          (icon) {
         setState(() {
           entranceIcon = icon;
         });
       },
     );
+    BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(), "assets/myLocation.png")
+        .then(
+          (icon) {
+        setState(() {
+          myLocationIcon = icon;
+        });
+      },
+    );
   }
-  //End entrance icon for entrances
-  //TODO make a entrance icon
+
+
+  //End wheelchair icon for ramps
+
 
 //Getting the markers from assets/locations.json, Converted to an object by lib/src/locations.dart, lib/src/locations.g.dart
 //TODO create a Map for mapping marker names to their coordinates
@@ -182,6 +207,17 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
   }
 //End of getting the markers
 
+  void panToLocation() async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        bearing: 0,
+        target: _currentLoc,
+        zoom: 17.0,
+      ),
+    ));
+  }
+
   //This function centers the camera around a marker. It is not used yet. If you used it you would need to change it.
   Future<void> _goToPlace(Map<String, dynamic> place) async {
     final double lat = place['geometry']['location']['lat'];
@@ -219,7 +255,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
     var markerLocal = Marker(
       markerId: MarkerId("Current Location"),
       position: _currentLoc,
-      icon: entranceIcon,
+      icon: myLocationIcon,
       infoWindow: InfoWindow(
           title: "Current Location"
       ),
@@ -288,6 +324,7 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
               14, //Minzoom
               null, //Maxzoom null means unbounded
             ),
+            myLocationEnabled: true,
             myLocationButtonEnabled: true,
             polylines:
                 _polylines, //TODO polylines function that takes in two args: start location, end location and returns polylines
@@ -301,37 +338,39 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
             ),
             markers: initializeMarkers(),
           ),
+
+
+
+
           Positioned(
             top: 10,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: FloatingActionButton.small(
                 onPressed: () async {
-                  /*
-                    The following code needs to be changed so that it is called by the search bar.
-
-                    First it gets the LatLng representation of the a location.
-                    Then it converts it from LatLng to String.
-                    Then it calls getDirections which returns the polyline route and other route info
-                    _goToPlaceRoute centers the camera around the route
-                    _setPolyline draws the route on the map
-                  */
-                  print("\n\n\n one \n\n\n\n");
-                  LatLng o = _convertToCoords["Livermore North Entrance"];
-                  print(o);
-                  String origin = "(" + o.latitude.toString() + ", " + o.longitude.toString() + ")";
-                  LatLng d = _convertToCoords["Holden Hall Entrance"];
-                  print(d);
-                  String destination = "(" + d.latitude.toString() + ", " + d.longitude.toString() + ")";
-                  var directions = await LocationService()
-                      .getDirections("(33.58798, -101.87573)", destination);
-                  print("\n\n\n\n\ntest\n\n\n\n");
-                  print(directions);
-                  _goToPlaceRoute(directions['start_location']['lat'], directions['start_location']['lng'], directions['bounds_ne'], directions['bounds_sw']);
-                  _setPolyline(directions['polyline_decoded']);
-                
-                
-                }, //TODO change button
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Settings()),
+                  );
+                },
+                child: Icon(
+                  Icons.filter_vintage,
+                  color: Colors.black,
+                ),
+                backgroundColor: Colors.white,
+                elevation: 10,
+              ),
+            ),
+          ),
+          /*
+          Layers Button
+           */
+          Positioned(
+            top: 60,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: FloatingActionButton.small(
+                onPressed: () => scaffoldKey.currentState!.openDrawer(),
                 child: Icon(
                   Icons.menu,
                   color: Colors.black,
@@ -342,21 +381,27 @@ BitmapDescriptor entranceIcon = BitmapDescriptor.defaultMarker;
             ),
           ),
           Positioned(
-            top: 60,
+            top: 110,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: FloatingActionButton.small(
-                onPressed: () => scaffoldKey.currentState!.openDrawer(),
+                onPressed: panToLocation,
                 child: Icon(
-                  Icons.filter_vintage,
-                  color: Colors.black,
+                  Icons.location_on,
+                  color: Colors.black
                 ),
                 backgroundColor: Colors.white,
                 elevation: 10,
               ),
             ),
           ),
+          //          FloatingActionButton.extended(
+          //             onPressed: panToLocation,
+          //             label: Text('My Location'),
+          //             icon: Icon(Icons.location_on),
+          //           )
         ],
+
       ),
       drawer: Drawer(
         child: ListView(

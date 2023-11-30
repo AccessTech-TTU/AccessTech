@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:accesstech/src/DraggableBottomSheet.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:accesstech/src/building_screen.dart';
@@ -19,9 +20,13 @@ Description:
   (map, buildings, etc) are children of this one. It uses PageController to
   switch between states.
 */
+class MapScreenController {
+  // Update Route in final version, but for now, just call a test function
+  late void Function(LatLng) testFunc;
+}
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -33,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen>
   late PageController _pageController;
   late Animation<double> _animation;
   late AnimationController _animationController;
+  final MapScreenController myController = MapScreenController();
   @override
   void initState() {
     super.initState();
@@ -40,9 +46,10 @@ class _HomeScreenState extends State<HomeScreen>
     _screens = [
       // List of states accessible from BottomNavBar
       BuildingScreen(),
-      MapScreen(),
+      MapScreen(controller: myController),
       ContactScreen()
     ];
+
     //pageController controls state transitions
     _pageController = PageController(initialPage: _selectedPageIndex);
     _animationController = AnimationController(
@@ -122,64 +129,16 @@ class _HomeScreenState extends State<HomeScreen>
             physics: NeverScrollableScrollPhysics(),
             children: _screens,
           ),
-          MyDraggableSheet(),
-          // Positioned(
-          //   top: 10,
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(20.0),
-          //     child: FloatingActionButton.small(
-          //       onPressed: () {},
-          //       child: Icon(
-          //         Icons.menu,
-          //         color: Colors.black,
-          //       ),
-          //       backgroundColor: Colors.white,
-          //       elevation: 10,
-          //     ),
-          //   ),
-          // ),
-          // Positioned(
-          //   top: 60,
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(20.0),
-          //     child: FloatingActionButton.small(
-          //       onPressed: () => scaffoldKey.currentState!.openDrawer(),
-          //       child: Icon(
-          //         Icons.filter_vintage,
-          //         color: Colors.black,
-          //       ),
-          //       backgroundColor: Colors.white,
-          //       elevation: 10,
-          //     ),
-          //   ),
-          // ),
+          MyDraggableSheet(destinationChanged: callbackParent),
         ],
       ),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     children: [
-      //       DrawerHeader(
-      //         decoration: BoxDecoration(color: Color.fromARGB(255, 204, 0, 0)),
-      //         child: Text(
-      //           "Filter",
-      //           style: TextStyle(
-      //             color: Colors.white,
-      //             fontSize: 24,
-      //           ),
-      //         ),
-      //       ),
-      //       ListTile(
-      //         title: Text('Drawer Item 1'),
-      //         // Add your drawer items here
-      //       ),
-      //       ListTile(
-      //         title: Text('Drawer Item 2'),
-      //         // Add more drawer items
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
+  }
+  void callbackParent(LatLng destination){
+    myController.testFunc(destination);
+  }
+  void callMap(LatLng destination){
+
   }
 
   // Function to pull a "bottom sheet" with Help Request form items

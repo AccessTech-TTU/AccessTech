@@ -6,13 +6,14 @@ Description:
 */
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'buildingData.dart';
 import 'building_screen.dart';
 import 'dart:math';
 
 class MyDraggableSheet extends StatefulWidget {
-  const MyDraggableSheet({Key? key});
-
+  const MyDraggableSheet({Key? key, required this.destinationChanged});
+  final Function destinationChanged;
   @override
   _MyDraggableSheetState createState() => _MyDraggableSheetState();
 }
@@ -460,6 +461,20 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                                 : 'Add to Favorites',
                           ),
                         ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            // TODO replace placeholder
+                            print("changing");
+
+                            // Use 'setState' provided by StatefulBuilder to rebuild the UI
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.location_on
+                          ),
+                          label: Text('Navigate Test'),
+                        ),
+
                         Text(
                           'Hours:',
                           style: TextStyle(fontWeight: FontWeight.bold),

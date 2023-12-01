@@ -534,9 +534,9 @@ class _MapScreenState extends State<MapScreen>
                 ),
               ),
             ),
-            Row(children: <Widget>[
-              Text("Show Ramps"),
-              Checkbox(
+            ListTile(
+              title: Text("Show Ramps"),
+              trailing: Checkbox(
                 value: showRamps,
                 onChanged: (bool? value) {
                   setState(() {
@@ -546,10 +546,10 @@ class _MapScreenState extends State<MapScreen>
                   });
                 },
               ),
-            ]),
-            Row(children: <Widget>[
-              Text("Show Entrances"),
-              Checkbox(
+            ),
+            ListTile(
+              title: Text("Show Entrances"),
+              trailing: Checkbox(
                 value: showEntrances,
                 onChanged: (bool? value) {
                   setState(() {
@@ -559,7 +559,7 @@ class _MapScreenState extends State<MapScreen>
                   });
                 },
               ),
-            ]),
+            ),
           ],
         ),
       ),

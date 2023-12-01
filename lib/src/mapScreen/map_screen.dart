@@ -350,7 +350,7 @@ class _MapScreenState extends State<MapScreen>
                     null, //Maxzoom null means unbounded
                   ),
                   myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
+                  myLocationButtonEnabled: false,
                   polylines:
                       _polylines, //TODO polylines function that takes in two args: start location, end location and returns polylines
                   trafficEnabled: false,

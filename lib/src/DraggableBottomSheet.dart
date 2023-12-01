@@ -524,60 +524,63 @@ void _showReportIssueForm(BuildContext context, BuildingInfo building) {
 
   showModalBottomSheet(
     context: context,
-    isScrollControlled: true,
+    isScrollControlled: true, // This is important for making the sheet full screen
     builder: (ctx) {
-      return Container(
-        height: MediaQuery.of(ctx).size.height / 2, // Set the height to half the screen height
-        padding: EdgeInsets.all(24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Report Issue for ${building.name}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: "Describe the issue",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a description of the issue.';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  issueDescription = value ?? '';
-                },
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      return Padding(
+        padding: MediaQuery.of(ctx).viewInsets, // Adjust the padding based on the keyboard
+        child: Container(
+          padding: EdgeInsets.all(24),
+          child: SingleChildScrollView( // Add SingleChildScrollView
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        _formKey.currentState?.save();
-                        // You can handle the issueDescription here
-                        print('Issue reported: $issueDescription'); // For now, just print it to the console
-                        Navigator.pop(ctx); // Close the form
-                      }
-                    },
-                    child: Text("Send"),
+                  Text(
+                    "Report Issue for ${building.name}",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(ctx),
-                    child: Text("Cancel"),
+                  SizedBox(height: 8),
+                  TextFormField(
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      hintText: "Describe the issue",
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter a description of the issue.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      issueDescription = value ?? '';
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            _formKey.currentState?.save();
+                            print('Issue reported: $issueDescription');
+                            Navigator.pop(ctx);
+                          }
+                        },
+                        child: Text("Send"),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx),
+                        child: Text("Cancel"),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       );

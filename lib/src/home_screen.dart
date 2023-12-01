@@ -34,7 +34,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late int _selectedPageIndex;
-  static late List<Widget> _screens;
+  static late Widget _screens;
   late PageController _pageController;
   late Animation<double> _animation;
   late AnimationController _animationController;
@@ -43,12 +43,9 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _selectedPageIndex = 1;
-    _screens = [
-      // List of states accessible from BottomNavBar
-      BuildingScreen(),
-      MapScreen(controller: myController),
-      ContactScreen()
-    ];
+    _screens =
+      MapScreen(controller: myController)
+    ;
 
     //pageController controls state transitions
     _pageController = PageController(initialPage: _selectedPageIndex);
@@ -123,12 +120,7 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       body: Stack(
         children: [
-          PageView(
-            // Main body is the screens
-            controller: _pageController,
-            physics: NeverScrollableScrollPhysics(),
-            children: _screens,
-          ),
+          _screens,
           MyDraggableSheet(destinationChanged: callbackParent),
         ],
       ),

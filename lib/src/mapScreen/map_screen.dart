@@ -146,6 +146,36 @@ class _MapScreenState extends State<MapScreen>
   double _zoom = 15;
   LatLng center = LatLng(33.58479,
       -101.87466); //Stores the coordinates at the center of the screen
+  Color _polylineColor = Color(0xFF00FF00);
+  Color _iconColor = Color(0xFFFFFFFF);
+
+  void handlePolylineColorChange(Color color) {
+    setState(() {
+      _polylineColor = color;
+      print("Colorz");
+      print(color);
+    });
+  }
+
+  void handleIconColorChange(Color color) {
+    setState(() {
+      _iconColor = color;
+      print("Colorz");
+      print(color);
+    });
+  }
+
+  Color _getPolylineColor() {
+    print("Polylinecolor");
+    print(_polylineColor);
+    return _polylineColor;
+  }
+
+  Color _getIconColor() {
+    print("Iconcolor");
+    print(_iconColor);
+    return _iconColor;
+  }
 
   /*
     Converts a LatLng Representation of coords to a string representation of coords.
@@ -163,6 +193,8 @@ class _MapScreenState extends State<MapScreen>
   int _polylineIdCounter = 1;
   Completer<GoogleMapController> _controller = Completer();
   Future<void> _onMapCreated(GoogleMapController controller) async {
+    print("Colorz");
+    print(_polylineColor);
     //Gets the markers
     _controller.complete(controller);
     final googleMarkers = await locations.getGoogleMarkers();
@@ -308,7 +340,7 @@ class _MapScreenState extends State<MapScreen>
         Polyline(
           polylineId: PolylineId(polylineIdVal),
           width: 4,
-          color: Colors.blue,
+          color: _polylineColor,
           points: points
               .map(
                 (point) => LatLng(point.latitude, point.longitude),
@@ -381,14 +413,20 @@ class _MapScreenState extends State<MapScreen>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Settings()),
+                              builder: (context) => Settings(
+                                    onPolylineColorChanged:
+                                        handlePolylineColorChange,
+                                    onIconColorChanged: handleIconColorChange,
+                                    parentPolylineColor: _polylineColor,
+                                    parentIconColor: _iconColor,
+                                  )),
                         );
                       },
                       child: Icon(
                         Icons.filter_vintage,
                         color: Colors.black,
                       ),
-                      backgroundColor: Colors.white,
+                      backgroundColor: _getIconColor(),
                       elevation: 10,
                     ),
                   ),
@@ -404,7 +442,7 @@ class _MapScreenState extends State<MapScreen>
                       onPressed: () => scaffoldKey.currentState!.openDrawer(),
                       child: Icon(
                         Icons.menu,
-                        color: Colors.black,
+                        color: _iconColor,
                       ),
                       backgroundColor: Colors.white,
                       elevation: 10,
@@ -417,7 +455,7 @@ class _MapScreenState extends State<MapScreen>
                     padding: const EdgeInsets.all(20.0),
                     child: FloatingActionButton.small(
                       onPressed: panToLocation,
-                      child: Icon(Icons.location_on, color: Colors.black),
+                      child: Icon(Icons.location_on, color: _iconColor),
                       backgroundColor: Colors.white,
                       elevation: 10,
                     ),
@@ -430,7 +468,7 @@ class _MapScreenState extends State<MapScreen>
                     padding: const EdgeInsets.all(20.0),
                     child: IconButton(
                         iconSize: 40,
-                        icon: Icon(Icons.add_circle),
+                        icon: Icon(Icons.add_circle, color: _iconColor),
                         onPressed: () async {
                           final GoogleMapController controller =
                               await _controller.future;
@@ -450,7 +488,7 @@ class _MapScreenState extends State<MapScreen>
                     padding: const EdgeInsets.all(20.0),
                     child: IconButton(
                         iconSize: 40,
-                        icon: Icon(Icons.remove_circle),
+                        icon: Icon(Icons.remove_circle, color: _iconColor),
                         onPressed: () async {
                           final GoogleMapController controller =
                               await _controller.future;
@@ -470,7 +508,7 @@ class _MapScreenState extends State<MapScreen>
                     padding: const EdgeInsets.all(20.0),
                     child: IconButton(
                         iconSize: 40,
-                        icon: Icon(Icons.navigation),
+                        icon: Icon(Icons.navigation, color: _iconColor),
                         onPressed: () async {
                           testFunc(center);
                         }),

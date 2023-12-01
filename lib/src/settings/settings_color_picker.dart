@@ -2,15 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class ColorPickerPage extends StatefulWidget {
+  final Function(Color) onColorChanged;
+  final Color parentColor;
+  final String text;
+  ColorPickerPage(
+      {required this.onColorChanged,
+      required this.parentColor,
+      required this.text});
+
   @override
   _ColorPickerPageState createState() => _ColorPickerPageState();
 }
 
 class _ColorPickerPageState extends State<ColorPickerPage> {
-  Color currentColor = Colors.blue;
+  Color currentColor = Color(0xFFFFFF);
+  void initState() {
+    currentColor = widget.parentColor;
+  }
 
   void changeColor(Color color) {
     setState(() => currentColor = color);
+    widget.onColorChanged(color);
   }
 
   @override
@@ -54,7 +66,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                     },
                   );
                 },
-                child: Text('Open Color Picker'),
+                child: Text(widget.text),
               ),
             ],
           ),

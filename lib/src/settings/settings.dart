@@ -8,11 +8,22 @@ Authors:
 Description:
   Meow
 */
-Color pickerColor = Color(0x0000ff);
-Color currentColor = Color(0x0000ff);
+Color polylineColor = Color(0x0000ff);
+Color iconColor = Color(0xffffff);
 
 class Settings extends StatelessWidget {
-  const Settings({Key? key});
+  final Function(Color) onPolylineColorChanged;
+  final Function(Color) onIconColorChanged;
+  final Color parentPolylineColor;
+  final Color parentIconColor;
+
+  const Settings({
+    Key? key,
+    required this.onPolylineColorChanged,
+    required this.onIconColorChanged,
+    required this.parentPolylineColor,
+    required this.parentIconColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +34,16 @@ class Settings extends StatelessWidget {
         elevation: 2,
       ),
       body: ListView(children: <Widget>[
-        ColorPickerPage(),
-        ColorPickerPage(),
+        ColorPickerPage(
+          onColorChanged: onPolylineColorChanged,
+          parentColor: parentPolylineColor,
+          text: "Change route line color",
+        ),
+        ColorPickerPage(
+          onColorChanged: onIconColorChanged,
+          parentColor: parentIconColor,
+          text: "Change icon color",
+        ),
       ]),
     );
   }

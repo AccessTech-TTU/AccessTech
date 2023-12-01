@@ -144,6 +144,8 @@ class _MapScreenState extends State<MapScreen>
   bool? showRamps = true;
   bool? showEntrances = true;
   double _zoom = 15;
+  LatLng center = LatLng(33.58479,
+      -101.87466); //Stores the coordinates at the center of the screen
 
   /*
     Converts a LatLng Representation of coords to a string representation of coords.
@@ -218,6 +220,10 @@ class _MapScreenState extends State<MapScreen>
       _currentlyDisplayingMarkers = _markers.values.toSet();
     });
     print(_convertToCoords);
+  }
+
+  void _onCameraMove(CameraPosition position) {
+    center = position.target;
   }
 //End of getting the markers
 
@@ -335,6 +341,7 @@ class _MapScreenState extends State<MapScreen>
               children: [
                 GoogleMap(
                   onMapCreated: _onMapCreated,
+                  onCameraMove: _onCameraMove,
                   /*
             (GoogleMapController controller){
               _controller.complete(controller);
@@ -453,6 +460,19 @@ class _MapScreenState extends State<MapScreen>
                           if (currentZoomLevel < 0) currentZoomLevel = 0;
                           controller.animateCamera(
                               CameraUpdate.zoomTo(currentZoomLevel));
+                        }),
+                  ),
+                ),
+                Positioned(
+                  top: 110,
+                  right: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: IconButton(
+                        iconSize: 40,
+                        icon: Icon(Icons.remove_circle),
+                        onPressed: () async {
+                          testFunc(center);
                         }),
                   ),
                 ),

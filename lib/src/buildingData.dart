@@ -19,7 +19,7 @@ final List<BuildingInfo> buildingData = [
   BuildingInfo(
     name: 'Human Sciences Building',
     description:
-    "The College of Human Sciences features programs ranging from family studies to financial planning to fashion design to the study of addiction of recovery.",
+        "The College of Human Sciences features programs ranging from family studies to financial planning to fashion design to the study of addiction of recovery.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1301 Akron Ave, Lubbock, TX 79409",
@@ -27,13 +27,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
-
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Administration Building',
     description:
-    "The Administration Building, with its distinctive bell towers, was the first structure built on the campus. The facility houses administrative offices for the university and for the Texas Tech University System.",
+        "The Administration Building, with its distinctive bell towers, was the first structure built on the campus. The facility houses administrative offices for the university and for the Texas Tech University System.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2625 Memorial Cir, Lubbock, TX 79409",
@@ -41,12 +40,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Industrial, Manufacturing, and Systems Engineering Bldg',
     description:
-    "The building is home to the Department of Industrial, Manufacturing & Systems Engineering classrooms, labs and offices.",
+        "The building is home to the Department of Industrial, Manufacturing & Systems Engineering classrooms, labs and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "905 Canton Ave, Lubbock, TX 79409",
@@ -54,12 +53,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(33.5871501, -101.876008),
+    latlong: LatLng(33.5871501, -101.876008),
   ),
   BuildingInfo(
     name: 'Electrical and Computer Engineering Bldg',
     description:
-    "The building is home to the Department of Electrical and Computer Engineering classrooms, research labs and administrative offices.",
+        "The building is home to the Department of Electrical and Computer Engineering classrooms, research labs and administrative offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1012 Boston Ave, Lubbock, TX 79409",
@@ -67,12 +66,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Chemistry Building',
     description:
-    "The building is home to the Department of Chemistry and Biochemistry classrooms, research labs and administrative offices.",
+        "The building is home to the Department of Chemistry and Biochemistry classrooms, research labs and administrative offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1204 Boston Ave, Lubbock, TX 79409",
@@ -80,12 +79,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Math Building',
     description:
-    "The building houses Department of Mathematics and Statistics classrooms, labs and offices.",
+        "The building houses Department of Mathematics and Statistics classrooms, labs and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1108 Memorial Cir, Lubbock, TX 79409",
@@ -93,12 +92,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(33.584875, -101.8769072),
+    latlong: LatLng(33.584875, -101.8761548),
   ),
   BuildingInfo(
     name: 'Agricultural Science Building',
     description:
-    "The building is home to offices and classrooms for the College of Agricultural Sciences and Natural Resources.",
+        "The building is home to offices and classrooms for the College of Agricultural Sciences and Natural Resources.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1312 Boston Ave, Lubbock, TX 79409",
@@ -106,12 +105,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Science - Physics and Geosciences: East Entrance',
     description:
-    "The building is home to the Departments of Geoscience and Physics classrooms, labs and offices.",
+        "The building is home to the Departments of Geoscience and Physics classrooms, labs and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1200 Memorial Cir, Lubbock, TX 79409",
@@ -119,12 +118,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(33.5842418, -101.8769072), // Phys East
+    latlong: LatLng(33.5842418, -101.8769072), // Phys East
   ),
   BuildingInfo(
     name: 'Science - Physics and Geosciences: South Entrance',
     description:
-    "The building is home to the Departments of Geoscience and Physics classrooms, labs and offices.",
+        "The building is home to the Departments of Geoscience and Physics classrooms, labs and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1200 Memorial Cir, Lubbock, TX 79409",
@@ -132,12 +131,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(33.5840745, -101.8772527), // Phys South
+    latlong: LatLng(33.5840745, -101.8772527), // Phys South
   ),
   BuildingInfo(
     name: 'Civil Engineering Building',
     description:
-    "The building houses the Department of Civil Engineering classrooms, research labs and administrative offices.",
+        "The building houses the Department of Civil Engineering classrooms, research labs and administrative offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "911 Boston Ave, Lubbock, TX 79409",
@@ -145,12 +144,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Student Union Building',
     description:
-    "The Student Union Building houses a food court, Barnes & Noble Bookstore, Starbucks, the Allen Theatre, Student Government Association and work space for many of the more than 400 student organizations.",
+        "The Student Union Building houses a food court, Barnes & Noble Bookstore, Starbucks, the Allen Theatre, Student Government Association and work space for many of the more than 400 student organizations.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2625 15th St, Lubbock, TX 79409",
@@ -158,12 +157,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Music Building',
     description:
-    "The facility houses School of Music classroom, performance and practice halls and offices.",
+        "The facility houses School of Music classroom, performance and practice halls and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2624 18th St, Lubbock, TX 79409",
@@ -171,12 +170,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
       name: 'Holden Hall Building',
       description:
-      "Holden Hall houses the College of Arts and Sciences administrative offices and classrooms. The original building features a 1,300 square-foot fresco mural by renowned painter Peter Hurd.",
+          "Holden Hall houses the College of Arts and Sciences administrative offices and classrooms. The original building features a 1,300 square-foot fresco mural by renowned painter Peter Hurd.",
       imageUrl: 'assets/sub.jpg',
       hours: "8am 12pm",
       address: "1011 Boston Ave, Lubbock, TX 79409",
@@ -184,12 +183,11 @@ final List<BuildingInfo> buildingData = [
       ramps: "Ramps available at the main entrance",
       elevators: "Elevators to all floors",
       restrooms: "Accessible restrooms on each floor",
-      latlong : LatLng(33.5855139, -101.8732425)
-  ),
+      latlong: LatLng(33.5855139, -101.8732425)),
   BuildingInfo(
     name: 'National Wind Institute',
     description:
-    "The National Wind Institute represents the nation's leading university wind-focused research and education enterprise.",
+        "The National Wind Institute represents the nation's leading university wind-focused research and education enterprise.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1009 Canton Ave, Lubbock, TX 79409",
@@ -197,12 +195,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Bob L. Herd Department of Petroleum Engineering',
     description:
-    "Bob L. Herd Department of Petroleum Engineering has approximately 42,000 square feet of modern classroom and research space and features a unique cluster of laboratories.",
+        "Bob L. Herd Department of Petroleum Engineering has approximately 42,000 square feet of modern classroom and research space and features a unique cluster of laboratories.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "807 Boston Ave, Lubbock, TX 79409",
@@ -210,12 +208,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(33.5877696, -101.8740621),
+    latlong: LatLng(33.5877696, -101.8740621),
   ),
   BuildingInfo(
     name: 'Development Office Building',
     description:
-    "The building is home to the Office of Institutional Advancement which oversees fundraising for the Texas Tech University System.",
+        "The building is home to the Office of Institutional Advancement which oversees fundraising for the Texas Tech University System.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2533 15th St, Lubbock, TX 79409",
@@ -223,12 +221,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Agricultural Pavilion Building',
     description:
-    "The building is home to offices, labs and classrooms for the Departments of Landscape Architecture and Range & Wildlife Management.",
+        "The building is home to offices, labs and classrooms for the Departments of Landscape Architecture and Range & Wildlife Management.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2803 15th St, Lubbock, TX 79409",
@@ -236,12 +234,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'McClellan Hall Building',
     description:
-    "The building is the home of the Honors College administrative offices.",
+        "The building is the home of the Honors College administrative offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1503 Akron Ave, Lubbock, TX 79409",
@@ -249,12 +247,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'McKenzie-Merket Alumni Center Building',
     description:
-    'The facility houses the administrative office of the Texas Tech Alumni Association as well as a variety of meeting and event venues.',
+        'The facility houses the administrative office of the Texas Tech Alumni Association as well as a variety of meeting and event venues.',
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2521 17th St, Lubbock, TX 79409",
@@ -262,12 +260,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Doak Hall Building',
     description:
-    "The building houses various business offices of Texas Tech University.",
+        "The building houses various business offices of Texas Tech University.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2518 15th St, Lubbock, TX 79409",
@@ -275,12 +273,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Drane Hall Building',
     description:
-    "Drane Hall houses various business offices of Texas Tech University as well as administrative offices of the College of Visual and Performing Arts.",
+        "Drane Hall houses various business offices of Texas Tech University as well as administrative offices of the College of Visual and Performing Arts.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2515 15th St, Lubbock, TX 79409",
@@ -288,12 +286,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Horn Hall Building',
     description:
-    "Horn Hall is an all-female, movable furniture residence hall. It is located on the southeast side of campus close to the Student Union building and the Music building. Formal and informal lounges offer opportunities for gatherings. Also available in each hall are study rooms, a TV lounge and vending machines. Limitless laundry lounges are available for all residents.",
+        "Horn Hall is an all-female, movable furniture residence hall. It is located on the southeast side of campus close to the Student Union building and the Music building. Formal and informal lounges offer opportunities for gatherings. Also available in each hall are study rooms, a TV lounge and vending machines. Limitless laundry lounges are available for all residents.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2519 15th St, Lubbock, TX 79409",
@@ -301,12 +299,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Knapp Hall Building',
     description:
-    "Knapp Hall is an all-female, movable furniture residence hall. The Women in Science and Engineering (WISE) Learning Community is located in Knapp Hall on the southeast side of campus, close to the Student Union building and the Music building. Formal and informal lounges offer opportunities for gatherings. Also available in each hall are study rooms, a TV lounge and vending machines. Limitless laundry lounges are available for all residents.",
+        "Knapp Hall is an all-female, movable furniture residence hall. The Women in Science and Engineering (WISE) Learning Community is located in Knapp Hall on the southeast side of campus, close to the Student Union building and the Music building. Formal and informal lounges offer opportunities for gatherings. Also available in each hall are study rooms, a TV lounge and vending machines. Limitless laundry lounges are available for all residents.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2519 15th St, Lubbock, TX 79409",
@@ -314,7 +312,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Human Science Cottage Building',
@@ -326,12 +324,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'West Hall Building',
     description:
-    "The Visitor's Center, undergraduate admissions offices, the registrar's office, student business services and the scholarship and financial aid offices are here.",
+        "The Visitor's Center, undergraduate admissions offices, the registrar's office, student business services and the scholarship and financial aid offices are here.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2520 Broadway Ave, Lubbock, TX 79409",
@@ -339,12 +337,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Sneed Hall Building',
     description:
-    "Sneed Hall is an all-male, movable furniture residence hall. The Men of STEM (Science Technology, Engineering and Mathematics) Learning Community is located in Sneed Hall near the College of Engineering, West Hall and Holden Hall.",
+        "Sneed Hall is an all-male, movable furniture residence hall. The Men of STEM (Science Technology, Engineering and Mathematics) Learning Community is located in Sneed Hall near the College of Engineering, West Hall and Holden Hall.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2508 Broadway Ave, Lubbock, TX 79409",
@@ -352,12 +350,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Bledsoe Hall Building',
     description:
-    "Bledsoe Hall is an all-male, movable furniture residence hall. The Engineering Success Learning Community is located in Bledsoe Hall, and residents have the opportunity to interact with students and faculty in the College of Engineering.",
+        "Bledsoe Hall is an all-male, movable furniture residence hall. The Engineering Success Learning Community is located in Bledsoe Hall, and residents have the opportunity to interact with students and faculty in the College of Engineering.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2509 Broadway Ave, Lubbock, TX 79409",
@@ -365,12 +363,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Gordon Hall Building',
     description:
-    "Gordon Hall is a coed, suite-style residence hall located on the northeast side of campus. Students in the hall share a suite with students of the same gender only. A furnished living room sits between two bedroom units. Each fully furnished bedroom unit accommodates one to two students and includes a vanity area and private bathroom.",
+        "Gordon Hall is a coed, suite-style residence hall located on the northeast side of campus. Students in the hall share a suite with students of the same gender only. A furnished living room sits between two bedroom units. Each fully furnished bedroom unit accommodates one to two students and includes a vanity area and private bathroom.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2509 Broadway Ave, Lubbock, TX 79409",
@@ -378,12 +376,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Jones Stadium Building',
     description:
-    "Jones AT&T Stadium is a football stadium located in Lubbock, Texas that serves as the home field of the Texas Tech Red Raiders. The stadium was opened in 1947 and has a current seating capacity of 60,454.",
+        "Jones AT&T Stadium is a football stadium located in Lubbock, Texas that serves as the home field of the Texas Tech Red Raiders. The stadium was opened in 1947 and has a current seating capacity of 60,454.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2526 Mac Davis Ln, Lubbock, TX 79409",
@@ -391,12 +389,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Ticket Office Stadium Building',
     description:
-    "The Ticket Office is located on the North side of the Sports Performance Center",
+        "The Ticket Office is located on the North side of the Sports Performance Center",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2526 Mac Davis Ln, Lubbock, TX 79409",
@@ -404,13 +402,13 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
 
   BuildingInfo(
     name: 'CASNR Annex Building',
     description:
-    "The building is home to offices, labs and classrooms for the Departments of Landscape Architecture and Range & Wildlife Management.",
+        "The building is home to offices, labs and classrooms for the Departments of Landscape Architecture and Range & Wildlife Management.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2904 15th St, Lubbock, TX 79409",
@@ -418,12 +416,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Agriculture Education Communication Building',
     description:
-    "The building houses the Department of Agricultural Education and Communications which offers undergraduate and graduate degrees.",
+        "The building houses the Department of Agricultural Education and Communications which offers undergraduate and graduate degrees.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2810 15th St, Lubbock, TX 79409",
@@ -431,12 +429,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Creative Movement Studio',
     description:
-    "The Creative Movement Studio is a multi-purpose studio that houses the Dance & Theatre programs, including studio spaces for rehearsals, and the university's cheer and pom squads. It is located at the southwest corner of Akron and Glenna Goodacre Avenues, just north of the Petroleum Engineering building.",
+        "The Creative Movement Studio is a multi-purpose studio that houses the Dance & Theatre programs, including studio spaces for rehearsals, and the university's cheer and pom squads. It is located at the southwest corner of Akron and Glenna Goodacre Avenues, just north of the Petroleum Engineering building.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "801 Akron Ave, Lubbock, TX 79409",
@@ -444,12 +442,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Library Building',
     description:
-    "The University Library is the state's third largest library with nearly two million books and a myriad of electronic publications and databases.",
+        "The University Library is the state's third largest library with nearly two million books and a myriad of electronic publications and databases.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2802 18th St, Lubbock, TX 79409",
@@ -457,12 +455,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Engineering Center Building',
     description:
-    "The building is home to the offices of the Dean of the Edward E. Whitacre Jr. College of Engineering.",
+        "The building is home to the offices of the Dean of the Edward E. Whitacre Jr. College of Engineering.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "902 Boston Ave, Lubbock, TX 79409",
@@ -470,12 +468,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Chemical Engineering Building',
     description:
-    'The building houses the Department Chemical Engineering classrooms, research labs and administrative offices.',
+        'The building houses the Department Chemical Engineering classrooms, research labs and administrative offices.',
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "807 Canton Ave, Lubbock, TX 79409",
@@ -483,12 +481,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Bayer Plant Science Building',
     description:
-    "The new building has an open lab design with the required support and graduate student spaces, one instructional lab and a departmental office suite.",
+        "The new building has an open lab design with the required support and graduate student spaces, one instructional lab and a departmental office suite.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2907 15th St, Lubbock, TX 79409",
@@ -496,12 +494,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Fisheries and Wildlife Building',
     description:
-    "The building is home to Department of Natural Resources Management classrooms, research labs and offices.",
+        "The building is home to Department of Natural Resources Management classrooms, research labs and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2912 15th St, Lubbock, TX 79409",
@@ -509,12 +507,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Kinesiology and Sport Management Building',
     description:
-    "The building is home to the Kinesiology & Sport Management Department classrooms, research labs and administrative offices.",
+        "The building is home to the Kinesiology & Sport Management Department classrooms, research labs and administrative offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3204 Main St, Lubbock, TX 79409",
@@ -522,7 +520,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Wall Hall Building',
@@ -534,13 +532,13 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
 
   BuildingInfo(
     name: 'Psychology Building',
     description:
-    "The Visitor's Center, undergraduate admissions offices, the registrar's office, student business services and the scholarship and financial aid offices are here.",
+        "The Visitor's Center, undergraduate admissions offices, the registrar's office, student business services and the scholarship and financial aid offices are here.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2810 18th St, Lubbock, TX 79410",
@@ -548,12 +546,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Charles E. Maedgen Jr. Theatre Building',
     description:
-    "The Charles E. Maedgen Jr. Theatre is home to the Department of Theatre and Dance. The main stage and adjoining lab theatre offer a variety of performances that are open to the public.",
+        "The Charles E. Maedgen Jr. Theatre is home to the Department of Theatre and Dance. The main stage and adjoining lab theatre offer a variety of performances that are open to the public.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2812 18th St, Lubbock, TX 79410",
@@ -561,12 +559,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Stangel Hall Building',
     description:
-    "Stangel Hall is a coed, built-in furniture residence hall. The Health Sciences Learning Community is located in Stangel Hall on the central western edge of the main campus, near Agriculture row, Biology building, and Experimental Science buildings.",
+        "Stangel Hall is a coed, built-in furniture residence hall. The Health Sciences Learning Community is located in Stangel Hall on the central western edge of the main campus, near Agriculture row, Biology building, and Experimental Science buildings.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3211 Main St, Lubbock, TX 79406",
@@ -574,12 +572,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Murdough Hall Building',
     description:
-    "Murdough Hall is a coed, built-in furniture residence hall. The Media and Communication, First Gen, PreLaw, and the Davis College of Agricultural Sciences and Natural Resources learning communities are located in Murdough Hall on the central western edge of the main campus near Agriculture row, Biology, and Experimental Science buildings.",
+        "Murdough Hall is a coed, built-in furniture residence hall. The Media and Communication, First Gen, PreLaw, and the Davis College of Agricultural Sciences and Natural Resources learning communities are located in Murdough Hall on the central western edge of the main campus near Agriculture row, Biology, and Experimental Science buildings.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3211 Main St, Lubbock, TX 79406",
@@ -587,12 +585,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Hulen Hall Building',
     description:
-    "Hulen Hall is a coed, built-in furniture residence hall. The Future Teachers Learning Community is located in Hulen Hall on the south side of campus, near the College of Architecture, English, Philosophy and Education buildings. ",
+        "Hulen Hall is a coed, built-in furniture residence hall. The Future Teachers Learning Community is located in Hulen Hall on the south side of campus, near the College of Architecture, English, Philosophy and Education buildings. ",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3003 18th St, Lubbock, TX 79410",
@@ -600,12 +598,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Clement Hall Building',
     description:
-    "Clement Hall is a coed, built-in furniture residence hall. The Architecture and Design Learning Community is located in Clement Hall, near the College of Architecture, English, Philosophy, and Education buildings.",
+        "Clement Hall is a coed, built-in furniture residence hall. The Architecture and Design Learning Community is located in Clement Hall, near the College of Architecture, English, Philosophy, and Education buildings.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3003 18th St, Lubbock, TX 79410",
@@ -613,12 +611,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Art 3D Annex Building',
     description:
-    "The Art 3-D annex is home to sculpture, jewelry design and metalsmithing classes in the School of Art.",
+        "The Art 3-D annex is home to sculpture, jewelry design and metalsmithing classes in the School of Art.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3216 Main St, Lubbock, TX 79409",
@@ -626,12 +624,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Museum Building',
     description:
-    "The Museum of Texas Tech features the Diamond M art collection and a range of works in the African, pre-Columbian and Taos/Southwest galleries.",
+        "The Museum of Texas Tech features the Diamond M art collection and a range of works in the African, pre-Columbian and Taos/Southwest galleries.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3301 4th St, Lubbock, TX 79409",
@@ -639,12 +637,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Media and Communication Building',
     description:
-    "The Media & Communication building houses the College of Media & Communication, the Department of Communication Studies, Army ROTC, Atmospheric Science, Texas Tech University Press and Student Media.",
+        "The Media & Communication building houses the College of Media & Communication, the Department of Communication Studies, Army ROTC, Atmospheric Science, Texas Tech University Press and Student Media.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3003 15th St, Lubbock, TX 79409",
@@ -652,13 +650,13 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
 
   BuildingInfo(
     name: 'Chitwood Hall Building',
     description:
-    "Chitwood Hall is a co-ed, built-in furniture residence hall. The First Year Success (FYS) Learning Community is located on the southwest side of campus near the College of Architecture and the Law School, and is only available to incoming freshman.",
+        "Chitwood Hall is a co-ed, built-in furniture residence hall. The First Year Success (FYS) Learning Community is located on the southwest side of campus near the College of Architecture and the Law School, and is only available to incoming freshman.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3115 18th St, Lubbock, TX 79406",
@@ -666,12 +664,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Coleman Hall Building',
     description:
-    "Coleman Hall is a coed, built-in furniture residence hall. Men and women live on alternating floors. Features of the hall include a TV lounge, and a computer lab. Limitless laundry lounges are available for all residents.",
+        "Coleman Hall is a coed, built-in furniture residence hall. Men and women live on alternating floors. Features of the hall include a TV lounge, and a computer lab. Limitless laundry lounges are available for all residents.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1802 Flint Ave, Lubbock, TX 79410",
@@ -679,12 +677,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Weymouth Hall Building',
     description:
-    "Weymouth Hall is a co-ed, built-in furniture residence hall. The First Year Success (FYS) Learning Community is located in Weymouth Hall on the southwest side of campus near the College of Architecture and the Law School.",
+        "Weymouth Hall is a co-ed, built-in furniture residence hall. The First Year Success (FYS) Learning Community is located in Weymouth Hall on the southwest side of campus near the College of Architecture and the Law School.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3115 18th St, Lubbock, TX 79406",
@@ -692,12 +690,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Wiggins Complex Building',
     description:
-    "The Wiggins Complex houses University Career Services, Student Housing, and Hospitality Services of Texas Tech University.",
+        "The Wiggins Complex houses University Career Services, Student Housing, and Hospitality Services of Texas Tech University.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3211 18th St, Lubbock, TX 79409",
@@ -705,12 +703,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Biology Building',
     description:
-    "The building is home to the Department of Biological Sciences classrooms, research labs, administrative offices and the Biology Auditorium.",
+        "The building is home to the Department of Biological Sciences classrooms, research labs, administrative offices and the Biology Auditorium.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2901 Main St, Lubbock, TX 79409",
@@ -718,12 +716,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(33.5848211, -101.877866),
+    latlong: LatLng(33.5848211, -101.877866),
   ),
   BuildingInfo(
     name: 'Architecture Building',
     description:
-    "The College of Architecture building opened in 1971. Architecture has been offered at Texas Tech since 1927. It became a full college in 1986.",
+        "The College of Architecture building opened in 1971. Architecture has been offered at Texas Tech since 1927. It became a full college in 1986.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3016 18th St, Lubbock, TX 79409",
@@ -731,12 +729,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Central Heating and Cooling Plant I Building',
     description:
-    "Central Heating and Cooling Plants (CHACP) provide steam and chilled water for heating and cooling, respectively",
+        "Central Heating and Cooling Plants (CHACP) provide steam and chilled water for heating and cooling, respectively",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3224 Main St, Lubbock, TX 79409",
@@ -744,12 +742,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Law Building',
     description:
-    "The building houses the School of Law classrooms, labs, courtrooms, law library, the Lanier Professional Development Center and offices.",
+        "The building houses the School of Law classrooms, labs, courtrooms, law library, the Lanier Professional Development Center and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3311 18th St, Lubbock, TX 79409",
@@ -757,7 +755,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Physical Plant Annex Building',
@@ -769,12 +767,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Greenhouse and Horticultural Building',
     description:
-    "The facility houses research projects as well as teaching materials for various plant-related classes.",
+        "The facility houses research projects as well as teaching materials for various plant-related classes.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3340 Main Street, Lubbock, TX 79409",
@@ -782,12 +780,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Goddard Range Wildlife Building',
     description:
-    "The building is home to the Office of the Dean of the College of Agricultural Sciences and Natural Resources as well as classrooms and lab space.",
+        "The building is home to the Office of the Dean of the College of Agricultural Sciences and Natural Resources as well as classrooms and lab space.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2903 15th St, Lubbock, TX 79409",
@@ -795,12 +793,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Rec Aquatic Facilities Building',
     description:
-    "The swimming facility at the Student Recreational Center offers a variety of swim classes and open swimming sessions.",
+        "The swimming facility at the Student Recreational Center offers a variety of swim classes and open swimming sessions.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3219 Main Street, Lubbock, TX 79409",
@@ -808,12 +806,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Central Heating and Cooling Plant II Building',
     description:
-    "Central Heating and Cooling Plants (CHACP) provide steam and chilled water for heating and cooling, respectively.",
+        "Central Heating and Cooling Plants (CHACP) provide steam and chilled water for heating and cooling, respectively.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3712 10th St, Lubbock, TX 79409",
@@ -821,12 +819,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Food Tech Building',
     description:
-    "The building houses classrooms, labs and offices for the Department of Food Science.",
+        "The building houses classrooms, labs and offices for the Department of Food Science.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2802 15th St, Lubbock, TX 79409",
@@ -834,12 +832,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'National Ranching Heritage Center - Devit and Mallet Ranch Building',
     description:
-    'The park and museum is dedicated to the preservation and interpretation of American ranching history.',
+        'The park and museum is dedicated to the preservation and interpretation of American ranching history.',
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "33121 4th St, Lubbock, TX 79409",
@@ -847,12 +845,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Art Building',
     description:
-    "The building is home to the School of Art classrooms, studios labs and administrative offices and the Landmark Arts Gallery.",
+        "The building is home to the School of Art classrooms, studios labs and administrative offices and the Landmark Arts Gallery.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3010 18th St, Lubbock, TX 79409",
@@ -860,12 +858,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Meat Lab and Livestock Arena',
     description:
-    "The Meat Lab is home to research and teaching facilities. The Livestock arena is used for various animal classes and events.",
+        "The Meat Lab is home to research and teaching facilities. The Livestock arena is used for various animal classes and events.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1306 Indiana Ave, Lubbock, TX 79409",
@@ -873,12 +871,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Student Rec Center Building',
     description:
-    "The Robert H. Ewalt Student Recreation Center features a raised jogging track, volleyball/basketball courts and weight room facilities. The climbing, outdoor pursuits and aquatic centers are also found here.",
+        "The Robert H. Ewalt Student Recreation Center features a raised jogging track, volleyball/basketball courts and weight room facilities. The climbing, outdoor pursuits and aquatic centers are also found here.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3219 Main Street, Lubbock, TX 79409",
@@ -886,13 +884,13 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
 
   BuildingInfo(
     name: 'KTTZ-TV, PBS Station',
     description:
-    "The facility houses the studios and offices of KTXT-TV, the Texas Tech owned Public Broadcasting Station in Lubbock.",
+        "The facility houses the studios and offices of KTXT-TV, the Texas Tech owned Public Broadcasting Station in Lubbock.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3406 18th St, Lubbock, TX 79409",
@@ -900,12 +898,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Fiber and Polymer Building',
     description:
-    "Texas Tech University's Fiber and Biopolymer Research Institute (FBRI) is equipped and staffed to conduct research and development activities ranging from small-scale testing through large-scale manufacturing. A fundamental objective is to foster greater use of the natural fibers and increase textile manufacturing in Texas.",
+        "Texas Tech University's Fiber and Biopolymer Research Institute (FBRI) is equipped and staffed to conduct research and development activities ranging from small-scale testing through large-scale manufacturing. A fundamental objective is to foster greater use of the natural fibers and increase textile manufacturing in Texas.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1001 E Texas 289 Loop Frontage, Lubbock, TX 79403",
@@ -913,7 +911,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Robert Nash Interpretive Center',
@@ -925,12 +923,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Lubbock Lake Landmark Building',
     description:
-    "The Lubbock Lake Landmark is one of the foremost New World archeological sites, providing proof of consistent human habitation at one North American location for about 12,000 years.",
+        "The Lubbock Lake Landmark is one of the foremost New World archeological sites, providing proof of consistent human habitation at one North American location for about 12,000 years.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2401 Landmark Dr, Lubbock, TX 79415",
@@ -938,12 +936,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Housing Services Building',
     description:
-    "The building is home to some of the university's student residence hall administrative offices.",
+        "The building is home to some of the university's student residence hall administrative offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3301 Physical Plant Dr, Lubbock, TX 79409",
@@ -951,12 +949,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Creative Movement Studio',
     description:
-    "The Creative Movement Studio is a multi-purpose studio that houses the Dance & Theatre programs, including studio spaces for rehearsals, and the university's cheer and pom squads.",
+        "The Creative Movement Studio is a multi-purpose studio that houses the Dance & Theatre programs, including studio spaces for rehearsals, and the university's cheer and pom squads.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "801 Akron Ave, Lubbock, TX 79409",
@@ -964,12 +962,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Mechanical Engineering North (MEN) Building',
     description:
-    "The building houses Department of Mechanical Engineering classrooms, research labs and offices.",
+        "The building houses Department of Mechanical Engineering classrooms, research labs and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2703 7th St, Lubbock, TX 79409",
@@ -977,12 +975,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Mechanical Engineering South (MES) Building',
     description:
-    "The building houses Department of Mechanical Engineering classrooms, research labs and offices.",
+        "The building houses Department of Mechanical Engineering classrooms, research labs and offices.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2703 7th St, Lubbock, TX 79409",
@@ -990,12 +988,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Dan Law Field (Baseball) at Rip Griffin Park',
     description:
-    "The Law is home to the Texas Tech Red Raider baseball team and has a seating capacity over 4,000.",
+        "The Law is home to the Texas Tech Red Raider baseball team and has a seating capacity over 4,000.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2901 Dr of Champions, Lubbock, TX 79409",
@@ -1003,12 +1001,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'International Cultural Center Building',
     description:
-    "The International Cultural Center houses Texas Tech's Office of International Affairs and Study Abroad programs, as well as a U.S. passport office. The university offers a variety of educational opportunities in more than 70 countries worldwide.",
+        "The International Cultural Center houses Texas Tech's Office of International Affairs and Study Abroad programs, as well as a U.S. passport office. The university offers a variety of educational opportunities in more than 70 countries worldwide.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3317 7th St, Lubbock, TX 79409",
@@ -1016,12 +1014,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Southwest Collection/Special Collections Library',
     description:
-    "The Southwest Collections/Special Collections Library is a historical research center and archive of materials relating to the American Southwest. The Vietnam Collection is housed here.",
+        "The Southwest Collections/Special Collections Library is a historical research center and archive of materials relating to the American Southwest. The Vietnam Collection is housed here.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2805 15th St, Lubbock, TX 79409",
@@ -1029,12 +1027,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Admin Support Center Building',
     description:
-    "This facility houses Transportation & Parking Services, IT Help Central, and the MailTech postal operation.",
+        "This facility houses Transportation & Parking Services, IT Help Central, and the MailTech postal operation.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "407 Flint Ave, Lubbock, TX 79409",
@@ -1042,12 +1040,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'United Supermarket Arena',
     description:
-    "The 15,000 seat multi-purpose facility is home to Texas Tech basketball and volleyball. The arena also hosts concerts by some of the biggest names in music.",
+        "The 15,000 seat multi-purpose facility is home to Texas Tech basketball and volleyball. The arena also hosts concerts by some of the biggest names in music.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1701 Indiana Ave, Lubbock, TX 79409",
@@ -1055,12 +1053,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Carpenter/Wells Complex',
     description:
-    "The Carpenter/Wells Complex features 3 and 4 bedroom suite-style residences for men and women of sophomore classification or higher. The complex is open year round for the convenience of residents. Students share a suite with students of the same gender.",
+        "The Carpenter/Wells Complex features 3 and 4 bedroom suite-style residences for men and women of sophomore classification or higher. The complex is open year round for the convenience of residents. Students share a suite with students of the same gender.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "909 Flint Ave, Lubbock, TX 79409",
@@ -1068,12 +1066,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Education Building',
     description:
-    "The Education building opened in 2002. The building faces the English/Philosophy building across a large courtyard. The two buildings mirror each other in architectural design.",
+        "The Education building opened in 2002. The building faces the English/Philosophy building across a large courtyard. The two buildings mirror each other in architectural design.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3002 18th St, Lubbock, TX 79409",
@@ -1081,25 +1079,26 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'English Philosophy Building',
-    description: "The English/Philosophy building opened in 2002. The building faces the Education building across a large courtyard. The two buildings mirror each other in architectural design.",
+    description:
+        "The English/Philosophy building opened in 2002. The building faces the Education building across a large courtyard. The two buildings mirror each other in architectural design.",
     imageUrl: 'assets/sub.jpg',
-    hours:"8am 12pm",
+    hours: "8am 12pm",
     address: "3001 15th St, Lubbock, TX 79409",
     accessibleDoors: "Automatic doors at north entrance",
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   //---------------------------------------------------------------------------
   BuildingInfo(
     name: 'TTU Police Dept Building',
     description:
-    "The building is home to the Texas Tech University Police Department.",
+        "The building is home to the Texas Tech University Police Department.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "413 Flint Ave, Lubbock, TX 79415",
@@ -1107,12 +1106,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Animal Food Science Building',
     description:
-    "The building is home to Department of Animal and Food Sciences classrooms, research labs and administrative offices as well as COWamongus, a food service and retail store.",
+        "The building is home to Department of Animal and Food Sciences classrooms, research labs and administrative offices as well as COWamongus, a food service and retail store.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1308 Indiana Ave, Lubbock, TX 79415",
@@ -1120,12 +1119,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Burkhart Center for Autism Education and Research',
     description:
-    "The Burkhart Center for Autism Education and Research, named for Jim and Jere Lynn Burkhart who have made significant contributions to the establishment and mission of the Center, officially opened in October 2005.",
+        "The Burkhart Center for Autism Education and Research, named for Jim and Jere Lynn Burkhart who have made significant contributions to the establishment and mission of the Center, officially opened in October 2005.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2902 18th St, Lubbock, TX 79410",
@@ -1133,12 +1132,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Experimental Science Building',
     description:
-    "The building houses multi-discipline research laboratories and classrooms.",
+        "The building houses multi-discipline research laboratories and classrooms.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1008 Canton Ave, Lubbock, TX 79410",
@@ -1146,12 +1145,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Texas Tech Plaza Building',
     description:
-    "Owned by the university, Texas Tech Plaza houses offices for eLearning & Academic Partnerships and the Skyviews restaurant, operated by the College of Human Sciences.",
+        "Owned by the university, Texas Tech Plaza houses offices for eLearning & Academic Partnerships and the Skyviews restaurant, operated by the College of Human Sciences.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1901 University Ave, Lubbock, TX 79401",
@@ -1159,7 +1158,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Flint Garage',
@@ -1171,7 +1170,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Baseball Clubhouse',
@@ -1183,7 +1182,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Rawls Turf Care Center',
@@ -1195,12 +1194,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Plant & Soil Science Fld Building',
     description:
-    "We are a student-focused and research-intense department, offering a range of multidisciplinary coursework and academic programs.",
+        "We are a student-focused and research-intense department, offering a range of multidisciplinary coursework and academic programs.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "TTU Bayer Plant Science Building, Lubbock, TX 79409",
@@ -1208,12 +1207,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Football Training Facility Building',
     description:
-    "The Athletic Complex, commonly known as the Football Training Complex or FTC, features training facilities and access to the outdoor football practice field.",
+        "The Athletic Complex, commonly known as the Football Training Complex or FTC, features training facilities and access to the outdoor football practice field.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2503 Mac Davis Ln, Lubbock, TX 79403",
@@ -1221,12 +1220,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Marsha Sharp Center for Student Athletes Building',
     description:
-    "The facility houses offices and facilities dedicated to the academic success of student athletes.",
+        "The facility houses offices and facilities dedicated to the academic success of student athletes.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "2702 7th St, Lubbock, TX 79409",
@@ -1234,12 +1233,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Student Wellness Center Building',
     description:
-    "The Student Wellness Center houses both Student Health Services and the Student Counseling Center. A pharmacy that offers student discounts is located in the building.",
+        "The Student Wellness Center houses both Student Health Services and the Student Counseling Center. A pharmacy that offers student discounts is located in the building.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "1003 Flint Ave, Lubbock, TX 79409",
@@ -1247,12 +1246,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Gold Course, Rawls (RGOLF)',
     description:
-    "The Tom Doak designed golf course is the recipient of several national honors as one of the top university-owned courses in the country.",
+        "The Tom Doak designed golf course is the recipient of several national honors as one of the top university-owned courses in the country.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "107 N Texas Tech Pkwy, Lubbock, TX 79415",
@@ -1260,12 +1259,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Murray Hall Building',
     description:
-    "Murray Hall offers 3 and 4 bedroom suite-style residences for men and women of any classification. Students share a suite with students of the same gender.",
+        "Murray Hall offers 3 and 4 bedroom suite-style residences for men and women of any classification. Students share a suite with students of the same gender.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "903 Flint Ave, Lubbock, TX 79409",
@@ -1273,12 +1272,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Rawls College of Business Building',
     description:
-    "The new Rawls College of Business is a 140,000 square-foot building state-of the art LEED-certified building.",
+        "The new Rawls College of Business is a 140,000 square-foot building state-of the art LEED-certified building.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "703 Flint Ave, Lubbock, TX 79409",
@@ -1286,12 +1285,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Lanier Professional Development Center',
     description:
-    "The facility is an addition to the School of Law featuring classrooms, offices and a state-of-the art courtroom.",
+        "The facility is an addition to the School of Law featuring classrooms, offices and a state-of-the art courtroom.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3311 18th St, Lubbock, TX 79409",
@@ -1299,12 +1298,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Livermore Center Building',
     description:
-    "The Livermore Center is part of the Department of Chemical Engineering and provides space for classrooms and labs.",
+        "The Livermore Center is part of the Department of Chemical Engineering and provides space for classrooms and labs.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "803 Canton Ave, Lubbock, TX 79409",
@@ -1312,7 +1311,7 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'Rawls Golf Course Clubhouse',
@@ -1324,12 +1323,12 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
   BuildingInfo(
     name: 'TTU Health Sciences Center (TTUHSC)',
     description:
-    "The Texas Tech University Health Sciences Center, a separate university located on the same campus as Texas Tech, is made up of the Schools of Medicine, Nursing, Pharmacy, Allied Health Sciences and Biomedical Sciences.",
+        "The Texas Tech University Health Sciences Center, a separate university located on the same campus as Texas Tech, is made up of the Schools of Medicine, Nursing, Pharmacy, Allied Health Sciences and Biomedical Sciences.",
     imageUrl: 'assets/sub.jpg',
     hours: "8am 12pm",
     address: "3601 4th St, Lubbock, TX 79430",
@@ -1337,6 +1336,6 @@ final List<BuildingInfo> buildingData = [
     ramps: "Ramps available at the main entrance",
     elevators: "Elevators to all floors",
     restrooms: "Accessible restrooms on each floor",
-    latlong : LatLng(0,0 ),
+    latlong: LatLng(0, 0),
   ),
 ];

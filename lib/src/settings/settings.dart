@@ -44,6 +44,58 @@ class Settings extends StatelessWidget {
           parentColor: parentIconColor,
           text: "Change icon color",
         ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          child: TextButton(
+            onPressed: () => (),
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color(0xFFC00000))), //red 192
+            child: Text(
+              'Show elevation changes',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          child: TextButton(
+            onPressed: () => (),
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color(0xFFC00000))), //red 192
+            child: Text(
+              'High Contrast Mode',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          child: TextButton(
+            onPressed: () => (),
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color(0xFFC00000))), //red 192
+            child: Text(
+              'Screen Reader',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          child: TextButton(
+            onPressed: () => (),
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color(0xFFC00000))), //red 192
+            child: Text(
+              'Font Size',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ]),
     );
   }

@@ -146,7 +146,7 @@ class _MapScreenState extends State<MapScreen>
   double _zoom = 15;
   LatLng center = LatLng(33.58479,
       -101.87466); //Stores the coordinates at the center of the screen
-  Color _polylineColor = Color(0xFF00FF00);
+  Color _polylineColor = Color(0xFF0000FF);
   Color _iconColor = Color(0xFFFFFFFF);
 
   void handlePolylineColorChange(Color color) {

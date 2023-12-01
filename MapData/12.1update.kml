@@ -43723,6 +43723,17 @@
           </coordinates>
         </LineString>
       </Placemark>
+      <Placemark>
+        <name>Line 1068</name>
+        <styleUrl>#line-E65100-3325-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            -101.8756239,33.5821538,0
+            -101.8755591,33.5819678,0
+          </coordinates>
+        </LineString>
+      </Placemark>
     </Folder>
   </Document>
 </kml>

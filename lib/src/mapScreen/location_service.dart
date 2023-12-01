@@ -6277,6 +6277,8 @@ List<String> getPath(String origin, String destination) {
       14.609782114618312);
   graph.addEdge("(33.5822785, -101.8739383)", "(33.5820887, -101.8739249)",
       23.062514856003617);
+  graph.addEdge("(33.5821538, -101.8756239)", "(33.5819678, -101.8755591)",
+      23.50104060185272);
 
   //graph.bfs("(33.5853681, -101.8743443)");
   origin = graph.findClosestVertex(

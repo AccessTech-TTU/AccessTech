@@ -472,7 +472,7 @@ class _MyDraggableSheetState extends State<MyDraggableSheet> {
                           icon: Icon(
                             Icons.location_on
                           ),
-                          label: Text('Navigate Test'),
+                          label: Text('Navigate'),
                         ),
 
                         Text(

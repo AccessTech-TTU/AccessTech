@@ -147,7 +147,7 @@ class _MapScreenState extends State<MapScreen>
   LatLng center = LatLng(33.58479,
       -101.87466); //Stores the coordinates at the center of the screen
   Color _polylineColor = Color(0xFF0000FF);
-  Color _iconColor = Color(0xFFFFFFFF);
+  Color _iconColor = Color(0xFF000000);
 
   void handlePolylineColorChange(Color color) {
     setState(() {
@@ -424,9 +424,9 @@ class _MapScreenState extends State<MapScreen>
                       },
                       child: Icon(
                         Icons.filter_vintage,
-                        color: Colors.black,
+                        color: _iconColor,
                       ),
-                      backgroundColor: _getIconColor(),
+                      backgroundColor: Colors.white,
                       elevation: 10,
                     ),
                   ),
@@ -466,9 +466,31 @@ class _MapScreenState extends State<MapScreen>
                   right: 0,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
+                    child: FloatingActionButton.small(
+                      onPressed: () async {
+                        final GoogleMapController controller =
+                            await _controller.future;
+                        var currentZoomLevel = await controller.getZoomLevel();
+
+                        currentZoomLevel = currentZoomLevel + 2;
+                        controller.animateCamera(
+                            CameraUpdate.zoomTo(currentZoomLevel));
+                      },
+                      child: Icon(
+                        Icons.add_circle,
+                        color: _iconColor,
+                      ),
+                      backgroundColor: Colors.white,
+                      elevation: 10,
+                    ),
+                    /*
                     child: IconButton(
                         iconSize: 40,
-                        icon: Icon(Icons.add_circle, color: _iconColor),
+                        icon: Icon(
+                          Icons.add_circle,
+                          color: _iconColor,
+                        ),
+                        color: Colors.white,
                         onPressed: () async {
                           final GoogleMapController controller =
                               await _controller.future;
@@ -478,13 +500,33 @@ class _MapScreenState extends State<MapScreen>
                           currentZoomLevel = currentZoomLevel + 2;
                           controller.animateCamera(
                               CameraUpdate.zoomTo(currentZoomLevel));
-                        }),
+                        }),*/
                   ),
                 ),
                 Positioned(
                   top: 60,
                   right: 0,
                   child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: FloatingActionButton.small(
+                      onPressed: () async {
+                        final GoogleMapController controller =
+                            await _controller.future;
+                        var currentZoomLevel = await controller.getZoomLevel();
+                        currentZoomLevel = currentZoomLevel - 2;
+                        if (currentZoomLevel < 0) currentZoomLevel = 0;
+                        controller.animateCamera(
+                            CameraUpdate.zoomTo(currentZoomLevel));
+                      },
+                      child: Icon(
+                        Icons.remove_circle,
+                        color: _iconColor,
+                      ),
+                      backgroundColor: Colors.white,
+                      elevation: 10,
+                    ),
+                  ),
+                  /*child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: IconButton(
                         iconSize: 40,
@@ -499,12 +541,26 @@ class _MapScreenState extends State<MapScreen>
                           controller.animateCamera(
                               CameraUpdate.zoomTo(currentZoomLevel));
                         }),
-                  ),
+                  ),*/
                 ),
                 Positioned(
                   top: 110,
                   right: 0,
                   child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: FloatingActionButton.small(
+                      onPressed: () async {
+                        testFunc(center);
+                      },
+                      child: Icon(
+                        Icons.navigation,
+                        color: _iconColor,
+                      ),
+                      backgroundColor: Colors.white,
+                      elevation: 10,
+                    ),
+                  ),
+                  /*child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: IconButton(
                         iconSize: 40,
@@ -512,7 +568,7 @@ class _MapScreenState extends State<MapScreen>
                         onPressed: () async {
                           testFunc(center);
                         }),
-                  ),
+                  ),*/
                 ),
                 //          FloatingActionButton.extended(
                 //             onPressed: panToLocation,

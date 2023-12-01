@@ -143,6 +143,7 @@ class _MapScreenState extends State<MapScreen>
   Set<Marker> _currentlyDisplayingMarkers = {};
   bool? showRamps = true;
   bool? showEntrances = true;
+  double _zoom = 15;
 
   /*
     Converts a LatLng Representation of coords to a string representation of coords.
@@ -413,6 +414,46 @@ class _MapScreenState extends State<MapScreen>
                       backgroundColor: Colors.white,
                       elevation: 10,
                     ),
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: IconButton(
+                        iconSize: 40,
+                        icon: Icon(Icons.add_circle),
+                        onPressed: () async {
+                          final GoogleMapController controller =
+                              await _controller.future;
+                          var currentZoomLevel =
+                              await controller.getZoomLevel();
+
+                          currentZoomLevel = currentZoomLevel + 2;
+                          controller.animateCamera(
+                              CameraUpdate.zoomTo(currentZoomLevel));
+                        }),
+                  ),
+                ),
+                Positioned(
+                  top: 60,
+                  right: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: IconButton(
+                        iconSize: 40,
+                        icon: Icon(Icons.remove_circle),
+                        onPressed: () async {
+                          final GoogleMapController controller =
+                              await _controller.future;
+                          var currentZoomLevel =
+                              await controller.getZoomLevel();
+                          currentZoomLevel = currentZoomLevel - 2;
+                          if (currentZoomLevel < 0) currentZoomLevel = 0;
+                          controller.animateCamera(
+                              CameraUpdate.zoomTo(currentZoomLevel));
+                        }),
                   ),
                 ),
                 //          FloatingActionButton.extended(

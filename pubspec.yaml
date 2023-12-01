@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.2.1
   location: ^5.0.3
   flutter_polyline_points: ^2.0.0
+  flutter_colorpicker: ^1.0.3
 dev_dependencies:
   build_runner: ^2.4.6
   flutter_launcher_icons: "0.13.1"

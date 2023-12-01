@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'settings_color_picker.dart';
 
 /*
 Authors:
@@ -6,6 +8,8 @@ Authors:
 Description:
   Meow
 */
+Color pickerColor = Color(0x0000ff);
+Color currentColor = Color(0x0000ff);
 
 class Settings extends StatelessWidget {
   const Settings({Key? key});
@@ -18,13 +22,10 @@ class Settings extends StatelessWidget {
         title: const Text('Settings'),
         elevation: 2,
       ),
-      body: Center(
-        child: Text(
-          "Settings Go Here",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
+      body: ListView(children: <Widget>[
+        ColorPickerPage(),
+        ColorPickerPage(),
+      ]),
     );
   }
 }

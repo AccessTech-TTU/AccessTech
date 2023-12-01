@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
-import 'package:accesstech/src/settings.dart';
+import 'package:accesstech/src/settings/settings.dart';
 import 'location_service.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -470,7 +470,7 @@ class _MapScreenState extends State<MapScreen>
                     padding: const EdgeInsets.all(20.0),
                     child: IconButton(
                         iconSize: 40,
-                        icon: Icon(Icons.remove_circle),
+                        icon: Icon(Icons.navigation),
                         onPressed: () async {
                           testFunc(center);
                         }),
